@@ -6,7 +6,6 @@ import { UserModule } from './modules/user/user.module';
 function test(target, name, descriptor) {
   console.log(target, name, descriptor);
   console.log(descriptor.value);
-  
 }
 
 @Module({
@@ -17,8 +16,6 @@ function test(target, name, descriptor) {
 export class AppModule {
   @test
   configure(consumer: MiddlewareConsumer) {
-    console.log(132456);
-    
     consumer
       .apply()
   }

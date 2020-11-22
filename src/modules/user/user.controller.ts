@@ -1,10 +1,9 @@
 import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UserBaseDto } from './dto/user.dto';
-import { ActiveGuards } from '../../core/guards/active.guards';
+import { LoginGuards } from '../../core/guards/login.guards';
 
 @Controller({
-  host: ':dev.slmblog.com',
   path: 'user',
 })
 export class UserController {
@@ -18,10 +17,8 @@ export class UserController {
 
 
   @Post()
-  @UseGuards(ActiveGuards)
+  @UseGuards(LoginGuards)
   async create(@Query() createUserDto: UserBaseDto) {
-    console.log(createUserDto);
-    
     this.userService.create(createUserDto);
   }
 }
