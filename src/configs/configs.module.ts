@@ -7,4 +7,4 @@ import ConfigsService from './configs.service';
   providers: [ ConfigsService ],
   exports: [ ConfigsService ]
 })
-export class ConfigsModule {} 
+export class ConfigsModule {}
