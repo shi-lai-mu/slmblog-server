@@ -2,6 +2,9 @@ import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UserModule } from './modules/user/user.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigsModule } from './configs/configs.module';
+import ConfigService from './configs/configs.service';
 
 function test(target, name, descriptor) {
   console.log(target, name, descriptor);
@@ -9,7 +12,14 @@ function test(target, name, descriptor) {
 }
 
 @Module({
-  imports: [UserModule],
+  imports: [
+    ConfigsModule,
+    UserModule,
+    TypeOrmModule.forRootAsync({
+      useFactory: async (configService: ConfigService) => configService.db,
+      inject: [ ConfigService ],
+    }),
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
