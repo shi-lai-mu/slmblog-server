@@ -7,18 +7,18 @@ import { LoginGuards } from '../../core/guards/login.guards';
   path: 'user',
 })
 export class UserController {
-  constructor(private userService: UserService<any>) {}
+  constructor(private userService: UserService) {}
 
-  @Get()
-  async findAll(): Promise<UserBaseDto[]> {
-    console.log(this.userService);
-    return this.userService.findAll();
-  }
+  // @Get()
+  // async findAll(): Promise<UserBaseDto[]> {
+  //   console.log(this.userService);
+  //   return this.userService.findAll();
+  // }
 
 
-  @Post()
-  @UseGuards(LoginGuards)
-  async create(@Query() createUserDto: UserBaseDto) {
-    this.userService.create(createUserDto);
-  }
+  // @Post()
+  // @UseGuards(LoginGuards)
+  // async create(@Query() createUserDto: UserBaseDto) {
+  //   this.userService.create(createUserDto);
+  // }
 }
