@@ -1,3 +1,6 @@
+import { USER_CONSTANTS } from './constants';
+import { UserResponse } from '../modules/user/response.cfg';
+
 /**
  * 响应枚举类
  */
@@ -7,8 +10,12 @@ export class ResponseEnum {
   static readonly PARAMS:        Status = { code: 1000, message: '参数错误' };
   static readonly PARAMS_GUARDS: Status = { code: 1001, message: '参数错误' };
 
+  static readonly ACCOUNT = UserResponse;
+
 
 }
+
+
 
 /**
  * 可枚举状态值
