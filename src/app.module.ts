@@ -3,13 +3,10 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UserModule } from './modules/user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { RedisModule } from './modules/redis/redis.module';
 import { ConfigsModule } from './configs/configs.module';
 import ConfigService from './configs/configs.service';
 
-function test(target, name, descriptor) {
-  console.log(target, name, descriptor);
-  console.log(descriptor.value);
-}
 
 @Module({
   imports: [
@@ -19,12 +16,15 @@ function test(target, name, descriptor) {
       useFactory: async (configService: ConfigService) => configService.db,
       inject: [ ConfigService ],
     }),
+    RedisModule.forRootAsync({
+      useFactory: async (configService: ConfigService) => configService,
+      inject: [ ConfigService ],
+    })
   ],
   controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule {
-  @test
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply()

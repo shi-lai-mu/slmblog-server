@@ -3,7 +3,7 @@ import { BaseConfig } from '../base.service';
 /**
  * 数据库配置
  */
-export default class DBConfig extends BaseConfig {
+export class DBConfig extends BaseConfig {
   readonly type: 'mysql' | 'mariadb';
   readonly host: string;
   readonly port: number;
@@ -15,6 +15,20 @@ export default class DBConfig extends BaseConfig {
   readonly logging: any;
   readonly retryAttempts: number;
   readonly logger: 'advanced-console' | 'simple-console' | 'file' | 'debug' | any;
+
+  constructor(cfg) {
+    super(cfg);
+  }
+}
+
+
+/**
+ * 数据库配置
+ */
+export class RedisConfig extends BaseConfig {
+  readonly host: string;
+  readonly port: number;
+  readonly keyPrefix: string;
 
   constructor(cfg) {
     super(cfg);
