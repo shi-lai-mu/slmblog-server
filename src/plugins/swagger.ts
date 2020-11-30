@@ -1,8 +1,13 @@
 import { HttpException, HttpStatus, INestApplication, ValidationPipe } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { ResponseBody } from '../constants/response';
 import pluginsCfg from '../configs/plugins.cfg';
-import { Response } from '../constants/response';
 
+
+/**
+ * Swagger Document  文档
+ * validation        全局注入 入参数据校验
+ */
 export default (app: INestApplication) => {
   const { title, description, version, tag, url } = pluginsCfg.swagger;
   const options = new DocumentBuilder()
@@ -14,11 +19,13 @@ export default (app: INestApplication) => {
 
   const document = SwaggerModule.createDocument(app, options);
 
-  // 注入全局守卫 且自定义响应
+  // 注入全局守卫数据校验 且自定义错误响应
   app.useGlobalPipes(new ValidationPipe({
     exceptionFactory: (validationErrors = []) => {
+      const { constraints } = validationErrors[0];
+      const message = constraints ? Object.values(constraints).pop() : '';
       throw new HttpException(
-        Response.status('PARAMS_GUARDS', false, validationErrors[0].constraints),
+        ResponseBody.status('PARAMS_GUARDS', false, '', message),
         HttpStatus.OK,
       );
     }

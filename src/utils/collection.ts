@@ -1,3 +1,6 @@
+import { Request } from "@nestjs/common";
+import { RequestHandler } from "@nestjs/common/interfaces";
+import { RequestBodyObject } from "@nestjs/swagger/dist/interfaces/open-api-spec.interface";
 
 /**
  * 生成UUID
@@ -13,4 +16,18 @@ export const generateUUID = (format: string = '#校验码#-xxxx-yxxx-xxxx-xxxxxx
       d = Math.floor(d / 16);
       return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16);
     });
+}
+
+
+/**
+ * 获取请求方IP [没获取到返回空字符串]
+ * @param req 请求
+ */
+export const getClientIP = (req): string => {
+  const findIP = (req.headers['x-real-for']
+    || req.connection.remoteAddress
+    || req.socket.remoteAddress
+    || req.connection.socket.remoteAddress
+    || '').match(/\d+\.\d+\.\d+\.\d+/);
+  return findIP ? findIP[0] : '';
 }
