@@ -16,7 +16,6 @@ export class ResBaseException extends HttpException {
 
     // 错误响应附带内容
     if (exception.code !== 0) {
-      console.log('exception');
       (<ErrorStatus>exception).uuid = generateUUID();
       (<ErrorStatus>exception).time = new Date().toLocaleString();
     }

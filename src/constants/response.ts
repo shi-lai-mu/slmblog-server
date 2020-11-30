@@ -9,10 +9,10 @@ export class ResponseEnum {
   static readonly ERROR:         Status = { code: 1,    message: 'fail' };
   static readonly PARAMS:        Status = { code: 1000, message: '参数错误' };
   static readonly PARAMS_GUARDS: Status = { code: 1001, message: '参数错误' };
+  static readonly FREQUENTLY:    Status = { code: 1002, message: '请求过于频繁' };
 
-  static readonly ACCOUNT = UserResponse;
-
-
+  // 逻辑层请求响应
+  static readonly USER = UserResponse;
 }
 
 
@@ -25,7 +25,7 @@ const ResponseEnumKey: keyof typeof ResponseEnum = 'ERROR';
 /**
  * 响应体
  */
-export class Response extends ResponseEnum {
+export class ResponseBody extends ResponseEnum {
 
   
   /**
@@ -42,7 +42,7 @@ export class Response extends ResponseEnum {
    * @param enums 错误枚举值
    */
   static getCode(enums: typeof ResponseEnumKey): number {
-    return (<Status>ResponseEnum[enums]).code || -1;
+    return (<Status>ResponseEnum[enums]).code ?? -1;
   }
 
 
@@ -53,10 +53,12 @@ export class Response extends ResponseEnum {
     enums: typeof ResponseEnumKey,
     success?: boolean,
     result: any = '',
+    message?: string,
+    code?: number,
   ): Status {
     return {
-      code: Response.getCode(enums),
-      message: Response.getMessage(enums),
+      code: code || ResponseBody.getCode(enums),
+      message: message || ResponseBody.getMessage(enums),
       success: success !== undefined ? success : enums === 'SUCCESS',
       result,
     };
