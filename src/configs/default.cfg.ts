@@ -30,7 +30,7 @@ export default ((): StandardConfig => ({
   jwt: {
     secret: '',
     signOptions: {
-      expiresIn: '60s',
+      expiresIn: '7h',
     },
   }
 }))();
