@@ -4,6 +4,7 @@ import * as path from 'path';
 import { DBConfig, RedisConfig } from './type/db.cfg';
 import DefaultCfg from './default.cfg';
 import { defaultsDeep } from 'lodash';
+import { JwtModuleOptions } from '@nestjs/jwt';
 
 /**
  * 配置逻辑层
@@ -18,6 +19,10 @@ export default class ConfigsService {
    * Redis 配置
    */
   readonly redis: RedisConfig;
+  /**
+   * jwt 配置
+   */
+  readonly jwt: JwtModuleOptions;
 
   constructor() {
     let cfg = DefaultCfg;
@@ -33,5 +38,6 @@ export default class ConfigsService {
     // 载入配置
     this.db = new DBConfig(cfg.db);
     this.redis = new RedisConfig(cfg.redis);
+    this.jwt = cfg.jwt;
   }
 }

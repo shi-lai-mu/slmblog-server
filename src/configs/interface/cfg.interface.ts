@@ -1,3 +1,4 @@
+import { JwtModuleOptions } from "@nestjs/jwt";
 import { DBConfig, RedisConfig } from "./db.interface";
 
 /**
@@ -12,4 +13,8 @@ export interface StandardConfig {
    * Redis 配置
    */
   redis: RedisConfig;
+  /**
+   * jwt 配置
+   */
+  jwt: JwtModuleOptions;
 }

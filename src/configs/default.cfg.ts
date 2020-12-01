@@ -26,5 +26,11 @@ export default ((): StandardConfig => ({
     family: 4,
     password: '',
     db: 0,
+  },
+  jwt: {
+    secret: '',
+    signOptions: {
+      expiresIn: '60s',
+    },
   }
 }))();
