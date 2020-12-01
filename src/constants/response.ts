@@ -1,15 +1,19 @@
 import { USER_CONSTANTS } from './constants';
 import { UserResponse } from '../modules/user/response.cfg';
+import { ResBaseException } from 'src/core/exception/res.exception';
 
 /**
  * 响应枚举类
  */
 export class ResponseEnum {
-  static readonly SUCCESS:       Status = { code: 0,    message: 'success' };
-  static readonly ERROR:         Status = { code: 1,    message: 'fail' };
-  static readonly PARAMS:        Status = { code: 1000, message: '参数错误' };
-  static readonly PARAMS_GUARDS: Status = { code: 1001, message: '参数错误' };
-  static readonly FREQUENTLY:    Status = { code: 1002, message: '请求过于频繁' };
+  static readonly SUCCESS:              Status = { code: 0,    message: 'success' };
+  static readonly ERROR:                Status = { code: 1,    message: 'fail' };
+  static readonly PARAMS:               Status = { code: 1000, message: '参数错误' };
+  static readonly PARAMS_GUARDS:        Status = { code: 1001, message: '参数错误' };
+  static readonly FREQUENTLY:           Status = { code: 1002, message: '请求过于频繁' };
+  static readonly UNAUTHORIZED_INVALID: Status = { code: 1003, message: '授权失败，令牌无效!' }
+  static readonly UNAUTHORIZED_EXPIRED: Status = { code: 1004, message: '授权失败，身份已过期!' }
+  static readonly TIME_OUT_LONG:        Status = { code: 1005, message: '服务器处理超时，请稍后再试!' }
 
   // 逻辑层请求响应
   static readonly USER = UserResponse;
@@ -62,6 +66,21 @@ export class ResponseBody extends ResponseEnum {
       success: success !== undefined ? success : enums === 'SUCCESS',
       result,
     };
+  }
+
+
+  /**
+   * 自适应返回体
+   * @param result 响应
+   */
+  static send(result) {
+    if (result instanceof ResBaseException) {
+      throw result;
+    }
+    if (result.code !== undefined && result.code !== 0 && result.message) {
+      return ResponseBody.status('ERROR', false, '', result.message, result.code);
+    }
+    return ResponseBody.status('SUCCESS', true, result, '');
   }
 }
 
