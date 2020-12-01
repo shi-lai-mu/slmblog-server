@@ -2,7 +2,7 @@ import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { RedisService } from 'src/modules/redis/redis.service';
 import { getClientIP } from 'src/utils/collection';
 import { generateHash } from 'src/utils/crypto';
-import { ResBaseException } from '../exception/res.exception';
+import { ResBaseException } from 'src/core/exception/res.exception';
 import { ResponseBody, Status } from 'src/constants/response';
 import ConfigsService from 'src/configs/configs.service';
 

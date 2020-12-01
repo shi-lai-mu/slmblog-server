@@ -7,7 +7,6 @@ import { generateUUID } from '../../utils/collection';
  */
 export class ResBaseException extends HttpException {
   constructor(exception: Status | ErrorStatus) {
-
     // const errorResponse: ErrorStatus = exception;
 
     if (exception.code === undefined) {

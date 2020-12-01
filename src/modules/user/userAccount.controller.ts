@@ -1,15 +1,19 @@
-import { Body, Controller, Post, Request, Res, UseGuards, Response } from '@nestjs/common';
-import { UserLoginDto } from './dto/user.dto';
+import { Body, Controller, Post, Request, Res, UseGuards, Response, Get } from '@nestjs/common';
+import { UserLoginDto, UserRegisterDto } from './dto/user.dto';
 import { UserService } from './user.service';
 import { FrequentlyGuards } from 'src/core/guards/frequently.guards';
 import { ResBaseException } from 'src/core/exception/res.exception';
 import { ResponseBody, ResponseEnum } from 'src/constants/response';
 import { getClientIP } from 'src/utils/collection';
+import { ApiBasicAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { AuthGuard } from '@nestjs/passport';
+import { GlobalRequest } from 'src/interface/gloabl.interface';
 
 /**
  * 用户类 控制层
  */
 @Controller('user')
+@ApiTags('用户账号')
 export class UserAccountController {
 
 
@@ -24,8 +28,9 @@ export class UserAccountController {
    */
   @Post('register')
   @UseGuards(FrequentlyGuards({ interval: 0.5 }))
-  async register(@Body() loginBody: UserLoginDto, @Request() req?: Request, @Res() res?: any) {
-    const { account } = loginBody;
+  @ApiOperation({ summary: '注册'})
+  async register(@Body() body: UserRegisterDto, @Request() req?: GlobalRequest, @Res() res?: any) {
+    const { account } = body;
 
     const nameFormat = /^[a-z0-9_\-@\.]+$/i.test(account);
     const nameFormatReg = [
@@ -36,7 +41,33 @@ export class UserAccountController {
       throw new ResBaseException(ResponseEnum.USER.ACCOUNT_FORMAT);
     }
 
-    const user = await this.UserService.create(loginBody, {
+    let userAgent = req.headers['user-agent'];
+    if (userAgent) {
+      userAgent = userAgent.match(/(MSIE|Firefox|Presto|QQBrowser|MetaSr|UCBrowser|Chrome|Safari|Edge|Macintosh|MicroMessenger|Baiduspider)(\/[\d\.]+)?/)[0];
+    }
+
+    const user = await this.UserService.create(body, {
+      ip: getClientIP(req),
+      systemPlatform: userAgent,
+    });
+
+    res.json(ResponseBody.status(
+      user ? 'SUCCESS' : 'ERROR',
+      !!user,
+      user,
+    ));
+  }
+
+
+  /**
+   * 登录账号
+   * @param loginBody 账号及密码
+   */
+  @Post('signin')
+  @UseGuards(AuthGuard('local'))
+  @ApiOperation({ summary: '登录'})
+  async login(@Body() body: UserLoginDto, @Request() req?: GlobalRequest, @Res() res?: any) {
+    const user = await this.UserService.login(body, {
       ip: getClientIP(req),
       systemPlatform: req.headers['user-agent'],
     });
@@ -46,6 +77,18 @@ export class UserAccountController {
       !!user,
       user,
     ));
-  } 
-  
+  }
+
+
+  /**
+   * 获取个人信息
+   */
+  @Get()
+  @UseGuards(AuthGuard('jwt'))
+  @ApiOperation({ summary: '获取个人信息'})
+  @ApiBasicAuth()
+  async info() {
+    console.log();
+    return this.UserService.find({ id: 1 });
+  }
 }

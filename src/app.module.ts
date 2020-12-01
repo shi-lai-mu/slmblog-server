@@ -11,7 +11,6 @@ import ConfigService from './configs/configs.service';
 @Module({
   imports: [
     ConfigsModule,
-    UserModule,
     TypeOrmModule.forRootAsync({
       useFactory: async (configService: ConfigService) => configService.db,
       inject: [ ConfigService ],
@@ -19,10 +18,13 @@ import ConfigService from './configs/configs.service';
     RedisModule.forRootAsync({
       useFactory: async (configService: ConfigService) => configService,
       inject: [ ConfigService ],
-    })
+    }),
+    UserModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+  ],
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {

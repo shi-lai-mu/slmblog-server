@@ -14,6 +14,8 @@ export class UserResponse {
   // 密码格式问题
   static readonly PASSWORD_FORMAT: Status = { code: 1103, message: `密码 格式不正确，只能在${USER_CONSTANTS.PASSWORD_MIN_LENGTH}-${USER_CONSTANTS.PASSWORD_MAX_LENGTH}之间。` };
   // 账号已注册
-  static readonly REG_AC_EXISTS: Status =   { code: 1104, message: '账号已注册!' };
+  static readonly REG_AC_EXISTS: Status =   { code: 1104, message: '账号已被注册!' };
+  // 账号或密码错误
+  static readonly LOG_AC_PW_ERROR: Status = { code: 1105, message: '账号或密码错误!' };
   
 }

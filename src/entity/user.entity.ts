@@ -1,7 +1,7 @@
 import { UserServiceNS } from 'src/interface/user.interface';
 import { Column, CreateDateColumn, Entity, Generated, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import { BaseInitEntity } from './baseInitEntity';
-
+import { Exclude } from 'class-transformer';
 
 /**
  * 用户权限
@@ -52,6 +52,7 @@ export class User extends BaseInitEntity<UserServiceNS.CreateUser> {
   @Column({ name: 'avatar_url', length: 300, default: '', comment: '头像' })
   avatarURL: string;
 
+  @Exclude()
   @Column({ length: 100, comment: '密码' })
   password: string;
 
@@ -62,9 +63,11 @@ export class User extends BaseInitEntity<UserServiceNS.CreateUser> {
   @Generated('uuid')
   token: string;
 
+  @Exclude()
   @Column({ length: 7, comment: '用户唯一盐' })
   iv: string;
 
+  @Exclude()
   @Column({ length: 20, comment: '最后登录IP' })
   ip: string;
 

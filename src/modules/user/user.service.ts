@@ -7,6 +7,8 @@ import { generateHash } from 'src/utils/crypto';
 import { ResBaseException } from 'src/core/exception/res.exception';
 import { ResponseBody } from 'src/constants/response';
 import { UserServiceNS } from 'src/interface/user.interface';
+import { plainToClass } from 'class-transformer';
+import { JwtService } from '@nestjs/jwt';
 
 
 @Injectable()
@@ -14,13 +16,13 @@ export class UserService {
   private readonly users: UserLoginDto[] = [];
 
   constructor(
-    @InjectRepository(User)
-    private readonly userRepository: Repository<User>,
+    @InjectRepository(User) private readonly userRepository: Repository<User>,
+    private readonly JwtService: JwtService,
   ) {}
 
   /**
-   * 创建用户
-   * @param user 用户数据
+   * 创建账号
+   * @param user 账号数据
    */
   async create(data: UserLoginDto, options: UserServiceNS.CreateOptions) {
     const { account, password } = data;
@@ -44,9 +46,31 @@ export class UserService {
 
 
   /**
-   * 通过定位 精准获取一个用户的信息
+   * 登录账号
+   * @param user 账号数据
    */
-  async find(findData: FindConditions<User>, select: FindOneOptions<User>['select']): Promise<User> {
+  async login(data: UserLoginDto, options: UserServiceNS.CreateOptions) {
+    const { account, password } = data;
+    const findUser = await this.find({ account });
+    const encryptionPwd = UserServiceBase.encryptionPwd(password, findUser ? findUser.iv : '', account);
+
+    // 账号密码校验
+    if (!findUser || encryptionPwd !== findUser.password) { 
+      throw new ResBaseException(ResponseBody.USER.LOG_AC_PW_ERROR);
+    }
+
+    findUser.token = this.JwtService.sign({
+      iv: findUser.iv,
+    });
+
+    return plainToClass(User, findUser);
+  }
+
+
+  /**
+   * 通过定位 精准获取一个账号的信息
+   */
+  async find(findData: FindConditions<User>, select?: FindOneOptions<User>['select']): Promise<User> {
     return await this.userRepository.findOne({ select, where: findData});
   }
 }
