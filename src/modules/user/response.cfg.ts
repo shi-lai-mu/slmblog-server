@@ -17,5 +17,7 @@ export class UserResponse {
   static readonly REG_AC_EXISTS: Status =   { code: 1104, message: '账号已被注册!' };
   // 账号或密码错误
   static readonly LOG_AC_PW_ERROR: Status = { code: 1105, message: '账号或密码错误!' };
+  // 账号或密码错误
+  static readonly FIND_USER_NULL: Status =  { code: 1106, message: '用户信息不存在!' };
   
 }

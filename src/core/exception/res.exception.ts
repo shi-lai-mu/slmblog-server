@@ -17,6 +17,7 @@ export class ResBaseException extends HttpException {
     if (exception.code !== 0) {
       (<ErrorStatus>exception).uuid = generateUUID();
       (<ErrorStatus>exception).time = new Date().toLocaleString();
+      (<ErrorStatus>exception).result = '';
     }
 
     super(exception, HttpStatus.OK);

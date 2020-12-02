@@ -5,10 +5,10 @@ import { User } from '../../entity/user.entity';
 import { FindConditions, FindOneOptions, Repository } from 'typeorm';
 import { generateHash } from 'src/utils/crypto';
 import { ResBaseException } from 'src/core/exception/res.exception';
-import { ResponseBody } from 'src/constants/response';
+import { ResponseBody, ResponseEnum } from 'src/constants/response';
 import { UserServiceNS } from 'src/interface/user.interface';
 import { plainToClass } from 'class-transformer';
-import { JwtService } from '@nestjs/jwt';
+import { AuthService } from './auth/auth.service';
 
 
 @Injectable()
@@ -17,7 +17,7 @@ export class UserService {
 
   constructor(
     @InjectRepository(User) private readonly userRepository: Repository<User>,
-    private readonly JwtService: JwtService,
+    private readonly AuthService: AuthService,
   ) {}
 
   /**
@@ -59,11 +59,21 @@ export class UserService {
       throw new ResBaseException(ResponseBody.USER.LOG_AC_PW_ERROR);
     }
 
-    findUser.token = this.JwtService.sign({
-      iv: findUser.iv,
-    });
+    findUser.token = this.AuthService.signToken(findUser);
 
     return plainToClass(User, findUser);
+  }
+
+
+  /**
+   * [输出模型] 通过定位 精准获取一个账号的信息
+   * 
+   * 包含：
+   * - 签证token
+   * - 去除隐私数据
+   */
+  async InputFind(findData: FindConditions<User>, select?: FindOneOptions<User>['select']) {
+    return plainToClass(User, await this.find(findData, select));
   }
 
 
@@ -71,7 +81,11 @@ export class UserService {
    * 通过定位 精准获取一个账号的信息
    */
   async find(findData: FindConditions<User>, select?: FindOneOptions<User>['select']): Promise<User> {
-    return await this.userRepository.findOne({ select, where: findData});
+    const findUser = await this.userRepository.findOne({ select, where: findData});
+    if (!findUser) {
+      throw new ResBaseException(ResponseEnum.USER.FIND_USER_NULL);
+    }
+    return findUser;
   }
 }
 
