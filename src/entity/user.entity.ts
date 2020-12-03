@@ -59,9 +59,9 @@ export class User extends BaseInitEntity<UserServiceNS.CreateUser> {
   @Column({ type: 'enum', enum: UserGender, default: UserGender.Unknown, comment: '性别' })
   gender: UserGender;
 
-  @Column({ length: 100, unique: true, comment: '身份令牌' })
-  @Generated('uuid')
-  token: string;
+  // @Column({ length: 100, unique: true, comment: '身份令牌' })
+  // @Generated('uuid')
+  // token: string;
 
   @Exclude()
   @Column({ length: 7, comment: '用户唯一盐' })

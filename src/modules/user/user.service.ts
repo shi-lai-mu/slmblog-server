@@ -59,7 +59,12 @@ export class UserService {
       throw new ResBaseException(ResponseBody.USER.LOG_AC_PW_ERROR);
     }
 
-    findUser.token = this.AuthService.signToken(findUser);
+    // 更新账号信息
+    this.userRepository.update({ id: findUser.id }, {
+      systemPlatform: options.systemPlatform,
+      ip: options.ip,
+      updateTime: new Date(),
+    });
 
     return plainToClass(User, findUser);
   }

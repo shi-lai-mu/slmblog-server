@@ -65,7 +65,7 @@ export class UserAccountController {
   @Post('signin')
   @UseGuards(AuthGuard('local'))
   @ApiOperation({ summary: '登录'})
-  async login(@Body() body: UserLoginDto, @Request() req?: GlobalRequest) {
+  async login(@Body() body: UserLoginDto, @Req() req?: GlobalRequest) {
     return this.UserService.login(body, {
       ip: getClientIP(req),
       systemPlatform: req.headers['user-agent'],
