@@ -88,6 +88,8 @@ export class User extends BaseInitEntity<UserServiceNS.CreateUser> {
 
   @ManyToOne(type => Badge, badge => badge.id)
   badge: Badge[];
+
+  validateType?: 'jwt' | 'local';
 }
 
 @Entity({ name: 'user_badge' })

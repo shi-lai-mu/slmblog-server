@@ -10,6 +10,7 @@ import { LocalStrategy } from './auth/local.strategy';
 import { JwtStrategy } from './auth/jwt.strategy';
 import { PassportModule } from '@nestjs/passport';
 import { AuthService } from './auth/auth.service';
+import { RedisService } from '../redis/redis.service';
 
 @Module({
   imports: [
@@ -32,8 +33,8 @@ import { AuthService } from './auth/auth.service';
     UserService,
     LocalStrategy,
     JwtStrategy,
-    AuthService,
+    RedisService,
   ],
-  exports: [UserService, AuthService],
+  exports: [UserService],
 })
 export class UserModule {}

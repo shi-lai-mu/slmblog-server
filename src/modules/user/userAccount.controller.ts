@@ -1,9 +1,9 @@
-import { Body, Controller, Post, Request, Res, UseGuards, Response, Get, Req } from '@nestjs/common';
+import { Body, Controller, Post, Request, Res, UseGuards, Response, Get, Req, Param } from '@nestjs/common';
 import { UserLoginDto, UserRegisterDto } from './dto/user.dto';
 import { UserService } from './user.service';
 import { FrequentlyGuards } from 'src/core/guards/frequently.guards';
 import { ResBaseException } from 'src/core/exception/res.exception';
-import { ResponseBody, ResponseEnum } from 'src/constants/response';
+import { ResponseEnum } from 'src/constants/response';
 import { getClientIP } from 'src/utils/collection';
 import { ApiBasicAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
@@ -11,6 +11,8 @@ import { GlobalRequest } from 'src/interface/gloabl.interface';
 import { CurUser } from 'src/core/decorators/global.decorators';
 import { User } from 'src/entity/user.entity';
 import { JwtAuthGuard } from './auth/jwt.strategy';
+import { plainToClass } from 'class-transformer';
+import { UserServiceBase } from './user.service'
 
 /**
  * 用户类 控制层
@@ -46,7 +48,7 @@ export class UserAccountController {
 
     let userAgent = req.headers['user-agent'];
     if (userAgent) {
-      userAgent = (userAgent.match(/(MSIE|Firefox|Presto|QQBrowser|MetaSr|UCBrowser|Chrome|Safari|Edge|Macintosh|MicroMessenger|Baiduspider)(\/[\d\.]+)?/) || [''])[0];
+      userAgent = UserServiceBase.getSystemPlatform(userAgent);
     }
 
     const user = await this.UserService.create(body, {
@@ -65,11 +67,12 @@ export class UserAccountController {
   @Post('signin')
   @UseGuards(AuthGuard('local'))
   @ApiOperation({ summary: '登录'})
-  async login(@Body() body: UserLoginDto, @Req() req?: GlobalRequest) {
-    return this.UserService.login(body, {
+  async login(@CurUser() user: User, @Body() body: UserLoginDto, @Req() req?: GlobalRequest) {
+    this.UserService.login(user, {
       ip: getClientIP(req),
       systemPlatform: req.headers['user-agent'],
     });
+    return plainToClass(User, user);
   }
 
 
@@ -81,6 +84,14 @@ export class UserAccountController {
   @ApiOperation({ summary: '获取个人信息'})
   @ApiBasicAuth()
   async info(@CurUser() user: User) {
-    return this.UserService.InputFind({ id: user.id });
+    return plainToClass(User, user);
+  }
+
+
+  @Get(':id')
+  @ApiOperation({ summary: '获取其他用户数据' })
+  async outherUser(@Param('id') id: number) {
+    console.log(id[1][1][1]);
+    
   }
 }
