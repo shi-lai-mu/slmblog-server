@@ -31,6 +31,7 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
     if (!findUser || encryptionPwd !== findUser.password) { 
       throw new ResBaseException(ResponseBody.USER.LOG_AC_PW_ERROR);
     }
+    findUser.validateType = 'local';
     
     return findUser;
   }

@@ -6,18 +6,19 @@ import { ResponseBody, ResponseEnum } from "src/constants/response";
 import { AuthService } from "src/modules/user/auth/auth.service";
 import { ResBaseException } from "../exception/res.exception";
 import ConfigsService from "src/configs/configs.service";
-import { getClientIP } from "src/utils/collection";
 import { User } from "src/entity/user.entity";
+import { RedisService } from "src/modules/redis/redis.service";
 
 
 @Injectable()
 export class TimeoutInterceptor implements NestInterceptor {
   constructor(
     private readonly configService: ConfigsService,
+    private readonly redisService: RedisService,
   ) {}
 
 
-  intercept(context: ExecutionContext, next: CallHandler) {
+  async intercept(context: ExecutionContext, next: CallHandler) {
     const jwt = new AuthService(new JwtService(this.configService.jwt));
     const req = context.switchToHttp().getRequest();
     const res = context.switchToHttp().getResponse();
@@ -29,12 +30,23 @@ export class TimeoutInterceptor implements NestInterceptor {
 
       // 跨平台/跨端 拦截
       // TODO: 不存在版本升级问题, 已移除所有数字
-      if (req.headers['user-agent'].replace(/\d/g, '') !== user.systemPlatform.replace(/\d/g, '') || getClientIP(req) !== user.ip) {
-        throw new ResBaseException({
-          ...ResponseEnum.UNAUTHORIZED_INVALID,
-          result: '请勿进行 跨端/跨平台 操作'
-        })
+      const systemPlatform = String(req.headers['user-agent']).replace(/\d/g, '');
+      if (
+        user.validateType === 'jwt'
+        && systemPlatform
+        && user.systemPlatform.replace(/\d/g, '') !== systemPlatform
+      ) {
+        if (await this.redisService.getItem('user', `user-agent${user.id}`) === systemPlatform) {
+          throw new ResBaseException({
+            ...ResponseEnum.USER.UNLOG_BUSY_LINE,
+            result: '已在其他设备上登录',
+          });
+        }
+        // 异常操作
+        throw new ResBaseException(ResponseEnum.USER.UNLOG_BUSY_LINE);
       }
+
+      delete user.validateType;
     }
 
     // CORS
@@ -43,7 +55,7 @@ export class TimeoutInterceptor implements NestInterceptor {
     return next.handle()
       // 对没有带标准输出格式的响应包装
       .pipe(map(data => {
-        if (data.code === undefined || data.success === undefined) {
+        if (data && (data.code === undefined || data.success === undefined)) {
           data = ResponseBody.send(data);
         }
         return data;

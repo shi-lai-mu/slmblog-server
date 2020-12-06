@@ -1,6 +1,9 @@
-import { USER_CONSTANTS } from './constants';
 import { UserResponse } from '../modules/user/response.cfg';
 import { ResBaseException } from 'src/core/exception/res.exception';
+import { ConstantsResponse } from 'src/interface/gloabl.interface';
+
+export type Status = ConstantsResponse.Status;
+export type ErrorStatus = ConstantsResponse.ErrorStatus;
 
 /**
  * 响应枚举类
@@ -8,6 +11,8 @@ import { ResBaseException } from 'src/core/exception/res.exception';
 export class ResponseEnum {
   static readonly SUCCESS:              Status = { code: 0,    message: 'success' };
   static readonly ERROR:                Status = { code: 1,    message: 'fail' };
+  static readonly NOT_FOUND:            Status = { code: 404,  message: '未找到有效的资源' };
+  static readonly SERVER_ERROR:         Status = { code: 500,  message: '服务器出错' };
   static readonly PARAMS:               Status = { code: 1000, message: '参数错误' };
   static readonly PARAMS_GUARDS:        Status = { code: 1001, message: '参数错误' };
   static readonly FREQUENTLY:           Status = { code: 1002, message: '请求过于频繁' };
@@ -84,40 +89,3 @@ export class ResponseBody extends ResponseEnum {
   }
 }
 
-
-/**
- * 响应状态
- */
-export interface Status {
-  /**
-   * 响应码
-   */
-  code: number;
-  /**
-   * 响应内容
-   */
-  message: string;
-  /**
-   * 执行状态
-   */
-  success?: boolean;
-  /**
-   * 执行结果
-   */
-  result?: any;
-}
-
-
-/**
- * 错误响应体
- */
-export interface ErrorStatus extends Status {
-  /**
-   * 追踪UUID
-   */
-  uuid: string;
-  /**
-   * 报错时间
-   */
-  time: string;
-}

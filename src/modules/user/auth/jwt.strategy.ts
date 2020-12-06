@@ -28,7 +28,9 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
    * 采用 用户id 和 用户盐 取数据 (只有id和八位盐都猜出才有可能获取到)
    */
   async validate(tokenParams) {
-    return await this.UserService.find({ id: tokenParams.id, iv: tokenParams.iv });
+    const user = await this.UserService.find({ id: tokenParams.id, iv: tokenParams.iv });
+    user.validateType = 'jwt';
+    return user;
   }
 }
 
