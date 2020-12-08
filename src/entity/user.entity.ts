@@ -50,7 +50,7 @@ export class User extends BaseInitEntity<UserServiceNS.CreateUser> {
   nickname: string;
 
   @Column({ name: 'avatar_url', length: 300, default: '', comment: '头像' })
-  avatarURL: string;
+  avatarUrl: string;
 
   @Exclude()
   @Column({ length: 100, comment: '密码' })
@@ -85,6 +85,13 @@ export class User extends BaseInitEntity<UserServiceNS.CreateUser> {
 
   @Column({ name: 'link_json', length: 500, default: '', comment: '个人链接' })
   link: string;
+
+  @Column({ length: 250, default: '', comment: '简介' })
+  introduction: string;
+
+  @Exclude()
+  @Column({ type: 'enum', enum: UserStatus, default: UserStatus.Actived, comment: '账号状态' })
+  status: UserStatus;
 
   @ManyToOne(type => Badge, badge => badge.id)
   badge: Badge[];

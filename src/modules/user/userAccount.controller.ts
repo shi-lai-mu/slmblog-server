@@ -88,10 +88,17 @@ export class UserAccountController {
   }
 
 
+  /**
+   * 获取其他用户数据
+   * @param id 用户ID
+   */
   @Get(':id')
   @ApiOperation({ summary: '获取其他用户数据' })
-  async outherUser(@Param('id') id: number) {
-    console.log(id[1][1][1]);
-    
+  async outherUser(@Param('id') id: User['id']) {
+    const user = await this.UserService.outherUser(id);
+    if (!user) {
+      throw new ResBaseException(ResponseEnum.USER.FIND_USER_NULL);
+    }
+    return user;
   }
 }

@@ -97,6 +97,20 @@ export class UserService {
     }
     return findUser;
   }
+
+
+  /**
+   * 获取其他用户数据
+   * @param id 用户ID
+   */
+  async outherUser(id: User['id']): Promise<User|null> {
+    return this.userRepository.findOne({
+      select: [
+        'id', 'nickname', 'avatarUrl', 'badge', 'createTime', 'gender', 'introduction'
+      ],
+      where: { id },
+    }) || null;
+  }
 }
 
 

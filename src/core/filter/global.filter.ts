@@ -15,7 +15,7 @@ export class GlobalFilter implements ExceptionFilter {
       404: ResponseEnum.NOT_FOUND,
       500: ResponseEnum.SERVER_ERROR,
     };
-    console.log(exception.getResponse());
+    // console.log(exception.getResponse());
     
 
     // 发送响应
