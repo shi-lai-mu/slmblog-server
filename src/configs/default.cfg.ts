@@ -18,6 +18,7 @@ export default ((): StandardConfig => ({
     logging: false,
     logger: 'simple-console',
     maxQueryExecutionTime: 500,
+    tablePerfix: 'blog_',
   },
   redis: {
     host: '127.0.0.1',
@@ -32,6 +33,5 @@ export default ((): StandardConfig => ({
     signOptions: {
       expiresIn: '7d',
     },
-    
   }
 }))();

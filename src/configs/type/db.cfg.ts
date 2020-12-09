@@ -15,6 +15,7 @@ export class DBConfig extends BaseConfig {
   readonly logging: any;
   readonly retryAttempts: number;
   readonly logger: 'advanced-console' | 'simple-console' | 'file' | 'debug' | any;
+  readonly tablePerfix: string;
 
   constructor(cfg) {
     super(cfg);

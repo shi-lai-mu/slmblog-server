@@ -37,7 +37,7 @@ export enum UserGender {
 /**
  * 用户实体
  */
-@Entity({ name: 'users' })
+@Entity({ name: BaseInitEntity.dbConfig.tablePerfix + 'users' })
 export class User extends BaseInitEntity<UserServiceNS.CreateUser> {
 
   @PrimaryGeneratedColumn({ comment: '用户ID' })
@@ -93,6 +93,7 @@ export class User extends BaseInitEntity<UserServiceNS.CreateUser> {
   @Column({ type: 'enum', enum: UserStatus, default: UserStatus.Actived, comment: '账号状态' })
   status: UserStatus;
 
+  // 徽章关联
   @ManyToOne(type => Badge, badge => badge.id)
   badge: Badge[];
 

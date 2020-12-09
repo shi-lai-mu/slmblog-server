@@ -1,4 +1,3 @@
-import { isDev } from 'src/constants/system';
 import * as fs from 'fs';
 import * as path from 'path';
 import { DBConfig, RedisConfig } from './type/db.cfg';

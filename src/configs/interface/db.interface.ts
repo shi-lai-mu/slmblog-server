@@ -4,7 +4,9 @@ import { RedisOptions } from 'ioredis';
 /**
  * 数据库 配置
  */
-export interface DBConfig extends MysqlConnectionOptions {}
+export interface DBConfig extends MysqlConnectionOptions {
+  tablePerfix: string;
+}
 
 export interface RedisConfig extends RedisOptions {}
 
