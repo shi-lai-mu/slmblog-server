@@ -2,6 +2,7 @@ import { UserServiceNS } from 'src/interface/user.interface';
 import { Column, CreateDateColumn, Entity, Generated, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import { BaseInitEntity } from './baseInitEntity';
 import { Exclude } from 'class-transformer';
+import { USER_CONSTANTS } from 'src/constants/constants';
 
 /**
  * 用户权限
@@ -28,8 +29,8 @@ export enum UserStatus {
  * 性别
  */
 export enum UserGender {
-  Male = 0,    // 男
-  Female = 1,  // 女
+  Male    = 0, // 男
+  Female  = 1, // 女
   Unknown = 2, // 未知
 }
 
@@ -43,13 +44,13 @@ export class User extends BaseInitEntity<UserServiceNS.CreateUser> {
   @PrimaryGeneratedColumn({ comment: '用户ID' })
   id: number;
 
-  @Column({ length: 20, unique: true, comment: '账号' })
+  @Column({ length: USER_CONSTANTS.ACCOUNT_MAX_LENGTH, unique: true, comment: '账号' })
   account: string;
 
-  @Column({ length: 50, comment: '昵称' })
+  @Column({ length: USER_CONSTANTS.NICKNAME_MAX_LENGTH, comment: '昵称' })
   nickname: string;
 
-  @Column({ name: 'avatar_url', length: 300, default: '', comment: '头像' })
+  @Column({ name: 'avatar_url', length: USER_CONSTANTS.AVATARURL_MAX_LENGTH, default: '', comment: '头像' })
   avatarUrl: string;
 
   @Exclude()
@@ -83,10 +84,10 @@ export class User extends BaseInitEntity<UserServiceNS.CreateUser> {
   @CreateDateColumn({ name: 'create_time', comment: '账号注册时间' })
   createTime: Date;
 
-  @Column({ name: 'link_json', length: 500, default: '', comment: '个人链接' })
+  @Column({ name: 'link_json', length: USER_CONSTANTS.LINKJSON_MAX_LENGTH, default: '', comment: '个人链接' })
   link: string;
 
-  @Column({ length: 250, default: '', comment: '简介' })
+  @Column({ length: USER_CONSTANTS.DESC_MAX_LENGTH, default: '', comment: '简介' })
   introduction: string;
 
   @Exclude()
@@ -105,15 +106,15 @@ export class Badge {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ length: 20, comment: '图标' })
-  icon: string;
-
-  @Column({ length: 50, comment: '名称' })
+  @Column({ length: USER_CONSTANTS.BADGE_NAME_MAX_LENGTH, comment: '名称' })
   name: string;
 
-  @Column({ length: 100, comment: '简介' })
+  @Column({ length: USER_CONSTANTS.BADGE_ICON_MAX_LENGTH, comment: '图标' })
+  icon: string;
+
+  @Column({ length: USER_CONSTANTS.BADEG_DESC_MAX_LENGTH, comment: '简介' })
   description: string;
 
-  @OneToMany(type => User, user => user.id)
+  @OneToMany(ts => User, user => user.id)
   owner: User[];
 }
