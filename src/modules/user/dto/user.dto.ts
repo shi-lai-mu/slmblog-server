@@ -7,8 +7,6 @@ export class UserBaseDto {
   /**
    * 用户ID
    */
-  @MinLength(1)
-  @IsString()
   id: number;
   /**
    * 昵称
@@ -24,11 +22,7 @@ export class UserLoginDto {
    * 账号
    */
   @MinLength(1, ResponseEnum.USER.ACCOUNT_EMPTY)
-  @Length(
-    USER_CONSTANTS.ACCOUNT_MIN_LENGTH,
-    USER_CONSTANTS.ACCOUNT_MAX_LENGTH,
-    ResponseEnum.USER.ACCOUNT_FORMAT,
-  )
+  @Length(USER_CONSTANTS.ACCOUNT_MIN_LENGTH, USER_CONSTANTS.ACCOUNT_MAX_LENGTH, ResponseEnum.USER.ACCOUNT_FORMAT)
   @ApiProperty()
   account: string;
 
@@ -51,11 +45,7 @@ export class UserRegisterDto {
    * 账号
    */
   @MinLength(1, ResponseEnum.USER.ACCOUNT_EMPTY)
-  @Length(
-    USER_CONSTANTS.ACCOUNT_MIN_LENGTH,
-    USER_CONSTANTS.ACCOUNT_MAX_LENGTH,
-    ResponseEnum.USER.ACCOUNT_FORMAT,
-  )
+  @Length(USER_CONSTANTS.ACCOUNT_MIN_LENGTH, USER_CONSTANTS.ACCOUNT_MAX_LENGTH, ResponseEnum.USER.ACCOUNT_FORMAT)
   @ApiProperty()
   account: string;
 

@@ -9,7 +9,7 @@ import { User } from './user.entity';
  * 文章删除状态
  */
 export enum ArticleStateEnum {
-  Failed = -2,   // 审核失败
+  Failed   = -2, // 审核失败
   IsDelete = -1, // 已删除
   Examine  = 0,  // 审核中
   Routine  = 1,  // 常规

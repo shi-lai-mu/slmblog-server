@@ -1,4 +1,4 @@
-export const APIPrefix: string = '/api/v1';
+export const APIPrefix: string = '/api/v1/';
 
 
 export class USER_CONSTANTS {

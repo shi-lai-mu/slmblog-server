@@ -1,6 +1,7 @@
 import { UserResponse } from '../modules/user/response.cfg';
 import { ResBaseException } from 'src/core/exception/res.exception';
 import { ConstantsResponse } from 'src/interface/gloabl.interface';
+import { ArticleResponse } from 'src/modules/article/response.cfg';
 
 export type Status = ConstantsResponse.Status;
 export type ErrorStatus = ConstantsResponse.ErrorStatus;
@@ -20,10 +21,34 @@ export class ResponseEnum {
   static readonly UNAUTHORIZED_EXPIRED: Status = { code: 1004, message: '授权失败，身份已过期!' }
   static readonly TIME_OUT_LONG:        Status = { code: 1005, message: '服务器处理超时，请稍后再试!' }
 
-  // 逻辑层请求响应
-  static readonly USER = UserResponse;
+  /**
+   * 逻辑层请求响应
+   */
+  static readonly USER = UserResponse;       // 用户业务
+  static readonly ARTICLE = ArticleResponse; // 文章业务
+
+
+  static THROW(Error: Status) {
+    return {
+      message: () => {
+        throw new ResBaseException(Error);
+        return '';
+      }
+    }
+  }
 }
 
+
+/**
+ * 校验参数时message伪装
+ * @param Error 错误内容
+ */
+export const ValidateThrow = Error => ({
+  message: () => {
+    throw new ResBaseException(Error);
+    return '';
+  }
+});
 
 
 /**

@@ -13,12 +13,13 @@ import { User } from 'src/entity/user.entity';
 import { JwtAuthGuard } from './auth/jwt.strategy';
 import { plainToClass } from 'class-transformer';
 import { UserServiceBase } from './user.service'
+import { APIPrefix } from 'src/constants/constants';
 
 /**
  * 用户类 控制层
  */
-@Controller('user')
-@ApiTags('用户账号')
+@Controller(APIPrefix + 'user')
+@ApiTags('用户')
 export class UserAccountController {
 
 

@@ -26,5 +26,5 @@ export class UserResponse {
   // 查看账号异常：已被冻结或转移
   static readonly INFO_AC_ABNORMAL: Status = { code: 1108, message: '目标账号处于冻结状态!' };
   // 查看账号异常：账号未激活
-  static readonly 
+  // static readonly 
 }
