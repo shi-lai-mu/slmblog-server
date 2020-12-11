@@ -5,8 +5,9 @@ import { UserModule } from './modules/user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { RedisModule } from './modules/redis/redis.module';
 import { ConfigsModule } from './configs/configs.module';
-import ConfigService from './configs/configs.service';
 import { GlobalMiddleware } from './core/middleware/global.middleware';
+import { ArticleModule } from './modules/article/article.module';
+import ConfigService from './configs/configs.service';
 
 
 @Module({
@@ -21,6 +22,7 @@ import { GlobalMiddleware } from './core/middleware/global.middleware';
       inject: [ ConfigService ],
     }),
     UserModule,
+    ArticleModule,
   ],
   controllers: [AppController],
   providers: [

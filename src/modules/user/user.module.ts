@@ -4,26 +4,21 @@ import { UserController } from './user.controller';
 import { UserService } from './user.service';
 import { UserAccountController } from './userAccount.controller';
 import { User, Badge } from 'src/entity/user.entity';
-import ConfigsService from 'src/configs/configs.service';
 import { JwtModule } from '@nestjs/jwt';
 import { LocalStrategy } from './auth/local.strategy';
 import { JwtStrategy } from './auth/jwt.strategy';
 import { PassportModule } from '@nestjs/passport';
-import { AuthService } from './auth/auth.service';
 import { RedisService } from '../redis/redis.service';
+import ConfigsService from 'src/configs/configs.service';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([
-      User,
-      Badge,
-    ]),
+    TypeOrmModule.forFeature([User, Badge]),
     PassportModule,
     JwtModule.registerAsync({
       useFactory: (configsService: ConfigsService) => configsService.jwt,
       inject: [ConfigsService]
     }),
-    // AuthModule
   ],
   controllers: [
     UserController,
