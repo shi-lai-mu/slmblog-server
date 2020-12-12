@@ -8,6 +8,9 @@ const configsService = new ConfigsService();
  */
 export class BaseInitEntity<T> extends BaseEntity {
   
+  /**
+   * 当前环境数据库配置信息
+   */
   static readonly dbConfig: ConfigsService['db'] = configsService.db;
 
   constructor(data?: T) {

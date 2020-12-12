@@ -115,5 +115,13 @@ export class ResponseBody extends ResponseEnum {
     }
     return ResponseBody.status('SUCCESS', true, result, '');
   }
+
+
+  /**
+   * 直接抛出错误
+   */
+  static throw(responseEnum: Status) {
+    throw new ResBaseException(responseEnum);
+  }
 }
 

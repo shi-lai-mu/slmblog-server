@@ -46,7 +46,6 @@ export class Article extends BaseInitEntity<{}> {
   @PrimaryGeneratedColumn({ comment: '文章ID' })
   id: number;
 
-  // 作者ID
   @ManyToOne(type => User, user => user.id)
   author: User['id'];
 
@@ -65,17 +64,17 @@ export class Article extends BaseInitEntity<{}> {
   @Column({ length: ARTICLE_CONSTANTS.CATEGORY_MAX_LENGTH, comment: '文章标签' })
   category: string;
 
+  @Column({ name: 'read_password', default: '', comment: '阅读密码' })
+  readPassword: string;
+
   @Column({ type: 'enum', enum: ArticleStateEnum, default: ArticleStateEnum.Routine, comment: '文章状态' })
   state: ArticleStateEnum;
 
-  @Column({ name: 'view_count', comment: '浏览次数' })
+  @Column({ name: 'view_count', default: 0, comment: '浏览次数' })
   viewCount: number;
 
-  @Column({ name: 'like_count', comment: '点赞次数' })
+  @Column({ name: 'like_count', default: 0, comment: '点赞次数' })
   likeCount: number;
-
-  @Column({ name: 'read_password', comment: '阅读密码' })
-  readPassword: string;
 
   @UpdateDateColumn({ name: 'edit_time', comment: '最后编辑时间' })
   lastEditorTime: Date;
@@ -100,10 +99,10 @@ export class ArticleLike extends BaseInitEntity<{}> {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(type => User, user => user.id)
+  @ManyToOne(ts => User, user => user.id)
   user: number;
   
-  @ManyToOne(type => Article, article => article.id)
+  @ManyToOne(ts => Article, article => article.id)
   article: number;
 
   @Column({ type: 'enum', enum: ArticleLikeStatus, default: ArticleLikeStatus.Approved, comment: '点赞状态' })
