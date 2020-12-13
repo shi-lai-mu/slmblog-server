@@ -1,3 +1,5 @@
+import { ResponseBody, ResponseEnum } from "src/constants/response";
+
 /**
  * 生成UUID
  * @param format 格式
@@ -27,3 +29,52 @@ export const getClientIP = (req): string => {
     || '').match(/\d+\.\d+\.\d+\.\d+/);
   return findIP ? findIP[0] : '';
 }
+
+/**
+ * 传入参数校验类
+ */
+export class ValidateParams {
+
+  /**
+   * 检测是否为正确的页数或者列数格式
+   */
+  static isPageOrCount(page: string | number, count: string | number) {
+    !/^\d+$/.test(String(page) + count) && ResponseBody.throw(ResponseEnum.PARAMS_PAGE_OR_COUNT);
+    return this;
+  }
+
+
+  /**
+   * 检测传入值是否在指定范围内
+   * @param data   传入的值,如入参 val1 变量请传入 { val1 } 以便追踪变量名
+   * @param values 值范围
+   */
+  static isThisValues(data: { [key: string]: string | number }, values: Array<string | number>) {
+    const [ key ] = Object.keys(data);
+    if (!values.includes(data[key])) {
+      const ERR = ResponseEnum.PARAMS_VALUES;
+      ERR.message = ERR.message.replace('%s', key).replace('%s', String(data[key]));
+      ResponseBody.throw(ERR)
+    }
+    return this;
+  }
+}
+
+
+/**
+ * 返回当前页数
+ */
+export const skipPage = (page: number, count: number) => (page - 1) * count;
+
+
+/**
+ * 返回列表响应信息
+ */
+export const responseList = <T>(page: number, count: number, list: T, total: number) => {
+  return {
+    list,
+    page: Number(page),
+    count: Number(count),
+    total: Number(total),
+  };
+};

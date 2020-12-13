@@ -8,6 +8,7 @@ import { sensitiveWord } from "src/configs/sensitive.word";
 import { ResponseBody, ResponseEnum } from "src/constants/response";
 import { ArticleNS } from "./type/article";
 import Mint from 'mint-filter'
+import { responseList, skipPage, ValidateParams } from "src/utils/collection";
 
 
 /**
@@ -75,6 +76,28 @@ export class ArticleService {
       article,
       comment: [],
     };
+
     return information;
+  }
+
+
+  /**
+   * 根据模式获取列表
+   * @param filterMode 过滤模式
+   * @param page       页数
+   * @param count      列数
+   */
+  async getFilterList(filterMode: keyof typeof ArticleStateEnum, page: number, count: number) {
+    ValidateParams
+      .isPageOrCount(page, count)
+      .isThisValues({ filterMode }, Object.keys(ArticleStateEnum))
+    ;
+
+    const [ list, total ] = await this.ArticleRepository.findAndCount({
+      skip: skipPage(page, count),
+      take: count,
+    });
+
+    return responseList(page, count, list, total);
   }
 }

@@ -1,4 +1,4 @@
-import { Length, MaxLength, MinLength } from "class-validator";
+import { Length, MinLength } from "class-validator";
 import { ARTICLE_CONSTANTS } from "src/constants/constants";
 import { ResponseEnum, ValidateThrow } from "src/constants/response";
 
