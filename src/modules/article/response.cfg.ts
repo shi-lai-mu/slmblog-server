@@ -12,4 +12,5 @@ export class ArticleResponse {
   static readonly SUB_CATEGORY_EMPTY: Status = { code: 1204, message: '文章类目不能为空!' };
   static readonly AC_SUBMIT_ERROR:    Status = { code: 1205, message: '没有发布文章的权限!' };
   static readonly SUB_IS_SENSITIVE:   Status = { code: 1206, message: '发布内容检测的敏感词 [%s]' };
+  static readonly SUB_ARTICLE_ERROR:  Status = { code: 1207, message: '文章发布失败!' };
 }
