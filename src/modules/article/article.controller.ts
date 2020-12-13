@@ -40,7 +40,7 @@ export class ArticleController {
    */
   @Get(':id')
   @ApiOperation({ summary: '获取文章内容'})
-  async info(@Param('id') id: number) {
-    // this.ArticleService.
+  async information(@Param('id') id: number) {
+    return this.ArticleService.information(id);
   }
 }

@@ -28,7 +28,7 @@ export class USER_CONSTANTS {
  */
 export class ARTICLE_CONSTANTS {
   static readonly TITLE_MIN_LENGTH:    number = 5;   // 标题 最小长度
-  static readonly TITLE_MAX_LENGTH:    number = 5;   // 标题 最大长度
+  static readonly TITLE_MAX_LENGTH:    number = 50;  // 标题 最大长度
   static readonly CONTENT_MIN_LENGTH:  number = 50;  // 文章 最小长度
   static readonly DESC_MIN_LENGTH:     number = 10;  // 简介 最小长度
   static readonly DESC_MAX_LENGTH:     number = 500; // 简介 最大长度

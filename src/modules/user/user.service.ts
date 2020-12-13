@@ -6,7 +6,7 @@ import { FindConditions, FindOneOptions, Repository } from 'typeorm';
 import { generateHash } from 'src/utils/crypto';
 import { ResBaseException } from 'src/core/exception/res.exception';
 import { ResponseBody, ResponseEnum } from 'src/constants/response';
-import { UserServiceNS } from 'src/interface/user.interface';
+import { UserServiceNS } from './type/user';
 import { plainToClass } from 'class-transformer';
 import { RedisService } from '../redis/redis.service';
 
@@ -50,16 +50,6 @@ export class UserService {
    * @param user 账号数据
    */
   async login(user: User, options: UserServiceNS.CreateOptions) {
-    // const { account, password } = data;
-    // const findUser = await this.find({ account });
-    // const encryptionPwd = UserServiceBase.encryptionPwd(password, findUser ? findUser.iv : '', account);
-
-    // // 账号密码校验
-    // if (!findUser || encryptionPwd !== findUser.password) { 
-    //   throw new ResBaseException(ResponseBody.USER.LOG_AC_PW_ERROR);
-    // }
-    // console.log(user.systemPlatform);
-    
     options.systemPlatform = UserServiceBase.getSystemPlatform(options.systemPlatform);
     this.RedisService.setItem('user', `user-agent${user.id}`, user.systemPlatform);
 

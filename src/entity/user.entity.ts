@@ -1,4 +1,4 @@
-import { UserServiceNS } from 'src/interface/user.interface';
+import { UserServiceNS } from 'src/modules/user/type/user';
 import { Column, CreateDateColumn, Entity, Generated, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import { BaseInitEntity } from './baseInitEntity';
 import { Exclude } from 'class-transformer';
@@ -8,11 +8,11 @@ import { USER_CONSTANTS } from 'src/constants/constants';
  * 用户权限
  */
 export enum UserRole {
-  Normal     = 1,  // 普通用户
-  BlogUser   = 2,  // 博主用户
-  Editor     = 3,  // 网站编辑
-  Admin      = 4,  // 管理员
-  SuperAdmin = 5,  // 超级管理员
+  Normal     = 1, // 普通用户
+  BlogUser   = 2, // 博主用户
+  Editor     = 3, // 网站编辑
+  Admin      = 4, // 管理员
+  SuperAdmin = 5, // 超级管理员
 }
 
 /**

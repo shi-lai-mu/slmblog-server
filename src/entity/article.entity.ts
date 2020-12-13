@@ -1,5 +1,5 @@
 import { ARTICLE_CONSTANTS } from 'src/constants/constants';
-import { UserServiceNS } from 'src/interface/user.interface';
+import { UserServiceNS } from 'src/modules/user/type/user';
 import { Column, CreateDateColumn, Entity, Generated, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import { BaseInitEntity } from './baseInitEntity';
 import { User } from './user.entity';
@@ -10,7 +10,7 @@ import { User } from './user.entity';
  * 文章删除状态
  */
 export enum ArticleStateEnum {
-  Failed   = -2, // 审核失败
+  Failed   = -2, // 审核未通过
   IsDelete = -1, // 已删除
   Examine  = 0,  // 审核中
   Routine  = 1,  // 常规
