@@ -1,6 +1,5 @@
 import { ARTICLE_CONSTANTS } from 'src/constants/constants';
-import { UserServiceNS } from 'src/modules/user/type/user';
-import { Column, CreateDateColumn, Entity, Generated, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import { BaseInitEntity } from './baseInitEntity';
 import { User } from './user.entity';
 

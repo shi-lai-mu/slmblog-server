@@ -50,7 +50,7 @@ export class TimeoutInterceptor implements NestInterceptor {
     }
 
     // CORS
-    res.header('Access-Control-Allow-Methods', 'OPTIONS,HEAD,PUT,POST,GET,DELETE');
+    // res.header('Access-Control-Allow-Methods', 'OPTIONS,HEAD,PUT,POST,GET,DELETE');
 
     return next.handle()
       // 对没有带标准输出格式的响应包装

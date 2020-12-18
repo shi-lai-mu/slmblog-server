@@ -7,15 +7,16 @@ export class GlobalFilter implements ExceptionFilter {
     const ctx = host.switchToHttp();
     const response: any = ctx.getResponse<Response>();
     const request = ctx.getRequest<Request>();
-    const status = exception.getStatus();
-    
-    console.log('[%s] %s %s error: %s', status, request.method, request.url, exception.message);
+    let status = exception.getStatus();
 
     const errorShooting = {
       404: ResponseEnum.NOT_FOUND,
       500: ResponseEnum.SERVER_ERROR,
     };
-    // console.log(exception.getResponse());
+
+    if (request.method === 'OPTIONS') {
+      status = 200;
+    }
     
 
     // 发送响应
@@ -25,5 +26,7 @@ export class GlobalFilter implements ExceptionFilter {
         ? ResponseBody.send(errorShooting[status])
         : exception.getResponse()
       );
+    
+    console.log('[%s] %s %s error: %s', status, request.method, request.url, exception.message);
   }
 }
