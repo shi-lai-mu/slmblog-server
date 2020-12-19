@@ -1,15 +1,12 @@
 import { Strategy, StrategyOptions, ExtractJwt } from "passport-jwt";
 import { AuthGuard, PassportStrategy } from "@nestjs/passport";
-import { User } from "src/entity/user.entity";
-import { InjectRepository } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
-import { ExecutionContext, Injectable, UnauthorizedException } from "@nestjs/common";
-import ConfigsService from "src/configs/configs.service";
+import { ExecutionContext, Injectable } from "@nestjs/common";
 import { ResponseEnum } from "src/constants/response";
 import { ResBaseException } from "src/core/exception/res.exception";
 import { UserService } from "../user.service";
+import ConfigsService from "src/configs/configs.service";
 
-
+const jwtConfig = new ConfigsService().jwt;
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(
@@ -19,16 +16,22 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
-      secretOrKey: new ConfigsService().jwt.secret,
-    } as StrategyOptions);
+      secretOrKey: jwtConfig.secret,
+    } as StrategyOptions, call => {
+      console.log(call);
+      
+    });
   }
+
 
   /**
    * 本地策略校验身份
    * 采用 用户id 和 用户盐 取数据 (只有id和八位盐都猜出才有可能获取到)
    */
   async validate(tokenParams) {
+    console.log(tokenParams);
     const user = await this.UserService.find({ id: tokenParams.id, iv: tokenParams.iv });
+    
     user.validateType = 'jwt';
     return user;
   }

@@ -1,14 +1,14 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Article, ArticleStateEnum } from "src/entity/article.entity";
-import { Not, Repository } from "typeorm";
+import { Repository } from "typeorm";
 import { RedisService } from "../redis/redis.service";
 import { ArticleSubmitDto } from "./dto/article.dto";
 import { sensitiveWord } from "src/configs/sensitive.word";
 import { ResponseBody, ResponseEnum } from "src/constants/response";
 import { ArticleNS } from "./type/article";
-import Mint from 'mint-filter'
 import { responseList, skipPage, ValidateParams } from "src/utils/collection";
+import Mint from 'mint-filter'
 
 
 /**

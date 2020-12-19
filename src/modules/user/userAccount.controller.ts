@@ -102,4 +102,14 @@ export class UserAccountController {
     }
     return user;
   }
+
+
+  /**
+   * 刷新令牌
+   */
+  @Get('refresh/token')
+  @ApiOperation({ summary: '刷新令牌' })
+  async refreshJWT(@Req() req?: GlobalRequest) {
+    return this.UserService.refreshJWT(req.headers['authorization']);
+  }
 }

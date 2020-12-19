@@ -1,4 +1,4 @@
-import { Length, MinLength } from "class-validator";
+import { IsNotEmpty, Length, MinLength } from "class-validator";
 import { ARTICLE_CONSTANTS } from "src/constants/constants";
 import { ResponseEnum, ValidateThrow } from "src/constants/response";
 
@@ -14,7 +14,7 @@ export class ArticleSubmitDto {
   /**
    * 头图
    */
-  @MinLength(1, ValidateThrow(ResponseEnum.ARTICLE.SUB_FIRPIC_EMPTY))
+  @IsNotEmpty(ValidateThrow(ResponseEnum.ARTICLE.SUB_FIRPIC_EMPTY))
   firstPicture: string;
 
   /**

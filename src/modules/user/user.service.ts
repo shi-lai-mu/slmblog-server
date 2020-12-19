@@ -9,6 +9,9 @@ import { ResponseBody, ResponseEnum } from 'src/constants/response';
 import { UserServiceNS } from './type/user';
 import { plainToClass } from 'class-transformer';
 import { RedisService } from '../redis/redis.service';
+import { AuthService } from './auth/auth.service';
+import ConfigsService from 'src/configs/configs.service';
+import * as JWT from 'jsonwebtoken';
 
 
 @Injectable()
@@ -18,6 +21,8 @@ export class UserService {
   constructor(
     @InjectRepository(User) private readonly userRepository: Repository<User>,
     private readonly RedisService: RedisService,
+    private readonly configsService: ConfigsService,
+    private readonly AuthService: AuthService,
   ) {}
 
   /**
@@ -61,6 +66,37 @@ export class UserService {
     });
 
     return plainToClass(User, user);
+  }
+
+  
+  /**
+   * 刷新令牌
+   * @param token 令牌
+   */
+  async refreshJWT(token: string) {
+    const [, jwt] = token.split(' ');
+    const { REFRESH_JWT_QUERY, REFRESH_JWT_ERROR, REFRESH_JWT_INVAL } = ResponseEnum.USER;
+
+    if (jwt) {
+      const jwtVerify = await new Promise(resolve => {
+        JWT.verify(jwt, this.configsService.jwt.secret, {
+          ignoreExpiration: true,
+        }, (err, data) => {
+          if (!err && data) return resolve(data);
+          resolve(err || '数据解析失败');
+        });
+      });
+
+      if (jwtVerify instanceof Error) return REFRESH_JWT_INVAL;
+
+      const { iv, id } = jwtVerify as { iv?: string; id?: number; iat?: number; exp?: number; };
+      if (iv && id) {
+        const userFind = await this.find({ id, iv });
+        return { token: this.AuthService.signToken(userFind) }
+      } else return REFRESH_JWT_QUERY;
+    }
+
+    return REFRESH_JWT_ERROR;
   }
 
 

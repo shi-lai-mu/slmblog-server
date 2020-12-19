@@ -10,6 +10,7 @@ import { JwtStrategy } from './auth/jwt.strategy';
 import { PassportModule } from '@nestjs/passport';
 import { RedisService } from '../redis/redis.service';
 import ConfigsService from 'src/configs/configs.service';
+import { AuthService } from './auth/auth.service';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import ConfigsService from 'src/configs/configs.service';
   providers: [
     UserService,
     LocalStrategy,
+    AuthService,
     JwtStrategy,
     RedisService,
   ],
