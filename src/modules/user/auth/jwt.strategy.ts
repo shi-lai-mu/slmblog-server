@@ -5,22 +5,22 @@ import { ResponseEnum } from "src/constants/response";
 import { ResBaseException } from "src/core/exception/res.exception";
 import { UserService } from "../user.service";
 import ConfigsService from "src/configs/configs.service";
+import { Repository } from "typeorm";
+import { User } from "src/entity/user.entity";
+import { InjectRepository } from "@nestjs/typeorm";
 
 const jwtConfig = new ConfigsService().jwt;
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(
-    // @InjectRepository(User) private readonly userRepository: Repository<User>,
-    private readonly UserService: UserService,
+    @InjectRepository(User) private readonly userRepository: Repository<User>,
+    // private readonly UserService: UserService,
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
       secretOrKey: jwtConfig.secret,
-    } as StrategyOptions, call => {
-      console.log(call);
-      
-    });
+    } as StrategyOptions);
   }
 
 
@@ -29,9 +29,13 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
    * 采用 用户id 和 用户盐 取数据 (只有id和八位盐都猜出才有可能获取到)
    */
   async validate(tokenParams) {
-    console.log(tokenParams);
-    const user = await this.UserService.find({ id: tokenParams.id, iv: tokenParams.iv });
-    
+    const user = await this.userRepository
+      .createQueryBuilder('u')
+      .addSelect('u.password')
+      .addSelect('u.iv')
+      .addSelect('u.status')
+      .getOne()
+    ;
     user.validateType = 'jwt';
     return user;
   }

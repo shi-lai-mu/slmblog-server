@@ -13,6 +13,7 @@ export class ResponseEnum {
   static readonly SUCCESS:              Status = { code: 0,    message: 'success' };
   static readonly ERROR:                Status = { code: 1,    message: 'fail' };
   static readonly NOT_FOUND:            Status = { code: 404,  message: '未找到有效的资源' };
+  static readonly UNAUTHORIZED:         Status = { code: 401,  message: '身份授权失效' };
   static readonly SERVER_ERROR:         Status = { code: 500,  message: '服务器出错' };
   static readonly PARAMS:               Status = { code: 1000, message: '参数错误' };
   static readonly PARAMS_GUARDS:        Status = { code: 1001, message: '参数错误' };

@@ -1,7 +1,6 @@
 import { UserServiceNS } from 'src/modules/user/type/user';
-import { Column, CreateDateColumn, Entity, Generated, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import { BaseInitEntity } from './baseInitEntity';
-import { Exclude } from 'class-transformer';
 import { USER_CONSTANTS } from 'src/constants/constants';
 
 /**
@@ -43,11 +42,19 @@ export enum ValidateType {
  local = 'local', // account
 }
 
+const { tablePerfix } = BaseInitEntity.dbConfig;
+/**
+ * 用户实体表名
+ */
+export const UserTableName = {
+  USER:  tablePerfix + 'users',
+  BADGE: tablePerfix + 'user_badge',
+}
 
 /**
  * 用户实体
  */
-@Entity({ name: BaseInitEntity.dbConfig.tablePerfix + 'users' })
+@Entity({ name: UserTableName.USER })
 export class User extends BaseInitEntity<UserServiceNS.CreateUser> {
 
   /**
@@ -77,8 +84,7 @@ export class User extends BaseInitEntity<UserServiceNS.CreateUser> {
   /**
    * 密码
    */
-  @Exclude()
-  @Column({ length: 100, comment: '密码' })
+  @Column({ length: 100, select: false, comment: '密码' })
   password: string;
 
   /**
@@ -94,15 +100,13 @@ export class User extends BaseInitEntity<UserServiceNS.CreateUser> {
   /**
    * 用户唯一盐
    */
-  @Exclude()
-  @Column({ length: 7, comment: '用户唯一盐' })
+  @Column({ length: 7, select: false, comment: '用户唯一盐' })
   iv: string;
 
   /**
    * 最后登录IP
    */
-  @Exclude()
-  @Column({ length: 20, comment: '最后登录IP' })
+  @Column({ length: 20, select: false, comment: '最后登录IP' })
   ip: string;
 
   /**
@@ -144,8 +148,7 @@ export class User extends BaseInitEntity<UserServiceNS.CreateUser> {
   /**
    * 账号状态
    */
-  @Exclude()
-  @Column({ type: 'enum', enum: UserStatus, default: UserStatus.Actived, comment: '账号状态' })
+  @Column({ type: 'enum', enum: UserStatus, select: false, default: UserStatus.Actived, comment: '账号状态' })
   status: UserStatus;
 
   /**
@@ -164,7 +167,7 @@ export class User extends BaseInitEntity<UserServiceNS.CreateUser> {
 /**
  * 徽章实体
  */
-@Entity({ name: 'user_badge' })
+@Entity({ name: UserTableName.BADGE })
 export class Badge {
   /**
    * ID

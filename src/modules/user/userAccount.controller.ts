@@ -3,7 +3,7 @@ import { UserLoginDto, UserRegisterDto } from './dto/user.dto';
 import { UserService } from './user.service';
 import { FrequentlyGuards } from 'src/core/guards/frequently.guards';
 import { ResBaseException } from 'src/core/exception/res.exception';
-import { ResponseEnum } from 'src/constants/response';
+import { ResponseBody, ResponseEnum } from 'src/constants/response';
 import { getClientIP } from 'src/utils/collection';
 import { ApiBasicAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
@@ -68,12 +68,12 @@ export class UserAccountController {
   @Post('signin')
   @UseGuards(AuthGuard('local'))
   @ApiOperation({ summary: '登录'})
-  async login(@CurUser() user: User, @Body() body: UserLoginDto, @Req() req?: GlobalRequest) {
+  async login(@CurUser() user: User, @Req() req?: GlobalRequest) {
     this.UserService.login(user, {
       ip: getClientIP(req),
       systemPlatform: req.headers['user-agent'],
     });
-    return plainToClass(User, user);
+    return this.UserService.find(user);
   }
 
 
@@ -85,7 +85,7 @@ export class UserAccountController {
   @ApiOperation({ summary: '获取个人信息'})
   @ApiBasicAuth()
   async info(@CurUser() user: User) {
-    return plainToClass(User, user);
+    return user;
   }
 
 

@@ -10,6 +10,7 @@ export class GlobalFilter implements ExceptionFilter {
     let status = exception.getStatus();
 
     const errorShooting = {
+      401: ResponseEnum.UNAUTHORIZED,
       404: ResponseEnum.NOT_FOUND,
       500: ResponseEnum.SERVER_ERROR,
     };
@@ -21,11 +22,12 @@ export class GlobalFilter implements ExceptionFilter {
 
     // 发送响应
     response
-      .status(status)
+      .status(errorShooting[status] ? 200 : status)
       .json(errorShooting[status]
         ? ResponseBody.send(errorShooting[status])
         : exception.getResponse()
-      );
+      )
+    ;
     
     console.log('[%s] %s %s error: %s', status, request.method, request.url, exception.message);
   }
