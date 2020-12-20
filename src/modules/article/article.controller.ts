@@ -31,7 +31,7 @@ export class ArticleController {
       ResponseBody.throw(ResponseEnum.ARTICLE.AC_SUBMIT_ERROR);
     }
     
-    return this.ArticleService.submit(articleData);
+    return this.ArticleService.submit(articleData, user);
   }
 
 

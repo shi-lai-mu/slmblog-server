@@ -9,13 +9,13 @@ export class ArticleSubmitDto {
    */
   // @MinLength(1, ValidateThrow(ResponseEnum.ARTICLE.SUB_TITLE_EMPTY))
   @Length(ARTICLE_CONSTANTS.TITLE_MIN_LENGTH, ARTICLE_CONSTANTS.TITLE_MAX_LENGTH, ValidateThrow(ResponseEnum.ARTICLE.SUB_TITLE_FORMAT))
-  title: string;
+  subject: string;
 
   /**
    * 头图
    */
   @IsNotEmpty(ValidateThrow(ResponseEnum.ARTICLE.SUB_FIRPIC_EMPTY))
-  firstPicture: string;
+  banner: string;
 
   /**
    * 内容

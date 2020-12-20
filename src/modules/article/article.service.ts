@@ -1,13 +1,14 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Article, ArticleStateEnum } from "src/entity/article.entity";
-import { Repository } from "typeorm";
+import { Article, ArticleStat, ArticleStateEnum, ArticleTableName } from "src/entity/article.entity";
+import { getConnection, Repository } from "typeorm";
 import { RedisService } from "../redis/redis.service";
 import { ArticleSubmitDto } from "./dto/article.dto";
 import { sensitiveWord } from "src/configs/sensitive.word";
 import { ResponseBody, ResponseEnum } from "src/constants/response";
 import { ArticleNS } from "./type/article";
 import { responseList, skipPage, ValidateParams } from "src/utils/collection";
+import { User, UserTableName } from "src/entity/user.entity";
 import Mint from 'mint-filter'
 
 
@@ -24,6 +25,7 @@ export class ArticleService {
 
   constructor(
     @InjectRepository(Article) private readonly ArticleRepository: Repository<Article>,
+    @InjectRepository(ArticleStat) private readonly ArticleStat: Repository<ArticleStat>,
     private readonly RedisService: RedisService,
   ) {}
 
@@ -31,11 +33,11 @@ export class ArticleService {
   /**
    * 发布文章
    * @param articleData 文章数据
+   * @param author      发布者
    */
-  async submit(articleData: ArticleSubmitDto) {
-
+  async submit(articleData: ArticleSubmitDto, author: User) {
     // 敏感词
-    const content = (articleData.content + articleData.description + articleData.title).replace(/\s|\n|\r|\t|\-|\_|[a-z0-9]/g, '');
+    const content = (articleData.content + articleData.description + articleData.subject).replace(/\s|\n|\r|\t|\-|\_|[a-z0-9]/g, '');
     const isMintContent = ArticleService.SensitiveWord.filterSync(content, { every: false, replace: false });
     if (isMintContent.words.length) {
       const errMsg = ResponseEnum.ARTICLE.SUB_IS_SENSITIVE;
@@ -43,13 +45,35 @@ export class ArticleService {
       ResponseBody.throw(errMsg);
     }
 
-    // 插入数据确认
-    const insert = await this.ArticleRepository.insert(articleData);
-    if (!insert.raw.insertId) {
-      ResponseBody.throw(ResponseEnum.ARTICLE.SUB_ARTICLE_ERROR);
+    // 系统数据写入
+    const insertData: Article = articleData as Article;
+    insertData.author = author.id;
+
+    const connection = getConnection().createQueryRunner();
+    await connection.connect();
+    await connection.startTransaction();
+    let insertArticleId = -1;
+
+    try {
+      // 插入数据确认
+      const insert = await connection.manager.insert(Article, insertData);
+      if (!insert.raw.insertId) {
+        ResponseBody.throw(ResponseEnum.ARTICLE.SUB_ARTICLE_ERROR);
+      }
+      insertArticleId = insert.identifiers[0].id;
+      const insertStat = await connection.manager.insert(ArticleStat, {
+        article: insertArticleId,
+      });
+      if (!insertStat.raw.insertId) {
+        ResponseBody.throw(ResponseEnum.ARTICLE.SUB_ARTICLE_ERROR);
+      }
+      connection.commitTransaction();
+    } catch(err) {
+      await connection.rollbackTransaction();
+      return err;
     }
-    
-    return { id: insert.identifiers[0].id };
+
+    return { id: insertArticleId };
   }
 
 
@@ -59,16 +83,19 @@ export class ArticleService {
    */
   async information(id: Article['id']) {
     const { Failed, IsDelete, Examine } = ArticleStateEnum;
+    const { STATE_FAILED, STATE_ISDELETE, STATE_EXAMINE, STATE_ABNORMAL, STATE_NOT_EXISTS } = ResponseEnum.ARTICLE;
     const article = await this.ArticleRepository.findOne(id);
+
+    if (!article) return STATE_NOT_EXISTS;
 
     // 文章状态检测
     const abnormalState = {
-      '-2': ResponseEnum.ARTICLE.STATE_FAILED,
-      '-1': ResponseEnum.ARTICLE.STATE_ISDELETE,
-      0: ResponseEnum.ARTICLE.STATE_EXAMINE,
+      '-2': STATE_FAILED,
+      '-1': STATE_ISDELETE,
+      0: STATE_EXAMINE,
     };
     if (article.state < ArticleStateEnum.Routine) {
-      ResponseBody.throw(abnormalState[article.state] || ResponseEnum.ARTICLE.STATE_ABNORMAL);
+      ResponseBody.throw(abnormalState[article.state] || STATE_ABNORMAL);
     }
 
     // 数据整合
@@ -76,6 +103,8 @@ export class ArticleService {
       article,
       comment: [],
     };
+
+    (<any>information.article).replyCount = 0;
 
     return information;
   }
@@ -93,10 +122,16 @@ export class ArticleService {
       .isThisValues({ filterMode }, Object.keys(ArticleStateEnum))
     ;
 
-    const [ list, total ] = await this.ArticleRepository.findAndCount({
-      skip: skipPage(page, count),
-      take: count,
-    });
+    const [ list, total ] = 
+    await this.ArticleRepository
+      .createQueryBuilder('article')
+      .leftJoinAndSelect('article.author', UserTableName.USER)
+      .leftJoinAndSelect('article.stat', ArticleTableName.STAT)
+      // .addSelect()
+      .skip(skipPage(page, count))
+      .take(count)
+      .getManyAndCount()
+    ;
 
     return responseList(page, count, list, total);
   }
