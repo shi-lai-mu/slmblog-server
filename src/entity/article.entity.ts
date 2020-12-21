@@ -2,7 +2,7 @@ import { ARTICLE_CONSTANTS } from 'src/constants/constants';
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import { BaseInitEntity } from './baseInitEntity';
 import { User } from './user.entity';
-
+import { Exclude } from 'class-transformer';
 
 
 /**
@@ -84,6 +84,60 @@ export const ArticleTableName = {
   STAT:    tablePerfix + 'article_stat',
 };
 
+
+/**
+ * 文章状态实体
+ */
+@Entity({ name: ArticleTableName.STAT })
+export class ArticleStat extends BaseInitEntity<{}> {
+  @PrimaryGeneratedColumn()
+  @Exclude()
+  id: number;
+  /**
+   * 目标文章
+   */
+  @ManyToOne(ts => Article, article => article.id)
+  article: number;
+  /**
+   * 收藏次数
+   */
+  @Column({ default: 0, comment: '收藏次数' })
+  bookmark_num: number;
+  /**
+   * 浏览次数
+   */
+  @Column({ default: 0, comment: '浏览次数' })
+  view_num: number;
+  /**
+   * 是否为推荐
+   */
+  @Column({ default: 0, comment: '是否为推荐' })
+  is_good: number;
+  /**
+   * 是否为官方
+   */
+  @Column({ default: 0, comment: '是否为官方' })
+  is_official: number;
+  /**
+   * 是否为置顶
+   */
+  @Column({ default: 0, comment: '是否为置顶' })
+  is_top: number;
+  /**
+   * 数据最后更新时间
+   */
+  @UpdateDateColumn({ name: 'update_time', comment: '数据最后更新时间' })
+  @Exclude()
+  updateTime: Date;
+  /**
+   * 操作人员
+   */
+  @Column({ default: 'system', comment: '操作人员' })
+  @Exclude()
+  operator: string;
+}
+
+
 /**
  * 文章实体
  */
@@ -98,7 +152,7 @@ export class Article extends BaseInitEntity<{}> {
    * 作者
    */
   @ManyToOne(type => User, user => user.id)
-  author: User['id'];
+  author: User | User['id'];
   /**
    * 标题
    */
@@ -137,9 +191,8 @@ export class Article extends BaseInitEntity<{}> {
   /**
    * 状态表ID
    */
-  @OneToOne(type => ArticleStat, stat => stat.id)
-  @JoinColumn()
-  stat: ArticleStat['id'];
+  @ManyToOne(type => ArticleStat, stat => stat.id)
+  stat: ArticleStat;
   /**
    * 最后编辑时间
    */
@@ -193,54 +246,3 @@ export class ArticleLike extends BaseInitEntity<{}> {
   createTime: Date;
 }
 
-
-
-/**
- * 文章状态实体
- */
-@Entity({ name: ArticleTableName.STAT })
-export class ArticleStat extends BaseInitEntity<{}> {
-  @PrimaryGeneratedColumn()
-  id: number;
-  /**
-   * 目标文章
-   */
-  @OneToOne(ts => Article, article => article.id)
-  @JoinColumn()
-  article: number;
-  /**
-   * 收藏次数
-   */
-  @Column({ default: 0, comment: '收藏次数' })
-  bookmark_num: number;
-  /**
-   * 浏览次数
-   */
-  @Column({ default: 0, comment: '浏览次数' })
-  view_num: number;
-  /**
-   * 是否为推荐
-   */
-  @Column({ default: 0, comment: '是否为推荐' })
-  is_good: number;
-  /**
-   * 是否为官方
-   */
-  @Column({ default: 0, comment: '是否为官方' })
-  is_official: number;
-  /**
-   * 是否为置顶
-   */
-  @Column({ default: 0, comment: '是否为置顶' })
-  is_top: number;
-  /**
-   * 数据最后更新时间
-   */
-  @UpdateDateColumn({ name: 'update_time', comment: '数据最后更新时间' })
-  updateTime: Date;
-  /**
-   * 操作人员
-   */
-  @Column({ default: 'system', comment: '操作人员' })
-  operator: string;
-}

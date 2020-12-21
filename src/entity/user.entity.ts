@@ -2,6 +2,7 @@ import { UserServiceNS } from 'src/modules/user/type/user';
 import { Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import { BaseInitEntity } from './baseInitEntity';
 import { USER_CONSTANTS } from 'src/constants/constants';
+import { Exclude } from 'class-transformer';
 
 /**
  * 用户权限
@@ -67,6 +68,7 @@ export class User extends BaseInitEntity<UserServiceNS.CreateUser> {
    * 账号
    */
   @Column({ length: USER_CONSTANTS.ACCOUNT_MAX_LENGTH, unique: true, comment: '账号' })
+  @Exclude()
   account: string;
 
   /**
@@ -85,6 +87,7 @@ export class User extends BaseInitEntity<UserServiceNS.CreateUser> {
    * 密码
    */
   @Column({ length: 100, select: false, comment: '密码' })
+  @Exclude()
   password: string;
 
   /**
@@ -101,12 +104,14 @@ export class User extends BaseInitEntity<UserServiceNS.CreateUser> {
    * 用户唯一盐
    */
   @Column({ length: 7, select: false, comment: '用户唯一盐' })
+  @Exclude()
   iv: string;
 
   /**
    * 最后登录IP
    */
   @Column({ length: 20, select: false, comment: '最后登录IP' })
+  @Exclude()
   ip: string;
 
   /**
@@ -119,12 +124,14 @@ export class User extends BaseInitEntity<UserServiceNS.CreateUser> {
    * 常用设备系统
    */
   @Column({ name: 'system_platform', length: 50, comment: '常用设备系统' })
+  @Exclude()
   systemPlatform: string;
 
   /**
    * 数据修改时间
    */
   @UpdateDateColumn({ name: 'update_time', comment: '数据修改时间' })
+  @Exclude()
   updateTime: Date;
 
   /**

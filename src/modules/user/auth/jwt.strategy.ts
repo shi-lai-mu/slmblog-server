@@ -36,7 +36,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       .addSelect('u.status')
       .getOne()
     ;
-    user.validateType = 'jwt';
+    if (user) user.validateType = 'jwt';
     return user;
   }
 }

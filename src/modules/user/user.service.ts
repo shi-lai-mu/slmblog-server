@@ -7,10 +7,10 @@ import { generateHash } from 'src/utils/crypto';
 import { ResBaseException } from 'src/core/exception/res.exception';
 import { ResponseBody, ResponseEnum } from 'src/constants/response';
 import { UserServiceNS } from './type/user';
-import { plainToClass } from 'class-transformer';
 import { RedisService } from '../redis/redis.service';
 import { AuthService } from './auth/auth.service';
 import ConfigsService from 'src/configs/configs.service';
+// import { plainToClass } from 'class-transformer';
 import * as JWT from 'jsonwebtoken';
 
 
@@ -46,7 +46,7 @@ export class UserService {
       iv,
     });
 
-    return plainToClass(User, await user.save());
+    return await user.save();
   }
 
 
@@ -65,7 +65,7 @@ export class UserService {
       updateTime: new Date(),
     });
 
-    return plainToClass(User, user);
+    return user;
   }
 
   
@@ -108,7 +108,7 @@ export class UserService {
    * - 去除隐私数据
    */
   async InputFind(findData: FindConditions<User>, select?: FindOneOptions<User>['select']) {
-    return plainToClass(User, await this.find(findData, select));
+    return await this.find(findData, select);
   }
 
 

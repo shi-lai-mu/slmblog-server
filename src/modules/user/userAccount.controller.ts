@@ -1,9 +1,9 @@
 import { Body, Controller, Post, Request, Res, UseGuards, Response, Get, Req, Param } from '@nestjs/common';
-import { UserLoginDto, UserRegisterDto } from './dto/user.dto';
+import { UserRegisterDto } from './dto/user.dto';
 import { UserService } from './user.service';
 import { FrequentlyGuards } from 'src/core/guards/frequently.guards';
 import { ResBaseException } from 'src/core/exception/res.exception';
-import { ResponseBody, ResponseEnum } from 'src/constants/response';
+import { ResponseEnum } from 'src/constants/response';
 import { getClientIP } from 'src/utils/collection';
 import { ApiBasicAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
@@ -11,9 +11,9 @@ import { GlobalRequest } from 'src/interface/gloabl.interface';
 import { CurUser } from 'src/core/decorators/global.decorators';
 import { User } from 'src/entity/user.entity';
 import { JwtAuthGuard } from './auth/jwt.strategy';
-import { plainToClass } from 'class-transformer';
 import { UserServiceBase } from './user.service'
 import { APIPrefix } from 'src/constants/constants';
+// import { plainToClass } from 'class-transformer';
 
 /**
  * 用户类 控制层

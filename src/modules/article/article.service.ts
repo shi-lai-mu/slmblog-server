@@ -10,6 +10,7 @@ import { ArticleNS } from "./type/article";
 import { responseList, skipPage, ValidateParams } from "src/utils/collection";
 import { User, UserTableName } from "src/entity/user.entity";
 import Mint from 'mint-filter'
+import { plainToClass } from "class-transformer";
 
 
 /**
@@ -25,7 +26,6 @@ export class ArticleService {
 
   constructor(
     @InjectRepository(Article) private readonly ArticleRepository: Repository<Article>,
-    @InjectRepository(ArticleStat) private readonly ArticleStat: Repository<ArticleStat>,
     private readonly RedisService: RedisService,
   ) {}
 
@@ -67,6 +67,11 @@ export class ArticleService {
       if (!insertStat.raw.insertId) {
         ResponseBody.throw(ResponseEnum.ARTICLE.SUB_ARTICLE_ERROR);
       }
+      await connection.manager.update(Article, {
+        id: insert.raw.insertId,
+      }, {
+        stat: insertStat.raw.insertId,
+      })
       connection.commitTransaction();
     } catch(err) {
       await connection.rollbackTransaction();
@@ -122,7 +127,7 @@ export class ArticleService {
       .isThisValues({ filterMode }, Object.keys(ArticleStateEnum))
     ;
 
-    const [ list, total ] = 
+    let [ list, total ] = 
     await this.ArticleRepository
       .createQueryBuilder('article')
       .leftJoinAndSelect('article.author', UserTableName.USER)
@@ -132,6 +137,13 @@ export class ArticleService {
       .take(count)
       .getManyAndCount()
     ;
+
+    // 数据过滤
+    list = list.map(data => {
+      data.stat = plainToClass(ArticleStat, data.stat);
+      data.author = plainToClass(User, data.author);
+      return data;
+    });
 
     return responseList(page, count, list, total);
   }
