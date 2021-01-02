@@ -89,7 +89,13 @@ export class ArticleService {
   async information(id: Article['id']) {
     const { Failed, IsDelete, Examine } = ArticleStateEnum;
     const { STATE_FAILED, STATE_ISDELETE, STATE_EXAMINE, STATE_ABNORMAL, STATE_NOT_EXISTS } = ResponseEnum.ARTICLE;
-    const article = await this.ArticleRepository.findOne(id);
+    const article = await this.ArticleRepository
+      .createQueryBuilder('article')
+      .leftJoinAndSelect('article.author', UserTableName.USER)
+      .leftJoinAndSelect('article.stat', ArticleTableName.STAT)
+      .where({ id })
+      .getOne()
+    ;
 
     if (!article) return STATE_NOT_EXISTS;
 
@@ -105,7 +111,7 @@ export class ArticleService {
 
     // 数据整合
     const information: ArticleNS.Information = {
-      article,
+      article: this.articleDataFilter(article),
       comment: [],
     };
 
@@ -140,11 +146,20 @@ export class ArticleService {
 
     // 数据过滤
     list = list.map(data => {
-      data.stat = plainToClass(ArticleStat, data.stat);
-      data.author = plainToClass(User, data.author);
-      return data;
+      return this.articleDataFilter(data);
     });
 
     return responseList(page, count, list, total);
+  }
+
+
+  /**
+   * 过滤文章数据
+   * @param article 文章内容
+   */
+  articleDataFilter(article: ArticleNS.BaseData) {
+    article.stat = plainToClass(ArticleStat, article.stat);
+    article.author = plainToClass(User, article.author);
+    return article;
   }
 }

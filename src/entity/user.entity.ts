@@ -131,7 +131,6 @@ export class User extends BaseInitEntity<UserServiceNS.CreateUser> {
    * 数据修改时间
    */
   @UpdateDateColumn({ name: 'update_time', comment: '数据修改时间' })
-  @Exclude()
   updateTime: Date;
 
   /**
