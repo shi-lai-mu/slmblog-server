@@ -14,6 +14,9 @@ import ConfigsService from 'src/configs/configs.service';
 import * as JWT from 'jsonwebtoken';
 
 
+/**
+ * 用户业务 逻辑层
+ */
 @Injectable()
 export class UserService {
   private readonly users: UserLoginDto[] = [];

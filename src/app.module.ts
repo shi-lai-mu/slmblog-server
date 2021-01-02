@@ -1,12 +1,15 @@
-import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { UserModule } from './modules/user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { RedisModule } from './modules/redis/redis.module';
+import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
+
+import { AppService } from './app.service';
+import { AppController } from './app.controller';
+import { UserModule } from './modules/user/user.module';
 import { ConfigsModule } from './configs/configs.module';
-import { GlobalMiddleware } from './core/middleware/global.middleware';
+import { RedisModule } from './modules/redis/redis.module';
 import { ArticleModule } from './modules/article/article.module';
+import { NoticModule } from './modules/notify/notic/notic.module';
+import { GlobalMiddleware } from './core/middleware/global.middleware';
+
 import ConfigService from './configs/configs.service';
 
 
@@ -23,6 +26,7 @@ import ConfigService from './configs/configs.service';
     }),
     UserModule,
     ArticleModule,
+    NoticModule,
   ],
   controllers: [AppController],
   providers: [
