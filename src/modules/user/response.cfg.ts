@@ -20,17 +20,17 @@ export class UserResponse {
   // 用户信息不存在
   static readonly FIND_USER_NULL:    Status = { code: 1106, message: '用户信息不存在!' };
   // 重新登录：已在其他设备上登录
-  static readonly UNLOG_BUSY_LINE:   Status = { code: 1106, message: '登录状态失效，请重新登录!' };
+  static readonly UNLOG_BUSY_LINE:   Status = { code: 1107, message: '登录状态失效，请重新登录!' };
   // 登录账号异常：已被冻结或转移
-  static readonly ACOOUNT_ABNORMAL:  Status = { code: 1107, message: '账号状态异常，已被冻结或未激活!' };
+  static readonly ACOOUNT_ABNORMAL:  Status = { code: 1108, message: '账号状态异常，已被冻结或未激活!' };
   // 查看账号异常：已被冻结或转移
-  static readonly INFO_AC_ABNORMAL:  Status = { code: 1108, message: '目标账号处于冻结状态!' };
+  static readonly INFO_AC_ABNORMAL:  Status = { code: 1109, message: '目标账号处于冻结状态!' };
   // 查看账号异常：账号未激活
-  static readonly AC_NO_ACTIVATION:  Status = { code: 1109, message: '账号状态异常，未激活!' };
+  static readonly AC_NO_ACTIVATION:  Status = { code: 1110, message: '账号状态异常，未激活!' };
   // 置换JWT：未知原因
-  static readonly REFRESH_JWT_ERROR: Status = { code: 1110, message: '置换JWT失败，未知原因!' };
+  static readonly REFRESH_JWT_ERROR: Status = { code: 1111, message: '置换JWT失败，未知原因!' };
   // 置换JWT：参数异常
-  static readonly REFRESH_JWT_QUERY: Status = { code: 1110, message: '置换JWT失败，必要参数不存在!' };
+  static readonly REFRESH_JWT_QUERY: Status = { code: 1112, message: '置换JWT失败，必要参数不存在!' };
   // 置换JWT：无效令牌
-  static readonly REFRESH_JWT_INVAL: Status = { code: 1110, message: '置换JWT失败，无效令牌!' };
+  static readonly REFRESH_JWT_INVAL: Status = { code: 1113, message: '置换JWT失败，无效令牌!' };
 }

@@ -15,10 +15,12 @@ import { UserServiceBase } from './user.service'
 import { APIPrefix } from 'src/constants/constants';
 // import { plainToClass } from 'class-transformer';
 
+export const _USER_PATH_NAME_ = APIPrefix + 'user';
+
 /**
  * 用户类 控制层
  */
-@Controller(APIPrefix + 'user')
+@Controller(_USER_PATH_NAME_)
 @ApiTags('用户')
 export class UserAccountController {
 

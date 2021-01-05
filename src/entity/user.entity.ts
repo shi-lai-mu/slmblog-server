@@ -1,8 +1,9 @@
-import { UserServiceNS } from 'src/modules/user/type/user';
-import { Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { Exclude } from 'class-transformer';
+import { Column, CreateDateColumn, Entity, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+
 import { BaseInitEntity } from './baseInitEntity';
 import { USER_CONSTANTS } from 'src/constants/constants';
-import { Exclude } from 'class-transformer';
+import { UserServiceNS } from 'src/modules/user/type/user';
 
 /**
  * 用户权限
@@ -167,7 +168,7 @@ export class User extends BaseInitEntity<UserServiceNS.CreateUser> {
   /**
    * 用户配置
    */
-  @ManyToOne(type => UserConfig, config => config.id)
+  @ManyToOne(type => UserConfigEntity, config => config.id)
   config: number;
 
   /**
@@ -218,7 +219,7 @@ export class Badge {
  * 用户配置实体
  */
 @Entity({ name: UserTableName.CONFIG })
-export class UserConfig {
+export class UserConfigEntity {
   /**
    * ID
    */
@@ -228,8 +229,8 @@ export class UserConfig {
   /**
    * 用户ID
    */
-  @OneToMany(type => User, user => user.id)
-  user: User;
+  @ManyToOne(type => User, user => user.id)
+  user: number;
 
   /**
    * 配置内容(JSON)

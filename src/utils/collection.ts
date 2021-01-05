@@ -78,3 +78,17 @@ export const responseList = <T>(page: number, count: number, list: T, total: num
     total: Number(total),
   };
 };
+
+
+/**
+ * 判断是否为标准的JSON字符串
+ * @param jsonString json字符串
+ */
+export const isJsonString = (jsonString: string) => {
+  try {
+    jsonString = JSON.parse(jsonString);
+    return true;
+  } catch (_err) {
+    return false;
+  }
+}

@@ -21,7 +21,7 @@ import * as JWT from 'jsonwebtoken';
  */
 @Injectable()
 export class UserService {
-  private readonly users: UserLoginDto[] = [];
+  // private readonly users: UserLoginDto[] = [];
 
   constructor(
     @InjectRepository(User) private readonly userRepository: Repository<User>,
