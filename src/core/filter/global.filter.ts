@@ -8,7 +8,7 @@ export class GlobalFilter implements ExceptionFilter {
     const response: any = ctx.getResponse<Response>();
     const request = ctx.getRequest<Request>();
     let status = exception.getStatus();
-
+    
     const errorShooting = {
       401: ResponseEnum.UNAUTHORIZED,
       404: ResponseEnum.NOT_FOUND,

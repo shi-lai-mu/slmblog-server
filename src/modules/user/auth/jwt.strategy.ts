@@ -19,6 +19,14 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+      // context => {
+      //   let token: string = ExtractJwt.fromAuthHeaderAsBearerToken()(context);
+      //   // 中间件如果设置了Authorization在headers则jwt取这里
+      //   if (!token && context.headers.Authorization) {
+      //     token = (context.headers.Authorization as string).split(' ')[1];
+      //   }
+      //   return token;
+      // },
       ignoreExpiration: false,
       secretOrKey: jwtConfig.secret,
     } as StrategyOptions);
@@ -47,6 +55,9 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 @Injectable()
 export class JwtAuthGuard extends AuthGuard('jwt') {
   canActivate(context: ExecutionContext) {
+    const req = context.switchToHttp().getRequest();
+    console.log({header: req.headers});
+    
     return super.canActivate(context);
   }
 
@@ -55,6 +66,8 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
    * 处理请求
    */
   handleRequest(err, user, info) {
+    console.log({err, user, info});
+    
     if (err || !user) {
       let errMsg = ResponseEnum.UNAUTHORIZED_INVALID;
 
