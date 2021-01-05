@@ -75,6 +75,15 @@ export class TimeoutInterceptor implements NestInterceptor {
           return throwError(err);
         })
       )
+      .pipe(
+        catchError(err => {
+          if (err instanceof ResBaseException) {
+            return throwError(err);
+          }
+          // TODO: write log file code...
+          throw new ResBaseException(ResponseEnum.SERVER_ERROR);
+        })
+      )
     ;
   }
 

@@ -18,7 +18,6 @@ export class GlobalFilter implements ExceptionFilter {
     if (request.method === 'OPTIONS') {
       status = 200;
     }
-    
 
     // 发送响应
     response
