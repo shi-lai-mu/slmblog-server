@@ -1,16 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { FindConditions, FindOneOptions, Repository } from 'typeorm';
+
+import { UserServiceNS } from './type/user';
 import { UserLoginDto } from './dto/user.dto';
 import { User } from '../../entity/user.entity';
-import { FindConditions, FindOneOptions, Repository } from 'typeorm';
 import { generateHash } from 'src/utils/crypto';
+import { AuthService } from './auth/auth.service';
+import { RedisService } from '../redis/redis.service';
+import ConfigsService from 'src/configs/configs.service';
 import { ResBaseException } from 'src/core/exception/res.exception';
 import { ResponseBody, ResponseEnum } from 'src/constants/response';
-import { UserServiceNS } from './type/user';
-import { RedisService } from '../redis/redis.service';
-import { AuthService } from './auth/auth.service';
-import ConfigsService from 'src/configs/configs.service';
 // import { plainToClass } from 'class-transformer';
+
 import * as JWT from 'jsonwebtoken';
 
 

@@ -1,9 +1,10 @@
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { Article, ArticleStat } from "src/entity/article.entity";
+
+import { ArticleService } from "./article.service";
 import { RedisService } from "../redis/redis.service";
 import { ArticleController } from "./article.controller";
-import { ArticleService } from "./article.service";
+import { Article, ArticleStat } from "src/entity/article.entity";
 
 @Module({
   imports: [TypeOrmModule.forFeature([ Article, ArticleStat ])],

@@ -48,8 +48,9 @@ const { tablePerfix } = BaseInitEntity.dbConfig;
  * 用户实体表名
  */
 export const UserTableName = {
-  USER:  tablePerfix + 'users',
-  BADGE: tablePerfix + 'user_badge',
+  USER:   tablePerfix + 'users',        // 用户表
+  BADGE:  tablePerfix + 'user_badge',   // 用户徽章表
+  CONFIG: tablePerfix + 'user_config',  // 用户配置表
 }
 
 /**
@@ -164,6 +165,12 @@ export class User extends BaseInitEntity<UserServiceNS.CreateUser> {
   badge: Badge[];
 
   /**
+   * 用户配置
+   */
+  @ManyToOne(type => UserConfig, config => config.id)
+  config: number;
+
+  /**
    * 校验策略
    */
   validateType?: keyof typeof ValidateType;
@@ -204,4 +211,29 @@ export class Badge {
    */
   @OneToMany(ts => User, user => user.id)
   owner: User[];
+}
+
+
+/**
+ * 用户配置实体
+ */
+@Entity({ name: UserTableName.CONFIG })
+export class UserConfig {
+  /**
+   * ID
+   */
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  /**
+   * 用户ID
+   */
+  @OneToMany(type => User, user => user.id)
+  user: User;
+
+  /**
+   * 配置内容(JSON)
+   */
+  @Column({ type: 'text', comment: '配置内容(JSON)' })
+  json: string;
 }

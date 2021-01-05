@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString, Length, MinLength } from 'class-validator';
+import { IsNotEmpty, Length, MinLength } from 'class-validator';
+
 import { USER_CONSTANTS } from '../../../constants/constants';
 import { ResponseEnum } from '../../../constants/response';
 

@@ -1,13 +1,14 @@
-import { Strategy, StrategyOptions, ExtractJwt } from "passport-jwt";
-import { AuthGuard, PassportStrategy } from "@nestjs/passport";
+import { Repository } from "typeorm";
+import { InjectRepository } from "@nestjs/typeorm";
 import { ExecutionContext, Injectable } from "@nestjs/common";
+import { AuthGuard, PassportStrategy } from "@nestjs/passport";
+import { Strategy, StrategyOptions, ExtractJwt } from "passport-jwt";
+
+import { User } from "src/entity/user.entity";
 import { ResponseEnum } from "src/constants/response";
 import { ResBaseException } from "src/core/exception/res.exception";
-import { UserService } from "../user.service";
+
 import ConfigsService from "src/configs/configs.service";
-import { Repository } from "typeorm";
-import { User } from "src/entity/user.entity";
-import { InjectRepository } from "@nestjs/typeorm";
 
 const jwtConfig = new ConfigsService().jwt;
 @Injectable()

@@ -1,7 +1,7 @@
 import { UserResponse } from '../modules/user/response.cfg';
-import { ResBaseException } from 'src/core/exception/res.exception';
 import { ConstantsResponse } from 'src/interface/gloabl.interface';
 import { ArticleResponse } from 'src/modules/article/response.cfg';
+import { ResBaseException } from 'src/core/exception/res.exception';
 
 export type Status = ConstantsResponse.Status;
 export type ErrorStatus = ConstantsResponse.ErrorStatus;
