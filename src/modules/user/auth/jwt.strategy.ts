@@ -56,8 +56,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 export class JwtAuthGuard extends AuthGuard('jwt') {
   canActivate(context: ExecutionContext) {
     const req = context.switchToHttp().getRequest();
-    console.log({header: req.headers});
-    
     return super.canActivate(context);
   }
 
@@ -66,8 +64,6 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
    * 处理请求
    */
   handleRequest(err, user, info) {
-    console.log({err, user, info});
-    
     if (err || !user) {
       let errMsg = ResponseEnum.UNAUTHORIZED_INVALID;
 

@@ -7,16 +7,17 @@ import { UserService } from './user.service';
 import { JwtStrategy } from './auth/jwt.strategy';
 import { AuthService } from './auth/auth.service';
 import { UserController } from './user.controller';
-import { User, Badge } from 'src/entity/user.entity';
 import { LocalStrategy } from './auth/local.strategy';
 import { RedisService } from '../redis/redis.service';
 import { UserAccountController } from './userAccount.controller';
+import { User, Badge, UserConfigEntity } from 'src/entity/user.entity';
+import { UserConfigService } from '../config/user/userConfig.service';
 
 import ConfigsService from 'src/configs/configs.service';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User, Badge]),
+    TypeOrmModule.forFeature([User, Badge, UserConfigEntity]),
     PassportModule,
     JwtModule.registerAsync({
       useFactory: (configsService: ConfigsService) => configsService.jwt,
@@ -29,6 +30,7 @@ import ConfigsService from 'src/configs/configs.service';
   ],
   providers: [
     UserService,
+    UserConfigService,
     LocalStrategy,
     AuthService,
     JwtStrategy,

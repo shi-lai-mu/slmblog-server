@@ -1,18 +1,22 @@
-import { Body, Controller, Post, Request, Res, UseGuards, Response, Get, Req, Param } from '@nestjs/common';
-import { UserRegisterDto } from './dto/user.dto';
-import { UserService } from './user.service';
-import { FrequentlyGuards } from 'src/core/guards/frequently.guards';
-import { ResBaseException } from 'src/core/exception/res.exception';
-import { ResponseEnum } from 'src/constants/response';
-import { getClientIP } from 'src/utils/collection';
-import { ApiBasicAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+
 import { AuthGuard } from '@nestjs/passport';
+import { ApiBasicAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Post, Request, UseGuards, Get, Req, Param } from '@nestjs/common';
+
+import { UserService } from './user.service';
+import { User } from 'src/entity/user.entity';
+import { UserRegisterDto } from './dto/user.dto';
+import { UserServiceBase } from './user.service';
+import { JwtAuthGuard } from './auth/jwt.strategy';
+import { getClientIP } from 'src/utils/collection';
+import { APIPrefix } from 'src/constants/constants';
+import { ResponseEnum } from 'src/constants/response';
 import { GlobalRequest } from 'src/interface/gloabl.interface';
 import { CurUser } from 'src/core/decorators/global.decorators';
-import { User } from 'src/entity/user.entity';
-import { JwtAuthGuard } from './auth/jwt.strategy';
-import { UserServiceBase } from './user.service'
-import { APIPrefix } from 'src/constants/constants';
+import { ResBaseException } from 'src/core/exception/res.exception';
+import { FrequentlyGuards } from 'src/core/guards/frequently.guards';
+import { UserConfigService } from '../config/user/userConfig.service';
+import { UserSpace } from 'src/interface/user.interface';
 // import { plainToClass } from 'class-transformer';
 
 export const _USER_PATH_NAME_ = APIPrefix + 'user';
@@ -27,6 +31,7 @@ export class UserAccountController {
 
   constructor(
     private readonly UserService: UserService,
+    private readonly UserConfigService: UserConfigService,
   ) {}
 
 
@@ -86,7 +91,10 @@ export class UserAccountController {
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: '获取个人信息'})
   @ApiBasicAuth()
-  async info(@CurUser() user: User) {
+  async info(@CurUser() user: UserSpace.UserInfo) {
+    delete user.password;
+    delete user.iv;
+    user.config = await this.UserConfigService.getConfig(user.id);
     return user;
   }
 
