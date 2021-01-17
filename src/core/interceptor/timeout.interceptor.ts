@@ -2,13 +2,15 @@ import { JwtService } from "@nestjs/jwt";
 import { throwError, TimeoutError } from "rxjs";
 import { catchError, map, timeout } from 'rxjs/operators';
 import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from "@nestjs/common";
-import { ResponseBody, ResponseEnum } from "src/constants/response";
-import { AuthService } from "src/modules/user/auth/auth.service";
-import { ResBaseException } from "../exception/res.exception";
+
 import { User } from "src/entity/user.entity";
+import { ResBaseException } from "../exception/res.exception";
 import { RedisService } from "src/modules/redis/redis.service";
-import ConfigsService from "src/configs/configs.service";
 import { UserServiceBase } from "src/modules/user/user.service";
+import { AuthService } from "src/modules/user/auth/auth.service";
+import { ResponseBody, ResponseEnum } from "src/constants/response";
+
+import ConfigsService from "src/configs/configs.service";
 
 
 @Injectable()
@@ -27,14 +29,16 @@ export class TimeoutInterceptor implements NestInterceptor {
   async intercept(context: ExecutionContext, next: CallHandler) {
     const req = context.switchToHttp().getRequest();
     const res = context.switchToHttp().getResponse();
-    
     const user: User | undefined = req.user;
 
     // 已登录用户带上新token
     if (user) {
       const token = this.AuthService.signToken(user);
       res.header('token', token);
-      res.cookie('token', token, {maxAge:1000*60*10,httpOnly:false});
+      res.cookie('token', token, {
+        maxAge: 1000 * 60 * 60 * 24 * 7,
+        httpOnly: false,
+      });
 
       // 跨平台/跨端 拦截
       // TODO: 不存在版本升级问题, 已移除所有数字
