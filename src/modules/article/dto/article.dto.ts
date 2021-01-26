@@ -37,4 +37,11 @@ export class ArticleSubmitDto {
   // @MinLength(1, ValidateThrow(ResponseEnum.ARTICLE.SUB_CATEGORY_EMPTY))
   @Length(ARTICLE_CONSTANTS.CATEGORY_MIN_LENGTH, ARTICLE_CONSTANTS.CATEGORY_MAX_LENGTH, ValidateThrow(ResponseEnum.ARTICLE.SUB_CATEGORY_FORMAT))
   category: string;
+
+  /**
+   * 设置
+   */
+  // @MinLength(1, ValidateThrow(ResponseEnum.ARTICLE.SUB_CATEGORY_EMPTY))
+  @IsNotEmpty(ValidateThrow(ResponseEnum.ARTICLE.SUB_SETTING_EMPTY))
+  setting: string;
 }

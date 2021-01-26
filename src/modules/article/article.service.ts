@@ -55,6 +55,10 @@ export class ArticleService {
     let insertArticleId = -1;
 
     try {
+      insertData.setting = typeof insertData.setting === 'string'
+        ? insertData.setting
+        : JSON.stringify(insertData.setting)
+      ;
       // 插入数据确认
       const insert = await connection.manager.insert(Article, insertData);
       if (!insert.raw.insertId) {
@@ -71,7 +75,7 @@ export class ArticleService {
         id: insert.raw.insertId,
       }, {
         stat: insertStat.raw.insertId,
-      })
+      });
       connection.commitTransaction();
     } catch(err) {
       await connection.rollbackTransaction();

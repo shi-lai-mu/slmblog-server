@@ -177,6 +177,7 @@ export class User extends BaseInitEntity<UserServiceNS.CreateUser> {
   validateType?: keyof typeof ValidateType;
 }
 
+console.log(new User());
 
 /**
  * 徽章实体

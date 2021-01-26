@@ -11,6 +11,7 @@ import { AuthService } from "src/modules/user/auth/auth.service";
 import { ResponseBody, ResponseEnum } from "src/constants/response";
 
 import ConfigsService from "src/configs/configs.service";
+import { isDev } from "src/constants/system";
 
 
 @Injectable()
@@ -48,7 +49,7 @@ export class TimeoutInterceptor implements NestInterceptor {
       if (
         user.validateType === 'jwt'
         && systemPlatform
-        && userSystemPlatform !== systemPlatform
+        && userSystemPlatform.replace(/\d/g, '') !== systemPlatform.replace(/\d/g, '')
       ) {
         if (await this.redisService.getItem('user', `user-agent${user.id}`) === systemPlatform) {
           throw new ResBaseException({
@@ -89,6 +90,9 @@ export class TimeoutInterceptor implements NestInterceptor {
         catchError(err => {
           if (err instanceof ResBaseException) {
             return throwError(err);
+          }
+          if (isDev) {
+            console.error(err);
           }
           // TODO: write log file code...
           throw new ResBaseException(ResponseEnum.SERVER_ERROR);

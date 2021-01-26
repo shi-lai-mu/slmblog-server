@@ -184,10 +184,10 @@ export class Article extends BaseInitEntity<{}> {
   @Column({ type: 'enum', enum: ArticleStateEnum, default: ArticleStateEnum.Routine, comment: '文章状态' })
   state: ArticleStateEnum;
   /**
-   * 阅读密码
+   * 文章设置
    */
-  @Column({ name: 'read_password', default: '', comment: '阅读密码' })
-  readPassword: string;
+  @Column({ type: 'text', comment: '文章设置' })
+  setting: string;
   /**
    * 状态表ID
    */
