@@ -4,7 +4,8 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { ArticleService } from "./article.service";
 import { RedisService } from "../redis/redis.service";
 import { ArticleController } from "./article.controller";
-import { Article, ArticleStat } from "src/entity/article.entity";
+import { Article } from "src/entity/article/article.entity";
+import { ArticleStat } from "src/entity/article/stat.entity";
 
 @Module({
   imports: [TypeOrmModule.forFeature([ Article, ArticleStat ])],

@@ -6,9 +6,10 @@ import { APIPrefix } from "src/constants/constants";
 import { ArticleSubmitDto } from "./dto/article.dto";
 import { JwtAuthGuard } from "../user/auth/jwt.strategy";
 import { User, UserStatus } from "src/entity/user.entity";
-import { ArticleStateEnum } from "src/entity/article.entity";
 import { CurUser } from "src/core/decorators/global.decorators";
 import { ResponseBody, ResponseEnum } from "src/constants/response";
+import { get } from "lodash";
+import { ArticleStateEnum } from "src/entity/article/constants";
 
 @Controller(APIPrefix + 'article')
 @ApiTags('文章')
@@ -61,4 +62,7 @@ export class ArticleController {
   ) {
     return this.ArticleService.getFilterList(filterMode, page, count);
   }
+
+
+  // @get('')
 }
