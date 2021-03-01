@@ -1,4 +1,4 @@
-import { BaseInitEntity } from "../baseInitEntity";
+import { BaseInitEntity } from "src/entity/baseInitEntity";
 
 
 const { tablePerfix } = BaseInitEntity.dbConfig;

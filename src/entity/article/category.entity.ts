@@ -1,6 +1,6 @@
+import { ArticleTableName } from "src/modules/article/constants/entity.cfg";
 import { Entity, PrimaryGeneratedColumn } from "typeorm";
 
-import { ArticleTableName } from "./constants";
 import { BaseInitEntity } from "../baseInitEntity";
 
 /**

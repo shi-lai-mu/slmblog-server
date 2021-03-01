@@ -2,7 +2,7 @@ import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } f
 
 import { User } from "../user.entity";
 import { Article } from "./article.entity";
-import { ArticleLikeStatus, ArticleTableName } from "./constants";
+import { ArticleLikeStatus, ArticleTableName } from "../../modules/article/constants/entity.cfg";
 import { BaseInitEntity } from "../baseInitEntity";
 
 /**

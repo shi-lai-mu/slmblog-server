@@ -4,7 +4,7 @@ import { User } from '../user.entity';
 import { ArticleStat } from './stat.entity';
 import { BaseInitEntity } from '../baseInitEntity';
 import { ARTICLE_CONSTANTS } from 'src/constants/constants';
-import { ArticleAuditEnum, ArticleStateEnum, ArticleTableName } from './constants';
+import { ArticleAuditEnum, ArticleStateEnum, ArticleTableName } from 'src/modules/article/constants/entity.cfg';
 
 
 /**

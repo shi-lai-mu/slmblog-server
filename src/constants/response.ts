@@ -1,9 +1,9 @@
 import { UserResponse } from '../modules/user/response.cfg';
 import { ConfigResponse } from 'src/modules/config/response.cfg';
 import { ConstantsResponse } from 'src/interface/gloabl.interface';
-import { ArticleResponse } from 'src/modules/article/response.cfg';
 import { ResBaseException } from 'src/core/exception/res.exception';
 import { isJsonString } from 'src/utils/collection';
+import { ArticleResponse } from 'src/modules/article/constants/response.cfg';
 
 export type Status = ConstantsResponse.Status;
 export type ErrorStatus = ConstantsResponse.ErrorStatus;

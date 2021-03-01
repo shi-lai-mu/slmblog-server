@@ -1,15 +1,15 @@
 import { Body, Controller, Get, Param, Post, UseGuards } from "@nestjs/common";
 import { ApiOperation, ApiTags } from "@nestjs/swagger";
 
-import { ArticleService } from "./article.service";
+import { ArticleService } from "../service/article.service";
 import { APIPrefix } from "src/constants/constants";
-import { ArticleSubmitDto } from "./dto/article.dto";
-import { JwtAuthGuard } from "../user/auth/jwt.strategy";
+import { ArticleSubmitDto } from "../dto/article.dto";
+import { JwtAuthGuard } from "../../user/auth/jwt.strategy";
 import { User, UserStatus } from "src/entity/user.entity";
 import { CurUser } from "src/core/decorators/global.decorators";
 import { ResponseBody, ResponseEnum } from "src/constants/response";
 import { get } from "lodash";
-import { ArticleStateEnum } from "src/entity/article/constants";
+import { ArticleStateEnum } from "src/modules/article/constants/entity.cfg";
 
 @Controller(APIPrefix + 'article')
 @ApiTags('文章')

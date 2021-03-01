@@ -2,17 +2,17 @@ import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Article } from "src/entity/article/article.entity";
 import { getConnection, Repository } from "typeorm";
-import { RedisService } from "../redis/redis.service";
-import { ArticleSubmitDto } from "./dto/article.dto";
+import { RedisService } from "../../redis/redis.service";
 import { sensitiveWord } from "src/configs/sensitive.word";
 import { ResponseBody, ResponseEnum } from "src/constants/response";
-import { ArticleNS } from "./type/article";
+import { ArticleNS } from "../type/article";
 import { responseList, skipPage, ValidateParams } from "src/utils/collection";
 import { User, UserTableName } from "src/entity/user.entity";
 import Mint from 'mint-filter'
 import { plainToClass } from "class-transformer";
 import { ArticleStat } from "src/entity/article/stat.entity";
-import { ArticleStateEnum, ArticleTableName } from "src/entity/article/constants";
+import { ArticleStateEnum, ArticleTableName } from "src/modules/article/constants/entity.cfg";
+import { ArticleSubmitDto } from "../dto/article.dto";
 
 
 /**
