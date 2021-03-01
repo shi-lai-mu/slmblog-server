@@ -43,23 +43,23 @@ export class TimeoutInterceptor implements NestInterceptor {
 
       // 跨平台/跨端 拦截
       // TODO: 不存在版本升级问题, 已移除所有数字
-      const systemPlatform = UserServiceBase.getSystemPlatform(req.headers['user-agent']);
-      const userSystemPlatform = UserServiceBase.getSystemPlatform(user.systemPlatform);
+      // const systemPlatform = UserServiceBase.getSystemPlatform(req.headers['user-agent']);
+      // const userSystemPlatform = UserServiceBase.getSystemPlatform(user.systemPlatform);
       
-      if (
-        user.validateType === 'jwt'
-        && systemPlatform
-        && userSystemPlatform.replace(/\d/g, '') !== systemPlatform.replace(/\d/g, '')
-      ) {
-        if (await this.redisService.getItem('user', `user-agent${user.id}`) === systemPlatform) {
-          throw new ResBaseException({
-            ...ResponseEnum.USER.UNLOG_BUSY_LINE,
-            result: '已在其他设备上登录',
-          });
-        }
-        // 异常操作
-        throw new ResBaseException(ResponseEnum.USER.UNLOG_BUSY_LINE);
-      }
+      // if (
+      //   user.validateType === 'jwt'
+      //   && systemPlatform
+      //   && userSystemPlatform.replace(/\d/g, '') !== systemPlatform.replace(/\d/g, '')
+      // ) {
+      //   if (await this.redisService.getItem('user', `user-agent${user.id}`) === systemPlatform) {
+      //     throw new ResBaseException({
+      //       ...ResponseEnum.USER.UNLOG_BUSY_LINE,
+      //       result: '已在其他设备上登录',
+      //     });
+      //   }
+      //   // 异常操作
+      //   throw new ResBaseException(ResponseEnum.USER.UNLOG_BUSY_LINE);
+      // }
 
       delete user.validateType;
     }
