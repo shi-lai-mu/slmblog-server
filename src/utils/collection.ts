@@ -52,9 +52,9 @@ export class ValidateParams {
   static isThisValues(data: { [key: string]: string | number }, values: Array<string | number>) {
     const [ key ] = Object.keys(data);
     if (!values.includes(data[key])) {
-      const ERR = ResponseEnum.PARAMS_VALUES;
-      ERR.message = ERR.message.replace('%s', key).replace('%s', String(data[key]));
-      ResponseBody.throw(ERR)
+      const ERROR = ResponseEnum.PARAMS_VALUES;
+      ERROR.message = ERROR.message.replace('%s', key).replace('%s', String(data[key]));
+      ResponseBody.throw(ERROR);
     }
     return this;
   }

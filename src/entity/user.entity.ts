@@ -88,14 +88,24 @@ export class User extends BaseInitEntity<UserServiceNS.CreateUser> {
   /**
    * 密码
    */
-  @Column({ length: 100, select: false, comment: '密码' })
+  @Column({
+    length: 100,
+    select: false,
+    comment: '密码',
+  })
   @Exclude()
   password: string;
 
   /**
    * 性别
    */
-  @Column({ type: 'enum', enum: UserGender, default: UserGender.Unknown, comment: '性别' })
+  @Column({
+    type: 'enum',
+    enum: UserGender,
+    default: UserGender.Unknown,
+    comment: '性别',
+    select: false,
+  })
   gender: UserGender;
 
   // @Column({ length: 100, unique: true, comment: '身份令牌' })
@@ -105,58 +115,101 @@ export class User extends BaseInitEntity<UserServiceNS.CreateUser> {
   /**
    * 用户唯一盐
    */
-  @Column({ length: 7, select: false, comment: '用户唯一盐' })
+  @Column({
+    length: 7,
+    comment: '用户唯一盐',
+    select: false,
+  })
   @Exclude()
   iv: string;
 
   /**
    * 最后登录IP
    */
-  @Column({ length: 20, select: false, comment: '最后登录IP' })
+  @Column({
+    length: 20,
+    comment: '最后登录IP',
+    select: false,
+  })
   @Exclude()
   ip: string;
 
   /**
    * 权限
    */
-  @Column({ type: 'enum', enum: UserRole, default: UserRole.Normal, comment: '权限' })
+  @Column({
+    type: 'enum',
+    enum: UserRole,
+    default: UserRole.Normal,
+    comment: '权限',
+  })
   role: UserRole;
 
   /**
    * 常用设备系统
    */
-  @Column({ name: 'system_platform', length: 50, comment: '常用设备系统' })
+  @Column({
+    name: 'system_platform',
+    length: 50,
+    comment: '常用设备系统',
+    select: false,
+  })
   @Exclude()
   systemPlatform: string;
 
   /**
    * 数据修改时间
    */
-  @UpdateDateColumn({ name: 'update_time', comment: '数据修改时间' })
+  @UpdateDateColumn({
+    name: 'update_time',
+    comment: '数据修改时间',
+    select: false,
+  })
   updateTime: Date;
 
   /**
    * 账号注册时间
    */
-  @CreateDateColumn({ name: 'create_time', comment: '账号注册时间' })
+  @CreateDateColumn({
+    name: 'create_time',
+    comment: '账号注册时间',
+    select: false,
+  })
   createTime: Date;
 
   /**
    * 个人链接
    */
-  @Column({ name: 'link_json', length: USER_CONSTANTS.LINKJSON_MAX_LENGTH, default: '', comment: '个人链接' })
+  @Column({
+    name: 'link_json',
+    length: USER_CONSTANTS.LINKJSON_MAX_LENGTH,
+    default: '',
+    comment: '个人链接',
+    select: false,
+  })
   link: string;
 
   /**
    * 简介
    */
-  @Column({ length: USER_CONSTANTS.DESC_MAX_LENGTH, default: '', comment: '简介' })
+  @Column({
+    length: USER_CONSTANTS.DESC_MAX_LENGTH,
+    default: '',
+    comment: '简介',
+    select: false,
+  })
   introduction: string;
 
   /**
    * 账号状态
    */
-  @Column({ type: 'enum', enum: UserStatus, select: false, default: UserStatus.Actived, comment: '账号状态' })
+  @Column({
+    type: 'enum',
+    enum: UserStatus,
+    default: UserStatus.Actived,
+    comment: '账号状态',
+    select: false,
+  })
   status: UserStatus;
 
   /**

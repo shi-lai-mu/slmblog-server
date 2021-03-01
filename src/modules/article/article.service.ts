@@ -91,12 +91,14 @@ export class ArticleService {
    * @param id 文章ID
    */
   async information(id: Article['id']) {
-    const { Failed, IsDelete, Examine } = ArticleStateEnum;
     const { STATE_FAILED, STATE_ISDELETE, STATE_EXAMINE, STATE_ABNORMAL, STATE_NOT_EXISTS } = ResponseEnum.ARTICLE;
     const article = await this.ArticleRepository
       .createQueryBuilder('article')
       .leftJoinAndSelect('article.author', UserTableName.USER)
       .leftJoinAndSelect('article.stat', ArticleTableName.STAT)
+      .addSelect([
+        'article.content',
+      ])
       .where({ id })
       .getOne()
     ;
@@ -109,7 +111,7 @@ export class ArticleService {
       '-1': STATE_ISDELETE,
       0: STATE_EXAMINE,
     };
-    if (article.state < ArticleStateEnum.Routine) {
+    if (article.state < ArticleStateEnum.routine) {
       ResponseBody.throw(abnormalState[article.state] || STATE_ABNORMAL);
     }
 
@@ -137,15 +139,24 @@ export class ArticleService {
       .isThisValues({ filterMode }, Object.keys(ArticleStateEnum))
     ;
 
-    let [ list, total ] = 
-    await this.ArticleRepository
+    const BaseSelect = this.ArticleRepository
       .createQueryBuilder('article')
       .leftJoinAndSelect('article.author', UserTableName.USER)
       .leftJoinAndSelect('article.stat', ArticleTableName.STAT)
-      // .addSelect()
-      .skip(skipPage(page, count))
-      .take(count)
-      .getManyAndCount()
+    ;
+
+    // 文章类型筛选
+    switch(ArticleStateEnum[filterMode]) {
+      case ArticleStateEnum.latest:
+        BaseSelect.addOrderBy('article.createTime', 'DESC')
+        break;
+    }
+
+    let [ list, total ] = 
+      await BaseSelect
+        .skip(skipPage(page, count))
+        .take(count)
+        .getManyAndCount()
     ;
 
     // 数据过滤

@@ -31,7 +31,6 @@ export class ArticleController {
     if (user.status !== UserStatus.Actived) {
       ResponseBody.throw(ResponseEnum.ARTICLE.AC_SUBMIT_ERROR);
     }
-    
     return this.ArticleService.submit(articleData, user);
   }
 
@@ -55,7 +54,11 @@ export class ArticleController {
    */
   @Get(':filterMode/:page/:count')
   @ApiOperation({ summary: '获取文章列表', description: '通过过滤模式获取各种状态的文章列表' })
-  async captureList(@Param('filterMode') filterMode: keyof typeof ArticleStateEnum, @Param('page') page: number, @Param('count') count: number ) {
+  async captureList(
+    @Param('filterMode') filterMode: keyof typeof ArticleStateEnum,
+    @Param('page') page: number,
+    @Param('count') count: number,
+  ) {
     return this.ArticleService.getFilterList(filterMode, page, count);
   }
 }
