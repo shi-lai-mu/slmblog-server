@@ -1,13 +1,16 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { USER_CONSTANTS } from "src/constants/constants";
-import { User, UserTableName } from "../user.entity";
-
+import { BaseInitEntity } from "src/entity/baseInitEntity";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { UserTableName } from "../constants/entity.cfg";
+import { User } from "./user.entity";
 
 /**
  * 徽章实体
  */
-@Entity({ name: UserTableName.BADGE })
-export class Badge {
+@Entity({
+  name: UserTableName.BADGE
+})
+export class Badge extends BaseInitEntity<{}> {
   /**
    * ID
    */
@@ -35,6 +38,6 @@ export class Badge {
   /**
    * 拥有者
    */
-  @OneToMany(ts => User, user => user.id)
+  @OneToMany(type => User, user => user.id)
   owner: User[];
 }

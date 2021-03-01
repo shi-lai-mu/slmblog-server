@@ -1,4 +1,4 @@
-import { UserResponse } from '../modules/user/response.cfg';
+import { UserResponse } from '../modules/user/constants/response.cfg';
 import { ConfigResponse } from 'src/modules/config/response.cfg';
 import { ConstantsResponse } from 'src/interface/gloabl.interface';
 import { ResBaseException } from 'src/core/exception/res.exception';

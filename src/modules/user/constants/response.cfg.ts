@@ -1,5 +1,5 @@
-import { USER_CONSTANTS } from '../../constants/constants';
-import { Status } from '../../constants/response';
+import { USER_CONSTANTS } from '../../../constants/constants';
+import { Status } from '../../../constants/response';
 
 /**
  * 用户类 响应信息

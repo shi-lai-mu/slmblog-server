@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Post, UseGuards } from "@nestjs/common";
 import { ApiBasicAuth, ApiTags } from "@nestjs/swagger";
 import { CurUser } from "src/core/decorators/global.decorators";
-import { User } from "src/entity/user.entity";
+import { User } from "src/modules/user/entity/user.entity";
 import { JwtAuthGuard } from "src/modules/user/auth/jwt.strategy";
 
 import { _USER_PATH_NAME_ } from "src/modules/user/userAccount.controller";

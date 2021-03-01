@@ -14,7 +14,7 @@ export default ((): StandardConfig => ({
     database: `blog${isProd ? '' : '_test'}`,
     timezone: 'UTC',
     synchronize: !isProd,
-    entities: [ path.join(__dirname, '../entity/**/*.entity{.ts,.js}') ] ,
+    entities: [ path.join(__dirname, '../**/*.entity{.ts,.js}') ] ,
     logging: false,
     logger: 'simple-console',
     maxQueryExecutionTime: 500,

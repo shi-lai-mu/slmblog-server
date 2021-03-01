@@ -2,7 +2,7 @@ import { Repository } from "typeorm";
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 
-import { UserConfigEntity } from "src/entity/user.entity";
+import { UserConfigEntity } from "src/modules/user/entity/user.entity";
 import { SaveUserConfigDto } from "../dto/userConfig.dto";
 import { ResponseBody, ResponseEnum } from "src/constants/response";
 

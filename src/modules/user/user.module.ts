@@ -10,14 +10,15 @@ import { UserController } from './user.controller';
 import { LocalStrategy } from './auth/local.strategy';
 import { RedisService } from '../redis/redis.service';
 import { UserAccountController } from './userAccount.controller';
-import { User, Badge, UserConfigEntity } from 'src/entity/user.entity';
+import { User, UserConfigEntity } from 'src/modules/user/entity/user.entity';
 import { UserConfigService } from '../config/user/userConfig.service';
 
 import ConfigsService from 'src/configs/configs.service';
+import { Badge } from './entity/badge.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User, Badge, UserConfigEntity]),
+    TypeOrmModule.forFeature([Badge, User, UserConfigEntity]),
     PassportModule,
     JwtModule.registerAsync({
       useFactory: (configsService: ConfigsService) => configsService.jwt,

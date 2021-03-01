@@ -4,7 +4,7 @@ import { ApiBasicAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Body, Controller, Post, Request, UseGuards, Get, Req, Param } from '@nestjs/common';
 
 import { UserService } from './user.service';
-import { User } from 'src/entity/user.entity';
+import { User } from 'src/modules/user/entity/user.entity';
 import { UserRegisterDto } from './dto/user.dto';
 import { UserServiceBase } from './user.service';
 import { JwtAuthGuard } from './auth/jwt.strategy';

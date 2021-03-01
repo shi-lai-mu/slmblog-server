@@ -1,6 +1,6 @@
 import { Strategy, IStrategyOptions } from "passport-local";
 import { PassportStrategy } from "@nestjs/passport";
-import { User } from "src/entity/user.entity";
+import { User } from "src/modules/user/entity/user.entity";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { UserServiceBase } from "src/modules/user/user.service";

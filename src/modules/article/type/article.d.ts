@@ -1,5 +1,5 @@
-import { Article } from "src/entity/article/article.entity"
-import { ArticleStat } from "src/entity/article/stat.entity";
+import { Article } from "src/modules/article/entity/article.entity"
+import { ArticleStat } from "src/modules/article/entity/stat.entity";
 
 /**
  * 文章

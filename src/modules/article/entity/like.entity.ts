@@ -1,9 +1,9 @@
 import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
-import { User } from "../user.entity";
+import { User } from "../../user/entity/user.entity";
 import { Article } from "./article.entity";
-import { ArticleLikeStatus, ArticleTableName } from "../../modules/article/constants/entity.cfg";
-import { BaseInitEntity } from "../baseInitEntity";
+import { ArticleLikeStatus, ArticleTableName } from "../constants/entity.cfg";
+import { BaseInitEntity } from "../../../entity/baseInitEntity";
 
 /**
  * 点赞实体

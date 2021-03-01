@@ -3,7 +3,7 @@ import { throwError, TimeoutError } from "rxjs";
 import { catchError, map, timeout } from 'rxjs/operators';
 import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from "@nestjs/common";
 
-import { User } from "src/entity/user.entity";
+import { User } from "src/modules/user/entity/user.entity";
 import { ResBaseException } from "../exception/res.exception";
 import { RedisService } from "src/modules/redis/redis.service";
 import { UserServiceBase } from "src/modules/user/user.service";

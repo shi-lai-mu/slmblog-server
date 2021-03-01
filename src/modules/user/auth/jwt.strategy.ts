@@ -4,7 +4,7 @@ import { ExecutionContext, Injectable } from "@nestjs/common";
 import { AuthGuard, PassportStrategy } from "@nestjs/passport";
 import { Strategy, StrategyOptions, ExtractJwt } from "passport-jwt";
 
-import { User } from "src/entity/user.entity";
+import { User } from "src/modules/user/entity/user.entity";
 import { ResponseEnum } from "src/constants/response";
 import { ResBaseException } from "src/core/exception/res.exception";
 

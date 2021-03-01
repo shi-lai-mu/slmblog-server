@@ -1,4 +1,4 @@
-import { User } from "src/entity/user.entity";
+import { User } from "src/modules/user/entity/user.entity";
 
 /**
  * 用户逻辑层接口

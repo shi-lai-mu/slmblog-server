@@ -4,7 +4,7 @@ import { FindConditions, FindOneOptions, Repository } from 'typeorm';
 
 import { UserServiceNS } from './type/user';
 import { UserLoginDto } from './dto/user.dto';
-import { User } from '../../entity/user.entity';
+import { User } from './entity/user.entity';
 import { generateHash } from 'src/utils/crypto';
 import { AuthService } from './auth/auth.service';
 import { RedisService } from '../redis/redis.service';

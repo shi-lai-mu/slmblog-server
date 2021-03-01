@@ -1,58 +1,12 @@
 import { Exclude } from 'class-transformer';
 import { Column, CreateDateColumn, Entity, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 
-import { BaseInitEntity } from './baseInitEntity';
+import { BaseInitEntity } from '../../../entity/baseInitEntity';
 import { USER_CONSTANTS } from 'src/constants/constants';
 import { UserServiceNS } from 'src/modules/user/type/user';
+import { UserGender, UserRole, UserStatus, UserTableName, ValidateType } from '../constants/entity.cfg';
+import { Badge } from './badge.entity';
 
-/**
- * 用户权限
- */
-export enum UserRole {
-  Normal     = 1, // 普通用户
-  BlogUser   = 2, // 博主用户
-  Editor     = 3, // 网站编辑
-  Admin      = 4, // 管理员
-  SuperAdmin = 5, // 超级管理员
-}
-
-/**
- * 账号状态
- */
-export enum UserStatus {
-  InActive = 1, // 未激活
-  Actived  = 2, // 已激活
-  Frozen   = 3, // 已冻结
-}
-
-
-/**
- * 性别
- */
-export enum UserGender {
-  Male    = 0, // 男
-  Female  = 1, // 女
-  Unknown = 2, // 未知
-}
-
-
-/**
- * 校验策略类型
- */
-export enum ValidateType {
- jwt   = 'jwt',   // token
- local = 'local', // account
-}
-
-const { tablePerfix } = BaseInitEntity.dbConfig;
-/**
- * 用户实体表名
- */
-export const UserTableName = {
-  USER:   tablePerfix + 'users',        // 用户表
-  BADGE:  tablePerfix + 'user_badge',   // 用户徽章表
-  CONFIG: tablePerfix + 'user_config',  // 用户配置表
-}
 
 /**
  * 用户实体
@@ -228,44 +182,6 @@ export class User extends BaseInitEntity<UserServiceNS.CreateUser> {
    * 校验策略
    */
   validateType?: keyof typeof ValidateType;
-}
-
-console.log(new User());
-
-/**
- * 徽章实体
- */
-@Entity({ name: UserTableName.BADGE })
-export class Badge {
-  /**
-   * ID
-   */
-  @PrimaryGeneratedColumn()
-  id: number;
-
-  /**
-   * 名称
-   */
-  @Column({ length: USER_CONSTANTS.BADGE_NAME_MAX_LENGTH, comment: '名称' })
-  name: string;
-
-  /**
-   * 图标
-   */
-  @Column({ length: USER_CONSTANTS.BADGE_ICON_MAX_LENGTH, comment: '图标' })
-  icon: string;
-
-  /**
-   * 简介
-   */
-  @Column({ length: USER_CONSTANTS.BADEG_DESC_MAX_LENGTH, comment: '简介' })
-  description: string;
-
-  /**
-   * 拥有者
-   */
-  @OneToMany(ts => User, user => user.id)
-  owner: User[];
 }
 
 

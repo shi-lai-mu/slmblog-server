@@ -1,7 +1,7 @@
 import { ArticleTableName } from "src/modules/article/constants/entity.cfg";
 import { Entity, PrimaryGeneratedColumn } from "typeorm";
 
-import { BaseInitEntity } from "../baseInitEntity";
+import { BaseInitEntity } from "../../../entity/baseInitEntity";
 
 /**
  * 文章类目实体

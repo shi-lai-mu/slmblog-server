@@ -2,7 +2,7 @@ import { Exclude } from "class-transformer";
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 import { Article } from "./article.entity";
-import { BaseInitEntity } from "../baseInitEntity";
+import { BaseInitEntity } from "../../../entity/baseInitEntity";
 import { ArticleTableName } from "src/modules/article/constants/entity.cfg";
 
 /**
