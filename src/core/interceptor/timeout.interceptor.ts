@@ -6,7 +6,7 @@ import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from "@nes
 import { User } from "src/modules/user/entity/user.entity";
 import { ResBaseException } from "../exception/res.exception";
 import { RedisService } from "src/modules/redis/redis.service";
-import { UserServiceBase } from "src/modules/user/user.service";
+import { UserServiceBase } from "src/modules/user/service/user.service";
 import { AuthService } from "src/modules/user/auth/auth.service";
 import { ResponseBody, ResponseEnum } from "src/constants/response";
 

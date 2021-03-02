@@ -1,5 +1,4 @@
-import { UserResponse } from '../modules/user/constants/response.cfg';
-import { ConfigResponse } from 'src/modules/config/response.cfg';
+import { UserConfigResponse, UserResponse } from '../modules/user/constants/response.cfg';
 import { ConstantsResponse } from 'src/interface/gloabl.interface';
 import { ResBaseException } from 'src/core/exception/res.exception';
 import { isJsonString } from 'src/utils/collection';
@@ -33,9 +32,9 @@ export class ResponseEnum {
   /**
    * 逻辑层请求响应
    */
-  static readonly USER    = UserResponse;    // 用户业务 1100
-  static readonly ARTICLE = ArticleResponse; // 文章业务 1200
-  static readonly CONFIG  = ConfigResponse;  // 配置业务 1300
+  static readonly USER    = UserResponse;       // 用户业务 1100
+  static readonly ARTICLE = ArticleResponse;    // 文章业务 1200
+  static readonly CONFIG  = UserConfigResponse; // 配置业务 1300
 
 
   static THROW(Error: Status) {
