@@ -37,7 +37,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
    * 本地策略校验身份
    * 采用 用户id 和 用户盐 取数据 (只有id和八位盐都猜出才有可能获取到)
    */
-  async validate(tokenParams) {
+  async validate() {
     const user = await this.userRepository
       .createQueryBuilder('u')
       .addSelect('u.password')

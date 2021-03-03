@@ -3,7 +3,7 @@ import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 
 import { UserConfigEntity } from "src/modules/user/entity/user.entity";
-import { SaveUserConfigDto } from "../dto/userConfig.dto";
+import { SaveUserConfigDto } from "../dto/config.dto";
 import { ResponseBody, ResponseEnum } from "src/constants/response";
 
 /**
@@ -26,7 +26,7 @@ export class UserConfigService {
     if (config) {
       config.json = JSON.parse(config.json);
     }
-    return config.json;
+    return config?.json;
   }
 
 

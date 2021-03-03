@@ -34,3 +34,15 @@ export class UserResponse {
   // 置换JWT：无效令牌
   static readonly REFRESH_JWT_INVAL: Status = { code: 1113, message: '置换JWT失败，无效令牌!' };
 }
+
+/**
+ * 配置类 响应信息
+ */
+export class UserConfigResponse {
+  // 保存信息为空
+  static readonly SAVE_JSON_EMPTY:   Status = { code: 1300, message: '保存信息不能为空!' };
+  // 配置保存失败
+  static readonly SAVE_INSERT_ERROR: Status = { code: 1301, message: '配置保存失败，请稍后再试!' };
+  // 配置保存失败
+  static readonly SAVE_UPDATE_ERROR: Status = { code: 1302, message: '配置保存失败，请稍后再试!' };
+}

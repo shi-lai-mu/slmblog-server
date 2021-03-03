@@ -2,12 +2,12 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindConditions, FindOneOptions, Repository } from 'typeorm';
 
-import { UserServiceNS } from './type/user';
-import { UserLoginDto } from './dto/user.dto';
-import { User } from './entity/user.entity';
+import { UserServiceNS } from '../type/user';
+import { UserLoginDto } from '../dto/user.dto';
+import { User } from '../entity/user.entity';
 import { generateHash } from 'src/utils/crypto';
-import { AuthService } from './auth/auth.service';
-import { RedisService } from '../redis/redis.service';
+import { AuthService } from '../auth/auth.service';
+import { RedisService } from '../../redis/redis.service';
 import ConfigsService from 'src/configs/configs.service';
 import { ResBaseException } from 'src/core/exception/res.exception';
 import { ResponseBody, ResponseEnum } from 'src/constants/response';
@@ -96,7 +96,7 @@ export class UserService {
 
       const { iv, id } = jwtVerify as { iv?: string; id?: number; iat?: number; exp?: number; };
       if (iv && id) {
-        const userFind = await this.find({ id, iv });
+        const userFind = await this.find({ id, iv }, [ 'status' ]);
         return { token: this.AuthService.signToken(userFind) }
       } else return REFRESH_JWT_QUERY;
     }

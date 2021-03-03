@@ -1,12 +1,12 @@
 import { Body, Controller, Get, Post, UseGuards } from "@nestjs/common";
-import { ApiBasicAuth, ApiTags } from "@nestjs/swagger";
+import { ApiBasicAuth, ApiBearerAuth, ApiOperation, ApiTags } from "@nestjs/swagger";
 import { CurUser } from "src/core/decorators/global.decorators";
 import { User } from "src/modules/user/entity/user.entity";
 import { JwtAuthGuard } from "src/modules/user/auth/jwt.strategy";
 
-import { _USER_PATH_NAME_ } from "src/modules/user/userAccount.controller";
-import { SaveUserConfigDto } from "../dto/userConfig.dto";
-import { UserConfigService } from "./userConfig.service";
+import { _USER_PATH_NAME_ } from "src/modules/user/controller/account.controller";
+import { SaveUserConfigDto } from "../dto/config.dto";
+import { UserConfigService } from "../service/config.service";
 
 export const _USER_CFG_PATH_NAME_ = _USER_PATH_NAME_ + '/config';
 
@@ -28,7 +28,11 @@ export class UserConfigController {
    */
   @Post()
   @UseGuards(JwtAuthGuard)
-  @ApiBasicAuth()
+  @ApiOperation({
+    summary: '保存用户全部配置',
+    description: '当前包括 站点配置、主题配置',
+  })
+  @ApiBearerAuth()
   async saveConfig(@CurUser() user: User, @Body() userConfig: SaveUserConfigDto) {
     return this.UserConfigService.saveConfig(user.id, userConfig);
   }
@@ -40,8 +44,12 @@ export class UserConfigController {
    */
   @Get('all')
   @UseGuards(JwtAuthGuard)
-  @ApiBasicAuth()
+  @ApiOperation({
+    summary: '获取用户全部配置',
+    description: '当前包括 站点配置、主题配置',
+  })
+  @ApiBearerAuth()
   async getConfig(@CurUser() user: User) {
-    return this.UserConfigService.getConfig(user.id);
+    return await this.UserConfigService.getConfig(user.id) || {};
   }
 }

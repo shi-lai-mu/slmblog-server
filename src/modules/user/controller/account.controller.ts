@@ -1,13 +1,13 @@
 
 import { AuthGuard } from '@nestjs/passport';
-import { ApiBasicAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBasicAuth, ApiBearerAuth, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { Body, Controller, Post, Request, UseGuards, Get, Req, Param } from '@nestjs/common';
 
-import { UserService } from './user.service';
+import { UserService } from '../service/user.service';
 import { User } from 'src/modules/user/entity/user.entity';
-import { UserRegisterDto } from './dto/user.dto';
-import { UserServiceBase } from './user.service';
-import { JwtAuthGuard } from './auth/jwt.strategy';
+import { UserLoginDto, UserRegisterDto } from '../dto/user.dto';
+import { UserServiceBase } from '../service/user.service';
+import { JwtAuthGuard } from '../auth/jwt.strategy';
 import { getClientIP } from 'src/utils/collection';
 import { APIPrefix } from 'src/constants/constants';
 import { ResponseEnum } from 'src/constants/response';
@@ -15,7 +15,7 @@ import { GlobalRequest } from 'src/interface/gloabl.interface';
 import { CurUser } from 'src/core/decorators/global.decorators';
 import { ResBaseException } from 'src/core/exception/res.exception';
 import { FrequentlyGuards } from 'src/core/guards/frequently.guards';
-import { UserConfigService } from '../config/user/userConfig.service';
+import { UserConfigService } from '../service/config.service';
 import { UserSpace } from 'src/interface/user.interface';
 // import { plainToClass } from 'class-transformer';
 
@@ -27,7 +27,6 @@ export const _USER_PATH_NAME_ = APIPrefix + 'user';
 @Controller(_USER_PATH_NAME_)
 @ApiTags('用户')
 export class UserAccountController {
-
 
   constructor(
     private readonly UserService: UserService,
@@ -41,7 +40,10 @@ export class UserAccountController {
    */
   @Post('register')
   @UseGuards(FrequentlyGuards({ interval: 0.5 }))
-  @ApiOperation({ summary: '注册'})
+  @ApiOperation({
+    summary: '注册',
+    description: '用户注册账号入口'
+  })
   async register(@Body() body: UserRegisterDto, @Request() req?: GlobalRequest) {
     const { account } = body;
 
@@ -74,8 +76,10 @@ export class UserAccountController {
    */
   @Post('signin')
   @UseGuards(AuthGuard('local'))
-  @ApiOperation({ summary: '登录'})
-  async login(@CurUser() user: User, @Req() req?: GlobalRequest) {
+  @ApiOperation({
+    summary: '登录',
+  })
+  async login(@CurUser() user: User, @Body() _body: UserLoginDto, @Req() req?: GlobalRequest) {
     this.UserService.login(user, {
       ip: getClientIP(req),
       systemPlatform: req.headers['user-agent'],
@@ -89,8 +93,10 @@ export class UserAccountController {
    */
   @Get()
   @UseGuards(JwtAuthGuard)
-  @ApiOperation({ summary: '获取个人信息'})
-  @ApiBasicAuth()
+  @ApiOperation({
+    summary: '获取个人信息',
+  })
+  @ApiBearerAuth()
   async info(@CurUser() user: UserSpace.UserInfo) {
     delete user.password;
     delete user.iv;
@@ -104,7 +110,13 @@ export class UserAccountController {
    * @param id 用户ID
    */
   @Get(':id')
-  @ApiOperation({ summary: '获取其他用户数据' })
+  @ApiOperation({
+    summary: '获取其他用户数据',
+  })
+  @ApiParam({
+    name: 'id',
+    description: '用户ID',
+  })
   async outherUser(@Param('id') id: User['id']) {
     const user = await this.UserService.outherUser(id);
     if (!user) {
@@ -118,7 +130,11 @@ export class UserAccountController {
    * 刷新令牌
    */
   @Get('refresh/token')
-  @ApiOperation({ summary: '刷新令牌' })
+  @ApiOperation({
+    summary: '刷新令牌',
+    description: '置换旧令牌',
+  })
+  @ApiBearerAuth()
   async refreshJWT(@Req() req?: GlobalRequest) {
     return this.UserService.refreshJWT(req.headers['authorization']);
   }
