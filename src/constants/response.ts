@@ -22,6 +22,7 @@ export class ResponseEnum {
   static readonly UNAUTHORIZED_INVALID: Status = { code: 1003, message: '授权失败，令牌无效!' };
   static readonly UNAUTHORIZED_EXPIRED: Status = { code: 1004, message: '授权失败，身份已过期!' };
   static readonly TIME_OUT_LONG:        Status = { code: 1005, message: '服务器处理超时，请稍后再试!' };
+  static readonly NOT_PERMISSION:       Status = { code: 1006, message: '无权进行此操作, 至少需要权限组 [%s]!' };
 
 
   static readonly PARAMS_IS_NOT_URL:    Status = { code: 1050, message: '非URL格式!' };
