@@ -1,8 +1,7 @@
 import { Body, Controller, Get, Param, Post, UseGuards } from "@nestjs/common";
-import { ApiOperation, ApiTags } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiOperation, ApiParam, ApiTags } from "@nestjs/swagger";
 
 import { ArticleService } from "../service/article.service";
-import { APIPrefix } from "src/constants/constants";
 import { ArticleSubmitDto } from "../dto/article.dto";
 import { JwtAuthGuard } from "../../user/auth/jwt.strategy";
 import { User } from "src/modules/user/entity/user.entity";
@@ -10,8 +9,9 @@ import { CurUser } from "src/core/decorators/global.decorators";
 import { ResponseBody, ResponseEnum } from "src/constants/response";
 import { ArticleStateEnum } from "src/modules/article/constants/entity.cfg";
 import { UserStatus } from "src/modules/user/constants/entity.cfg";
+import { MainCPrefix } from "../constants/controller.cfg";
 
-@Controller(APIPrefix + 'article')
+@Controller(MainCPrefix)
 @ApiTags('文章')
 export class ArticleController {
 
@@ -26,7 +26,11 @@ export class ArticleController {
    */
   @Post()
   @UseGuards(JwtAuthGuard)
-  @ApiOperation({ summary: '发布文章', description: '用于发布文章' })
+  @ApiOperation({
+    summary: '发布文章',
+    description: '用于发布文章',
+  })
+  @ApiBearerAuth()
   async submit(@Body() articleData: ArticleSubmitDto, @CurUser() user: User) {
     // 发布权
     if (user.status !== UserStatus.Actived) {
@@ -41,7 +45,10 @@ export class ArticleController {
    * @param id 文章ID
    */
   @Get(':id')
-  @ApiOperation({ summary: '获取文章内容', description: '获取文章的详细信息，包含评论'})
+  @ApiOperation({
+    summary: '获取文章内容',
+    description: '获取文章的详细信息，包含评论',
+  })
   async information(@Param('id') id: number) {
     return this.ArticleService.information(id);
   }
@@ -54,7 +61,15 @@ export class ArticleController {
    * @param count      列数
    */
   @Get(':filterMode/:page/:count')
-  @ApiOperation({ summary: '获取文章列表', description: '通过过滤模式获取各种状态的文章列表' })
+  @ApiOperation({
+    summary: '获取文章列表',
+    description: '通过过滤模式获取各种状态的文章列表',
+  })
+  @ApiParam({
+    name: 'filterMode',
+    enum: ArticleStateEnum,
+    description: '文章过滤类型',
+  })
   async captureList(
     @Param('filterMode') filterMode: keyof typeof ArticleStateEnum,
     @Param('page') page: number,

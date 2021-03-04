@@ -5,7 +5,6 @@ import { Status } from "src/constants/response";
  * 文章业务响应
  */
 export class ArticleResponse {
-  // 发布文章 标题字段 为空
   static readonly SUB_TITLE_EMPTY:     Status = { code: 1200, message: '文章标题不能为空!' };
   static readonly SUB_TITLE_FORMAT:    Status = { code: 1201, message: `文章标题长度错误，应在${ARTICLE_CONSTANTS.TITLE_MIN_LENGTH}~${ARTICLE_CONSTANTS.TITLE_MAX_LENGTH}字` };
   static readonly SUB_FIRPIC_EMPTY:    Status = { code: 1202, message: '文章头图不能为空!' };
@@ -24,4 +23,11 @@ export class ArticleResponse {
   static readonly STATE_ISDELETE:      Status = { code: 1215, message: '非常抱歉，该文章已被删除!' };
   static readonly STATE_NOT_EXISTS:    Status = { code: 1216, message: '未找到有效的文章资源!' };
   static readonly STATE_ABNORMAL:      Status = { code: 1217, message: '文章状态异常，请稍后再试!' };
+}
+
+/**
+ * 文章类目响应
+ */
+export class ArticleCategoryResponse {
+  static readonly CREATE_EXISTS: Status = { code: 1250, message: '创建的类目名已存在!' };
 }

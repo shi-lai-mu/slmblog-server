@@ -9,15 +9,13 @@ export const ArticleTableName = {
   ARTICLE:  tablePerfix + 'article',
   LIKE:     tablePerfix + 'article_like',
   STAT:     tablePerfix + 'article_stat',
-  CATEGORY: tablePerfix + 'article_category',
+  CATEGORY: tablePerfix + 'article_cas',
 };
 
 /**
  * 文章状态
  */
 export enum ArticleStateEnum {
-  failed    = -2, // 审核未通过
-  isDelete  = -1, // 已删除
   examine   = 0,  // 审核中
   routine   = 1,  // 常规
   topping   = 2,  // 置顶文章
@@ -25,6 +23,8 @@ export enum ArticleStateEnum {
   recommend = 4,  // 推荐文章
   latest    = 5,  // 最新文章
   owner     = 6,  // 我的文章
+  failed    = 7,  // 审核未通过
+  isDelete  = 8,  // 已删除
 }
 
 /**
