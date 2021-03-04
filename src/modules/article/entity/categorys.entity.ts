@@ -5,7 +5,7 @@ import { BaseInitEntity } from "../../../entity/baseInitEntity";
 import { ArticleCategoryNS } from "../type/category";
 
 /**
- * 文章类目实体
+ * 文章业务 类目 实体
  */
 @Entity({
   name: 'blog_article_category',

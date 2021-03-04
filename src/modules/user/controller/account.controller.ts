@@ -7,7 +7,7 @@ import { UserService } from '../service/user.service';
 import { User } from 'src/modules/user/entity/user.entity';
 import { UserLoginDto, UserRegisterDto } from '../dto/user.dto';
 import { UserServiceBase } from '../service/user.service';
-import { JwtAuthGuard } from '../auth/jwt.strategy';
+import { JwtAuthGuard } from '../../../core/strategy/jwt.strategy';
 import { getClientIP } from 'src/utils/collection';
 import { APIPrefix } from 'src/constants/constants';
 import { ResponseEnum } from 'src/constants/response';

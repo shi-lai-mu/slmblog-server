@@ -1,13 +1,16 @@
 import { Body, Controller, Get, Post, Query, UseGuards } from "@nestjs/common";
 import { ApiBasicAuth, ApiBearerAuth, ApiOperation, ApiTags } from "@nestjs/swagger";
 import { CurUser } from "src/core/decorators/global.decorators";
-import { JwtAuthGuard, JwtPermissionStrategy } from "src/modules/user/auth/jwt.strategy";
+import { JwtAuthGuard, JwtPermissionStrategy } from "src/core/strategy/jwt.strategy";
 import { UserRole } from "src/modules/user/constants/entity.cfg";
 import { User } from "src/modules/user/entity/user.entity";
 import { MainCPrefix } from "../constants/controller.cfg";
 import { CreateArticleCategoryDto } from "../dto/category.dto";
 import { ArticleCategoryService } from "../service/category.service";
 
+/**
+ * 文章业务 类目 控制层
+ */
 @Controller(MainCPrefix + '/category')
 @ApiTags('文章')
 export class ArticleCategoryContorller {
@@ -21,7 +24,7 @@ export class ArticleCategoryContorller {
    * 创建类目
    */
   @Post('append')
-  @UseGuards(new JwtPermissionStrategy(UserRole.BlogUser))
+  @UseGuards(new JwtPermissionStrategy(UserRole.SuperAdmin))
   @ApiBearerAuth()
   @ApiOperation({
     summary: '新增类目',

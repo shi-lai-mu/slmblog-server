@@ -3,13 +3,13 @@ import { ApiBearerAuth, ApiOperation, ApiParam, ApiTags } from "@nestjs/swagger"
 
 import { ArticleService } from "../service/article.service";
 import { ArticleSubmitDto } from "../dto/article.dto";
-import { JwtAuthGuard } from "../../user/auth/jwt.strategy";
 import { User } from "src/modules/user/entity/user.entity";
 import { CurUser } from "src/core/decorators/global.decorators";
 import { ResponseBody, ResponseEnum } from "src/constants/response";
 import { ArticleStateEnum } from "src/modules/article/constants/entity.cfg";
 import { UserStatus } from "src/modules/user/constants/entity.cfg";
 import { MainCPrefix } from "../constants/controller.cfg";
+import { JwtAuthGuard } from "src/core/strategy/jwt.strategy";
 
 @Controller(MainCPrefix)
 @ApiTags('文章')

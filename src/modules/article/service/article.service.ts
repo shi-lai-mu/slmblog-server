@@ -2,7 +2,6 @@ import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Article } from "src/modules/article/entity/article.entity";
 import { getConnection, Repository } from "typeorm";
-import { RedisService } from "../../redis/redis.service";
 import { sensitiveWord } from "src/configs/sensitive.word";
 import { ResponseBody, ResponseEnum } from "src/constants/response";
 import { ArticleNS } from "../type/article";
@@ -29,7 +28,6 @@ export class ArticleService {
 
   constructor(
     @InjectRepository(Article) private readonly ArticleRepository: Repository<Article>,
-    private readonly RedisService: RedisService,
   ) {}
 
 

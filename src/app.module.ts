@@ -6,7 +6,7 @@ import { AppController } from './app.controller';
 import { UserModule } from './modules/user/user.module';
 import { ConfigsModule } from './configs/configs.module';
 import { RedisModule } from './modules/redis/redis.module';
-import { ArticleModule } from './modules/article/article.module';
+import { ArticleBusinessModule } from './modules/article/index.module';
 import { NoticModule } from './modules/notify/notic/notic.module';
 import { GlobalMiddleware } from './core/middleware/global.middleware';
 
@@ -25,7 +25,7 @@ import ConfigService from './configs/configs.service';
       inject: [ ConfigService ],
     }),
     UserModule,
-    ArticleModule,
+    ArticleBusinessModule,
     NoticModule,
   ],
   controllers: [AppController],

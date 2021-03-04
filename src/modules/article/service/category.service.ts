@@ -8,7 +8,9 @@ import { CreateArticleCategoryDto } from "../dto/category.dto";
 import { ArticleCategory } from "../entity/categorys.entity";
 import { ArticleCategoryNS, FindIdsParams } from '../type/category';
 
-
+/**
+ * 文章业务 类目 逻辑层
+ */
 @Injectable()
 export class ArticleCategoryService {
   constructor(
