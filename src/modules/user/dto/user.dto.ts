@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, Length, MinLength } from 'class-validator';
 
 import { USER_CONSTANTS } from '../../../constants/constants';
-import { ResponseEnum } from '../../../constants/response';
+import { ResponseEnum, ValidateThrow } from '../../../constants/response';
 
 export class UserBaseDto {
   /**
@@ -23,7 +23,7 @@ export class UserLoginDto {
    * 账号
    */
   @IsNotEmpty(ResponseEnum.USER.ACCOUNT_EMPTY)
-  @Length(USER_CONSTANTS.ACCOUNT_MIN_LENGTH, USER_CONSTANTS.ACCOUNT_MAX_LENGTH, ResponseEnum.USER.ACCOUNT_FORMAT)
+  @Length(USER_CONSTANTS.ACCOUNT_MIN_LENGTH, USER_CONSTANTS.ACCOUNT_MAX_LENGTH, ValidateThrow(ResponseEnum.USER.ACCOUNT_FORMAT))
   @ApiProperty({
     description: '账号',
     default: 'shilaimu',

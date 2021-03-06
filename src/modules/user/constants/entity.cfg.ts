@@ -10,7 +10,6 @@ export const UserTableName = {
   CONFIG: tablePerfix + 'user_config',  // 用户配置表
 }
 
-
 /**
  * 用户权限
  */
@@ -31,7 +30,6 @@ export enum UserStatus {
   Frozen   = 3, // 已冻结
 }
 
-
 /**
  * 性别
  */
@@ -40,7 +38,6 @@ export enum UserGender {
   Female  = 1, // 女
   Unknown = 2, // 未知
 }
-
 
 /**
  * 校验策略类型
