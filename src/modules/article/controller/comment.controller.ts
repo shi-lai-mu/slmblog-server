@@ -30,8 +30,8 @@ export class ArticleCommentController {
     description: '当用户点击评论赞或者踩时调用此接口记录行为',
   })
   @ApiBearerAuth()
-  async doCheckLog(@Body() loveLog: LoveLogDto, @CurUser() user: User) {
-    return this.ArticleCommentService.doCheckLog(loveLog, user);
+  async doLoveCheckLog(@Body() loveLog: LoveLogDto, @CurUser() user: User) {
+    return this.ArticleCommentService.doLoveCheckLog(loveLog, user);
   }
 
 }

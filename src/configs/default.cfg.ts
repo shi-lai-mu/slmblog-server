@@ -11,7 +11,7 @@ export default ((): StandardConfig => ({
     charset: 'utf8mb4',
     username: '',
     password: '',
-    database: `blog${isProd ? '' : '_test'}`,
+    database: `blog${isProd ? '_prod' : '_test'}`,
     timezone: 'UTC',
     synchronize: !isProd,
     entities: [ path.join(__dirname, '../**/*.entity{.ts,.js}') ] ,
@@ -26,7 +26,7 @@ export default ((): StandardConfig => ({
     keyPrefix: `blog${isProd ? '' : '_test'}:`,
     family: 4,
     password: '',
-    db: 0,
+    db: isProd ? 0 : 1,
   },
   jwt: {
     secret: '',

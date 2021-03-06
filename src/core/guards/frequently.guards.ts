@@ -1,5 +1,5 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
-import { RedisService } from 'src/modules/redis/redis.service';
+import { RedisService } from 'src/modules/coreModules/redis/redis.service';
 import { getClientIP } from 'src/utils/collection';
 import { generateHash } from 'src/utils/crypto';
 import { ResBaseException } from 'src/core/exception/res.exception';

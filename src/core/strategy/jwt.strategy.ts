@@ -38,12 +38,15 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
    * 本地策略校验身份
    * 采用 用户id 和 用户盐 取数据 (只有id和八位盐都猜出才有可能获取到)
    */
-  async validate() {
+  async validate(data: { iv: string; id: number; iat: number; exp: number; }) {
     const user = await this.userRepository
       .createQueryBuilder('u')
       .addSelect('u.password')
       .addSelect('u.iv')
       .addSelect('u.status')
+      .where({
+        id: data.id,
+      })
       .getOne()
     ;
     if (user) user.validateType = 'jwt';
@@ -131,6 +134,8 @@ export class JwtPermissionStrategy extends AuthGuard('jwt') {
         });
       }
     }
+    console.log(user);
+    
     
     return user;
   }

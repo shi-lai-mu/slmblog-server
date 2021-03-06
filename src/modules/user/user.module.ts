@@ -6,7 +6,7 @@ import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from '../../core/strategy/jwt.strategy';
 import { AuthService } from './service/auth.service';
 import { UserService } from './service/user.service';
-import { RedisService } from '../redis/redis.service';
+import { RedisService } from '../coreModules/redis/redis.service';
 import { UserConfigService } from './service/config.service';
 import { UserController } from './controller/user.controller';
 import { UserAccountController } from './controller/account.controller';

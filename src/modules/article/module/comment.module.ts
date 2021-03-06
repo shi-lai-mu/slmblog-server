@@ -1,10 +1,11 @@
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { RedisService } from "src/modules/redis/redis.service";
+import { RedisService } from "src/modules/coreModules/redis/redis.service";
 import { ArticleCommentController } from "../controller/comment.controller";
 import { Article } from "../entity/article.entity";
 import { ArticleComment } from "../entity/comment.entity";
 import { ArticleLove } from "../entity/comment.love.entity";
+import { ArticleService } from "../service/article.service";
 import { ArticleCommentService } from "../service/comment.service";
 
 /**
@@ -24,6 +25,6 @@ import { ArticleCommentService } from "../service/comment.service";
   providers: [
     RedisService,
     ArticleCommentService,
-  ]
+  ],
 })
 export class ArticleCommentModule {}

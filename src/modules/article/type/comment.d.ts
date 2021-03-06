@@ -18,6 +18,14 @@ export namespace ArticleCommentNS {
      * 踩ID列表
      */
     criticism: number[];
+    /**
+     * 是否已更新
+     */
+    update: boolean;
+    /**
+     * 数据库记录ID
+     */
+    dbId: number;
   }
 
   /**
@@ -39,20 +47,25 @@ export namespace ArticleCommentNS {
    */
   export interface CreateArticleLove {
     /**
-     * 踩赞用户ID
-     */
-    user: User['id'];
-    /**
      * 踩赞文章
      */
     article: Article['id'];
     /**
-     * 踩赞状态
-     */
-    status: ArticleLoveStatus;
-    /**
      * 行为目标
      */
     target: ArticleLoveTarget;
+    /**
+     * 踩赞ids
+     */
+    json: string;
+    /**
+     * 点赞人数
+     */
+    praise: number;
+  
+    /**
+     * 点踩人数
+     */
+    criticism: number;
   }
 }

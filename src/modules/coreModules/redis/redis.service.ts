@@ -2,11 +2,13 @@ import { Injectable, NotImplementedException } from '@nestjs/common';
 import * as Redis from 'ioredis';
 import ConfigsService from 'src/configs/configs.service';
 import { RedisConfig } from 'src/configs/type/db.cfg';
+import { isDev } from 'src/constants/system';
 
 /**
  * 缓存键定义
  */
 enum CacheKeys {
+  all            = '%d',
   user           = 'user:%d',
   guards         = 'guards:%d',
   articleComment = 'articleComment:%d',
@@ -24,6 +26,10 @@ let RedisCache: { config?: RedisConfig, object?: Redis.Redis } = {
 @Injectable()
 export class RedisService {
   readonly client: Redis.Redis;
+  /**
+   * 缓存键
+   */
+  readonly cacheKeys: CacheKeys;
 
   constructor(
     private readonly configService: ConfigsService,
@@ -71,6 +77,25 @@ export class RedisService {
     const cacheKey = CacheKeys[business].replace('%d', key);
     let FindCache: unknown = await this.client.get(cacheKey);
     if (FindCache && FindCache[0] === '{') FindCache = JSON.parse(<string>FindCache); 
-    return <T | null>FindCache;
+    return FindCache as T | null;
+  }
+
+
+  /**
+   * redis keys
+   * @param keys keys
+   */
+  async keys(keys: string, business?: keyof typeof CacheKeys) {
+    return this.client.keys(RedisCache.config.keyPrefix + (business || '') + keys);
+  }
+
+
+  /**
+   * 清空缓存
+   */
+  async clearAll() {
+    if (isDev) {
+      await this.client.flushdb();
+    }
   }
 }

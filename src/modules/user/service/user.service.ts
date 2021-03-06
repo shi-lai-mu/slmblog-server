@@ -7,13 +7,14 @@ import { UserLoginDto } from '../dto/user.dto';
 import { User } from '../entity/user.entity';
 import { generateHash } from 'src/utils/crypto';
 import { AuthService } from './auth.service';
-import { RedisService } from '../../redis/redis.service';
+import { RedisService } from '../../coreModules/redis/redis.service';
 import ConfigsService from 'src/configs/configs.service';
 import { ResBaseException } from 'src/core/exception/res.exception';
 import { ResponseBody, ResponseEnum } from 'src/constants/response';
 // import { plainToClass } from 'class-transformer';
 
 import * as JWT from 'jsonwebtoken';
+import { plainToClass } from 'class-transformer';
 
 
 /**
@@ -51,7 +52,7 @@ export class UserService {
       iv,
     });
 
-    return await user.save();
+    return plainToClass(User, await user.save());
   }
 
 
@@ -70,7 +71,7 @@ export class UserService {
       updateTime: new Date(),
     });
 
-    return user;
+    return plainToClass(User, user);
   }
 
   
