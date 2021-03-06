@@ -23,6 +23,11 @@ export class ArticleResponse {
   static readonly STATE_ISDELETE:      Status = { code: 1215, message: '非常抱歉，该文章已被删除!' };
   static readonly STATE_NOT_EXISTS:    Status = { code: 1216, message: '未找到有效的文章资源!' };
   static readonly STATE_ABNORMAL:      Status = { code: 1217, message: '文章状态异常，请稍后再试!' };
+
+  static readonly ID_IS_NOT_NUMBER:    Status = { code: 1218, message: '文章ID必须为数值!' };
+  static readonly COMMENT_LOVE_TYPE:   Status = { code: 1219, message: '行为状态必须为数值!' };
+  static readonly COMMENT_LOVE_TARGET: Status = { code: 1220, message: '行为目标必须为数值!' };
+  static readonly REPEAT_LOVE_ACTION:  Status = { code: 1221, message: '无法重复记录此操作!' };
 }
 
 /**
