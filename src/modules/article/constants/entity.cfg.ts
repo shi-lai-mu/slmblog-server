@@ -1,15 +1,16 @@
 import { BaseInitEntity } from "src/entity/baseInitEntity";
 
-
 const { tablePerfix } = BaseInitEntity.dbConfig;
 /**
  * 文章实体表名
  */
 export const ArticleTableName = {
-  ARTICLE:  tablePerfix + 'article',
-  LIKE:     tablePerfix + 'article_like',
-  STAT:     tablePerfix + 'article_stat',
-  CATEGORY: tablePerfix + 'article_cas',
+  ARTICLE:      tablePerfix + 'article',
+  LIKE:         tablePerfix + 'article_like',
+  STAT:         tablePerfix + 'article_stat',
+  CATEGORY:     tablePerfix + 'article_category',
+  COMMENT:      tablePerfix + 'article_comment',
+  COMMENT_LOVE: tablePerfix + 'article_comment_love',
 };
 
 /**
@@ -45,40 +46,33 @@ export enum ArticleAuditEnum {
 }
 
 /**
- * 用户权限
+ * 文章评论是否已被置顶
  */
-export enum UserRole {
-  Normal     = 1, // 普通用户
-  BlogUser   = 2, // 博主用户
-  Editor     = 3, // 网站编辑
-  Admin      = 4, // 管理员
-  SuperAdmin = 5, // 超级管理员
+export enum ArticleCommentIsTop {
+  true  = 0,
+  false = 1,
 }
 
 /**
- * 账号状态
+ * 文章评论是否已被删除
  */
-export enum UserStatus {
-  InActive = 1, // 未激活
-  Actived  = 2, // 已激活
-  Frozen   = 3, // 已冻结
+export enum ArticleCommentIsDelete {
+  true  = 0,
+  false = 1,
 }
 
-
 /**
- * 性别
+ * 评论 踩赞状态
  */
-export enum UserGender {
-  Male    = 0, // 男
-  Female  = 1, // 女
-  Unknown = 2, // 未知
+export enum ArticleLoveStatus {
+  Praise = 1,    // 点赞
+  Criticism = 2, // 点踩
 }
 
-
 /**
- * 校验策略类型
+ * 评论 踩赞状态
  */
-export enum ValidateType {
- jwt   = 'jwt',   // token
- local = 'local', // account
+export enum ArticleLoveTarget {
+  Article = 1, // 文章
+  Comment = 2, // 评论
 }

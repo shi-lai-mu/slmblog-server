@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Post, Query, UseGuards } from "@nestjs/common";
-import { ApiBasicAuth, ApiBearerAuth, ApiOperation, ApiTags } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiOperation, ApiTags } from "@nestjs/swagger";
 import { CurUser } from "src/core/decorators/global.decorators";
-import { JwtAuthGuard, JwtPermissionStrategy } from "src/core/strategy/jwt.strategy";
+import { JwtPermissionStrategy } from "src/core/strategy/jwt.strategy";
 import { UserRole } from "src/modules/user/constants/entity.cfg";
 import { User } from "src/modules/user/entity/user.entity";
 import { MainCPrefix } from "../constants/controller.cfg";
@@ -28,7 +28,7 @@ export class ArticleCategoryContorller {
   @ApiBearerAuth()
   @ApiOperation({
     summary: '新增类目',
-    description: '[超管] 新增类目',
+    description: '`[超管权限]` 新增类目',
   })
   async create(@Body() CreateCategoryDto: CreateArticleCategoryDto, @CurUser() user: User) {
     return this.CategoryService.create(CreateCategoryDto, user);

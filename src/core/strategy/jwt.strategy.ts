@@ -85,6 +85,10 @@ export class JwtPermissionStrategy extends AuthGuard('jwt') {
   // 权限等级
   private PermissionRole: UserRole = UserRole.Normal;
 
+  /**
+   * 权限守卫 只允许指定权限以上用户访问接口
+   * @params role 权限组
+   */
   constructor(role: UserRole = UserRole.Normal) {
     super(role);
     this.PermissionRole = role;

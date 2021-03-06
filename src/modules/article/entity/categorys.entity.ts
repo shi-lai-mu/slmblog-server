@@ -61,5 +61,5 @@ export class ArticleCategory extends BaseInitEntity<ArticleCategoryNS.CreateCate
    * 创建用户ID
    */
   @ManyToOne(type => User, user => user.id)
-  create_user_id: number;
+  create_user: number;
 }

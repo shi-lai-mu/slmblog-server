@@ -94,8 +94,11 @@ export class TimeoutInterceptor implements NestInterceptor {
           if (isDev) {
             console.error(err);
           }
-          // TODO: write log file code...
-          throw new ResBaseException(ResponseEnum.SERVER_ERROR);
+          if (!err?.response?.code) {
+            // TODO: write log file code...
+            throw new ResBaseException(ResponseEnum.SERVER_ERROR);
+          }
+          return throwError(err);
         })
       )
     ;

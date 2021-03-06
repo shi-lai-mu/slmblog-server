@@ -7,8 +7,9 @@ import { RedisConfig } from 'src/configs/type/db.cfg';
  * 缓存键定义
  */
 enum CacheKeys {
-  user = 'user:%d',
-  guards = 'guards:%d',
+  user           = 'user:%d',
+  guards         = 'guards:%d',
+  articleComment = 'articleComment:%d',
 }
 
 // 实例缓存
@@ -52,7 +53,7 @@ export class RedisService {
     time: string | number = 60 * 60,
   ) {
     const cacheKey = CacheKeys[business].replace('%d', key);
-    return await this.client.set(
+    return this.client.set(
       cacheKey,
       typeof data === 'object' ? JSON.stringify(data) : data,
       expiryMode,
@@ -70,6 +71,6 @@ export class RedisService {
     const cacheKey = CacheKeys[business].replace('%d', key);
     let FindCache: unknown = await this.client.get(cacheKey);
     if (FindCache && FindCache[0] === '{') FindCache = JSON.parse(<string>FindCache); 
-    return <T>FindCache;
+    return <T | null>FindCache;
   }
 }

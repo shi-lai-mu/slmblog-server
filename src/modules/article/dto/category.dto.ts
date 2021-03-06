@@ -22,6 +22,9 @@ export class CreateArticleCategoryDto {
   })
   parentId?: number;
 
+  /**
+   * 指向链接
+   */
   @ApiProperty({
     description: '指向链接',
   })

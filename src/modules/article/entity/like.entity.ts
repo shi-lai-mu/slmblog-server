@@ -1,15 +1,16 @@
-import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
 import { User } from "../../user/entity/user.entity";
 import { Article } from "./article.entity";
 import { ArticleLikeStatus, ArticleTableName } from "../constants/entity.cfg";
 import { BaseInitEntity } from "../../../entity/baseInitEntity";
+import { ArticleComment } from "./comment.entity";
 
 /**
  * 点赞实体
  */
 @Entity({ name: ArticleTableName.LIKE })
-export class ArticleLike extends BaseInitEntity<{}> {
+export class ArticleCommentLike extends BaseInitEntity<{}> {
   @PrimaryGeneratedColumn()
   id: number;
   /**
@@ -18,10 +19,10 @@ export class ArticleLike extends BaseInitEntity<{}> {
   @ManyToOne(ts => User, user => user.id)
   user: number;
   /**
-   * 点赞文章
+   * 点赞评论ID
    */
-  @ManyToOne(ts => Article, article => article.id)
-  article: number;
+  @ManyToOne(ts => ArticleComment, comment => comment.id)
+  comment: number;
   /**
    * 点赞状态
    */

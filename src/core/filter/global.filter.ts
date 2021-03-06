@@ -27,7 +27,8 @@ export class GlobalFilter implements ExceptionFilter {
         : exception.getResponse()
       )
     ;
-    
-    console.log('[%s] %s %s error: %s', status, request.method, request.url, exception.message);
+    if (request.method !== 'OPTIONS') {
+      console.log('[%s] %s %s error: %s', status, request.method, request.url, exception.message);
+    }
   }
 }
