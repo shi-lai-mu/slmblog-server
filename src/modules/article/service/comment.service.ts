@@ -1,9 +1,9 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { ResponseBody } from "src/constants/response";
-import { RedisService } from "src/modules/redis/redis.service";
+import { RedisService } from "src/modules/coreModules/redis/redis.service";
 import { User } from "src/modules/user/entity/user.entity";
-import { Repository } from "typeorm";
+import { DeepPartial, Repository } from "typeorm";
 import { ArticleLoveStatus } from "../constants/entity.cfg";
 import { ArticleResponse } from "../constants/response.cfg";
 import { LoveLogDto } from "../dto/comment.dto";
@@ -30,7 +30,8 @@ export class ArticleCommentService {
    * @param loveLog 踩赞行为
    * @param user    行为用户
    */
-  async doCheckLog(loveLog: LoveLogDto, user: User) {
+  async doLoveCheckLog(loveLog: LoveLogDto, user: User) {
+    await this.saveRedisData();
     const { articleId, loveType, target } = loveLog;
     const userId = user.id;
     const key = `${articleId}-${target}`;
@@ -39,34 +40,35 @@ export class ArticleCommentService {
     const loveIds: ArticleCommentNS.LoveIdList = {
       praise: [],
       criticism: [],
+      update: false,
+      dbId: 0,
     };
     // 当前用户对文章的踩赞状态
     const loveState: ArticleCommentNS.LoveState = {
       praise: false,
       criticism: false,
     }
+    const { praise: Lpraise, criticism: Lcriticism } = loveIds;
     
     if (!checkExists) {
       const findArticle = await this.Article.findOne({ id: articleId });
-      console.log({findArticle});
+      const findLove = await this.ArticleLove.findOne({ article: articleId, target });
       
       if (!findArticle) {
         ResponseBody.throw(ArticleResponse.STATE_NOT_EXISTS);
-      }
-      const loveList = await this.ArticleLove.find({ article: articleId });
-      if (loveList.length) {
-        loveList.forEach(log => {
-          log.status === ArticleLoveStatus.Praise
-            ? loveIds.praise.push(log.user)
-            : loveIds.criticism.push(log.user)
-        });
+      } else if (findLove) {
+        Lpraise
+          ? Lpraise.push(userId)
+          : Lcriticism.push(userId)
+        loveIds.dbId = findLove.id;
       }
     } else {
-      loveIds.praise.push(...checkExists.praise);
-      loveIds.criticism.push(...checkExists.criticism);
+      Lpraise.push(...checkExists.praise);
+      Lcriticism.push(...checkExists.criticism);
+      loveIds.dbId = checkExists.dbId;
     }
-    loveState.praise = loveIds.praise.findIndex(v => v === userId) + 1;
-    loveState.criticism = loveIds.criticism.findIndex(v => v === userId) + 1;
+    loveState.praise = Lpraise.findIndex(v => v === userId) + 1;
+    loveState.criticism = Lcriticism.findIndex(v => v === userId) + 1;
 
     // 读取最新状态
     const { praise, criticism } = loveState;
@@ -78,22 +80,28 @@ export class ArticleCommentService {
     if (praise || criticism) {
       // 互换踩赞
       if (praise) {
-        loveIds.praise.splice(praise - 1, 1);
-        loveIds.criticism.push(userId);
+        Lpraise.splice(praise - 1, 1);
+        Lcriticism.push(userId);
       } else {
-        loveIds.criticism.splice(praise - 1, 1);
-        loveIds.praise.push(userId);
+        Lcriticism.splice(praise - 1, 1);
+        Lpraise.push(userId);
       }
     } else {
       // 最新的行为 进行插入
       const insertData = await new ArticleLove({
         target,
-        status: loveType,
         article: articleId,
-        user: userId,
-      }).save();
+        praise: Lpraise.length,
+        criticism: Lcriticism.length,
+        json: JSON.stringify({
+          praise: Lpraise,
+          criticism: Lcriticism,
+        }),
+      })
+      .save();
 
       if (insertData.id) {
+        loveIds.dbId = insertData.id;
         if (loveType === ArticleLoveStatus.Praise) {
           loveIds.praise.push(userId);
         } else {
@@ -104,14 +112,68 @@ export class ArticleCommentService {
 
     // 缓存更新
     if (loveIds) {
+      // 将用户ID添加入更新列队
+      loveIds.update = true;
       // 异常数据过滤
-      Object.keys(loveIds).forEach(key => loveIds[key] = loveIds[key].filter(v => !!v));
-      this.RedisService.setItem('articleComment', key, loveIds, 'EX');
+      this.RedisService.setItem('articleComment', key, loveIds);
     }
 
+    delete loveIds.update;
+    delete loveIds.dbId;
     return {
       state: loveState,
       list: loveIds,
     };
+  }
+
+
+  /**
+   * 存储Redis缓存数据
+   */
+  async saveRedisData() {
+    let keyList = await this.RedisService.keys('*', 'articleComment');
+    const indexs = keyList.map(key => key.match(/\d+\-\d+$/)[0]);
+    const updateData: Array<{ index: string; data: ArticleCommentNS.LoveIdList }> = [];
+
+    for (const index of indexs) {
+      const cache = await this.RedisService.getItem<ArticleCommentNS.LoveIdList>('articleComment', index);
+      if (cache && cache.update) {
+        updateData.push({
+          index,
+          data: cache,
+        });
+      }
+    }
+
+    if (updateData.length) {
+      const saveData = await this.ArticleLove.save<DeepPartial<ArticleLove | null>>(
+        updateData
+        .map(item => {
+          const { data, index } = item;
+          const [ article, target ] = index.split('-');
+          const { dbId, criticism, praise } = data;
+
+          if (!dbId) return null;
+
+          return {
+            id: dbId,
+            article: Number(article),
+            target: Number(target),
+            praise: praise.length,
+            criticism: criticism.length,
+            json: JSON.stringify({ criticism, praise }),
+          }
+        })
+        .filter(v => !!v)
+      );
+
+      // TODO: 判断数据是否全量存储，如果数量不相等则不进行清除
+      if (saveData.length === updateData.length) {
+        for (const check of updateData) {
+          check.data.update = false;
+          await this.RedisService.setItem('articleComment', check.index, check.data);
+        }
+      }
+    }
   }
 }
