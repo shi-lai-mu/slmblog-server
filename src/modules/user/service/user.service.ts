@@ -8,7 +8,7 @@ import { User } from '../entity/user.entity';
 import { generateHash } from 'src/utils/crypto';
 import { AuthService } from './auth.service';
 import { RedisService } from '../../coreModules/redis/redis.service';
-import ConfigsService from 'src/configs/configs.service';
+import ConfigsService from 'src/modules/coreModules/config/configs.service';
 import { ResBaseException } from 'src/core/exception/res.exception';
 import { ResponseBody, ResponseEnum } from 'src/constants/response';
 // import { plainToClass } from 'class-transformer';

@@ -26,7 +26,13 @@ export namespace ArticleNS {
    * - 评论
    */
   export interface Information {
+    /***
+     * 文章数据
+     */
     article: Article;
+    /**
+     * 评论数据
+     */
     comment: [];
   }
 }

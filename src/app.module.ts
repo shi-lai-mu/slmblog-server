@@ -4,17 +4,20 @@ import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
 import { AppService } from './app.service';
 import { AppController } from './app.controller';
 import { UserModule } from './modules/user/user.module';
-import { ConfigsModule } from './configs/configs.module';
+import { ConfigsModule } from './modules/coreModules/config/configs.module';
+import { NoticModule } from './modules/notify/notic/notic.module';
 import { RedisModule } from './modules/coreModules/redis/redis.module';
 import { ArticleBusinessModule } from './modules/article/index.module';
-import { NoticModule } from './modules/notify/notic/notic.module';
 import { GlobalMiddleware } from './core/middleware/global.middleware';
-
-import ConfigService from './configs/configs.service';
-import { ScheduleBusinessModule } from './modules/coreModules/schedule/schedule.module';
 import { RedisService } from './modules/coreModules/redis/redis.service';
+import { ScheduleBusinessModule } from './modules/coreModules/schedule/schedule.module';
+
+import ConfigService from './modules/coreModules/config/configs.service';
 
 
+/**
+ * APP 主模块
+ */
 @Module({
   imports: [
     TypeOrmModule.forRootAsync({
@@ -25,11 +28,11 @@ import { RedisService } from './modules/coreModules/redis/redis.service';
       useFactory: async (configService: ConfigService) => configService,
       inject: [ ConfigService ],
     }),
-    ConfigsModule,
     UserModule,
-    ScheduleBusinessModule,
-    ArticleBusinessModule,
     NoticModule,
+    ConfigsModule,
+    ArticleBusinessModule,
+    ScheduleBusinessModule,
   ],
   controllers: [
     AppController
@@ -43,6 +46,7 @@ export class AppModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(
+        // 全局中间件
         GlobalMiddleware,
       )
       .forRoutes({

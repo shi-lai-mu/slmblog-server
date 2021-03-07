@@ -7,7 +7,7 @@ import { SaveUserConfigDto } from "../dto/config.dto";
 import { ResponseBody, ResponseEnum } from "src/constants/response";
 
 /**
- * 用户配置 逻辑层
+ * 用户业务 配置 逻辑层
  */
 @Injectable()
 export class UserConfigService {

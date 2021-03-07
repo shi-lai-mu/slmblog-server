@@ -8,6 +8,9 @@ export interface DBConfig extends MysqlConnectionOptions {
   tablePerfix: string;
 }
 
+/**
+ * Redis 配置
+ */
 export interface RedisConfig extends RedisOptions {}
 
 /**

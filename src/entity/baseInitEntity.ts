@@ -1,4 +1,4 @@
-import ConfigsService from "src/configs/configs.service";
+import ConfigsService from "src/modules/coreModules/config/configs.service";
 import { BaseEntity } from "typeorm";
 
 const configsService = new ConfigsService();

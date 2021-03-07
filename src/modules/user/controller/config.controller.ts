@@ -11,7 +11,7 @@ import { UserConfigService } from "../service/config.service";
 export const _USER_CFG_PATH_NAME_ = _USER_PATH_NAME_ + '/config';
 
 /**
- * 用户配置 控制层
+ * 用户业务 配置 控制层
  */
 @Controller(_USER_CFG_PATH_NAME_)
 @ApiTags('用户')

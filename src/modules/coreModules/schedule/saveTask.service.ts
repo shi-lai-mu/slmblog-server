@@ -3,7 +3,7 @@ import { Cron } from '@nestjs/schedule';
 import { ArticleCommentService } from "src/modules/article/service/comment.service";
 
 /**
- * 定时器 保存任务 逻辑
+ * 核心 定时器 保存任务 逻辑
  */
 @Injectable()
 export class ScheduleSaveTaskService {

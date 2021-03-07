@@ -5,8 +5,12 @@ import { ResBaseException } from "src/core/exception/res.exception";
 import { User } from "src/modules/user/entity/user.entity";
 import { UserStatus } from "../constants/entity.cfg";
 
+/**
+ * 用户业务 认证 逻辑层
+ */
 @Injectable()
 export class AuthService {
+
   constructor(
     private readonly jwtService: JwtService,
   ) {}

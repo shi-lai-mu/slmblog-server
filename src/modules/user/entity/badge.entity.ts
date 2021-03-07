@@ -5,7 +5,7 @@ import { UserTableName } from "../constants/entity.cfg";
 import { User } from "./user.entity";
 
 /**
- * 徽章实体
+ * 用户 徽章实体
  */
 @Entity({
   name: UserTableName.BADGE

@@ -28,6 +28,7 @@ export namespace ArticleCommentNS {
     dbId: number;
   }
 
+  
   /**
    * 踩赞状态
    */
@@ -41,6 +42,7 @@ export namespace ArticleCommentNS {
      */
     criticism: false | number;
   }
+
 
   /**
    * 创建文章评论点赞状态
@@ -62,7 +64,6 @@ export namespace ArticleCommentNS {
      * 点赞人数
      */
     praise: number;
-  
     /**
      * 点踩人数
      */

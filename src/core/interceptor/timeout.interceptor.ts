@@ -9,7 +9,7 @@ import { RedisService } from "src/modules/coreModules/redis/redis.service";
 import { AuthService } from "src/modules/user/service/auth.service";
 import { ResponseBody, ResponseEnum } from "src/constants/response";
 
-import ConfigsService from "src/configs/configs.service";
+import ConfigsService from "src/modules/coreModules/config/configs.service";
 import { isDev } from "src/constants/system";
 
 

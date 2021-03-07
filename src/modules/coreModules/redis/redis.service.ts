@@ -1,6 +1,6 @@
 import { Injectable, NotImplementedException } from '@nestjs/common';
 import * as Redis from 'ioredis';
-import ConfigsService from 'src/configs/configs.service';
+import ConfigsService from 'src/modules/coreModules/config/configs.service';
 import { RedisConfig } from 'src/configs/type/db.cfg';
 import { isDev } from 'src/constants/system';
 
@@ -21,7 +21,7 @@ let RedisCache: { config?: RedisConfig, object?: Redis.Redis } = {
 };
 
 /**
- * Redis逻辑层
+ * 核心 Redis业务 逻辑层
  */
 @Injectable()
 export class RedisService {

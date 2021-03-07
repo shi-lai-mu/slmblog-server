@@ -15,7 +15,7 @@ import { User, UserConfigEntity } from 'src/modules/user/entity/user.entity';
 import { Badge } from './entity/badge.entity';
 import { UserConfigController } from './controller/config.controller';
 
-import ConfigsService from 'src/configs/configs.service';
+import ConfigsService from 'src/modules/coreModules/config/configs.service';
 import { LocalStrategy } from 'src/core/strategy/local.strategy';
 
 @Module({

@@ -22,7 +22,7 @@ import { UserSpace } from 'src/interface/user.interface';
 export const _USER_PATH_NAME_ = APIPrefix + 'user';
 
 /**
- * 用户类 控制层
+ * 用户业务 账号 控制层
  */
 @Controller(_USER_PATH_NAME_)
 @ApiTags('用户')

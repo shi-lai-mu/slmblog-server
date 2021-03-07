@@ -4,7 +4,7 @@ import { getClientIP } from 'src/utils/collection';
 import { generateHash } from 'src/utils/crypto';
 import { ResBaseException } from 'src/core/exception/res.exception';
 import { ResponseBody, Status } from 'src/constants/response';
-import ConfigsService from 'src/configs/configs.service';
+import ConfigsService from 'src/modules/coreModules/config/configs.service';
 
 const Redis = new RedisService(new ConfigsService());
 

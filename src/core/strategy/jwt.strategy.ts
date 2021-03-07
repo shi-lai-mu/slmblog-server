@@ -9,7 +9,7 @@ import { User } from "src/modules/user/entity/user.entity";
 import { UserRole } from "src/modules/user/constants/entity.cfg";
 import { ResBaseException } from "src/core/exception/res.exception";
 
-import ConfigsService from "src/configs/configs.service";
+import ConfigsService from "src/modules/coreModules/config/configs.service";
 
 const jwtConfig = new ConfigsService().jwt;
 @Injectable()

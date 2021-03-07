@@ -16,7 +16,8 @@ export default (app: INestApplication) => {
     .setVersion(version)
     .addTag(tag)
     .addBearerAuth()
-    .build();
+    .build()
+  ;
 
   const document = SwaggerModule.createDocument(app, options);
 

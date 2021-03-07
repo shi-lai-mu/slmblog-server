@@ -11,6 +11,7 @@ export type FindIdsParams = ArticleCategory['id'] | ArticleCategory['id'][] | st
  */
 export namespace ArticleCategoryNS {
 
+  
   /**
    * 创建类目入参
    */
@@ -32,6 +33,7 @@ export namespace ArticleCategoryNS {
      */
     create_user_id: User['id'];
   }
+
 
   /**
    * 响应类目列表

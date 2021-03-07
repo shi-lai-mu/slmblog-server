@@ -11,6 +11,9 @@ import { RedisModule } from "../redis/redis.module";
 import { RedisService } from "../redis/redis.service";
 import { ScheduleSaveTaskService } from "./saveTask.service";
 
+/**
+ * 核心 定时器 主模块
+ */
 @Module({
   imports: [
     TypeOrmModule.forFeature([

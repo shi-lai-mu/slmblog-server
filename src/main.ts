@@ -4,7 +4,7 @@ import { TimeoutInterceptor } from './core/interceptor/timeout.interceptor';
 import { GlobalFilter } from './core/filter/global.filter';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import createApiDocument from './plugins/swagger';
-import ConfigsService from './configs/configs.service';
+import ConfigsService from './modules/coreModules/config/configs.service';
 import { RedisService } from './modules/coreModules/redis/redis.service';
 
 async function bootstrap() {

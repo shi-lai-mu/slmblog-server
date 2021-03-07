@@ -11,23 +11,30 @@ import { ArticleComment } from "./comment.entity";
  */
 @Entity({ name: ArticleTableName.LIKE })
 export class ArticleCommentLike extends BaseInitEntity<{}> {
+  /**
+   * 点赞ID
+   */
   @PrimaryGeneratedColumn()
   id: number;
+
   /**
    * 点赞用户
    */
   @ManyToOne(ts => User, user => user.id)
   user: number;
+
   /**
    * 点赞评论ID
    */
   @ManyToOne(ts => ArticleComment, comment => comment.id)
   comment: number;
+
   /**
    * 点赞状态
    */
   @Column({ type: 'enum', enum: ArticleLikeStatus, default: ArticleLikeStatus.Approved, comment: '点赞状态' })
   status: ArticleLikeStatus;
+
   /**
    * 点赞时间
    */
