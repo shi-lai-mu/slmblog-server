@@ -134,9 +134,6 @@ export class JwtPermissionStrategy extends AuthGuard('jwt') {
         });
       }
     }
-    console.log(user);
-    
-    
     return user;
   }
 }

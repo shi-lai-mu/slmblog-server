@@ -39,8 +39,6 @@ export class ResponseEnum {
 
 
   static THROW(Error: Status) {
-    console.log({Error});
-    
     throw new ResBaseException(Error);
   }
 }
