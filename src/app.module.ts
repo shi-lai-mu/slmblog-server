@@ -3,16 +3,18 @@ import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
 
 import { AppService } from './app.service';
 import { AppController } from './app.controller';
+import { RedisService } from './modules/coreModules/redis/redis.service';
+import ConfigService from './modules/coreModules/config/configs.service';
+
 import { UserModule } from './modules/user/user.module';
-import { ConfigsModule } from './modules/coreModules/config/configs.module';
 import { NoticModule } from './modules/notify/notic/notic.module';
 import { RedisModule } from './modules/coreModules/redis/redis.module';
 import { ArticleBusinessModule } from './modules/article/index.module';
-import { GlobalMiddleware } from './core/middleware/global.middleware';
-import { RedisService } from './modules/coreModules/redis/redis.service';
+import { ConfigsModule } from './modules/coreModules/config/configs.module';
 import { ScheduleBusinessModule } from './modules/coreModules/schedule/schedule.module';
 
-import ConfigService from './modules/coreModules/config/configs.service';
+import { GlobalMiddleware } from './core/middleware/global.middleware';
+
 
 
 /**

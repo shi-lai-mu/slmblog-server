@@ -1,7 +1,9 @@
-import { fromPairs } from 'lodash';
+import * as path from 'path';
+
 import { isProd } from 'src/constants/system';
 import { StandardConfig } from './interface/cfg.interface';
-import * as path from 'path';
+
+
 
 export default ((): StandardConfig => ({
   db: {

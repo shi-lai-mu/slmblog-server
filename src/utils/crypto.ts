@@ -1,6 +1,5 @@
-import {
-  createHash
-} from 'crypto';
+import { createHash } from 'crypto';
+
 
 
 /**

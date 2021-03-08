@@ -1,11 +1,13 @@
 import { Exclude } from 'class-transformer';
-import { Column, CreateDateColumn, Entity, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 
-import { BaseInitEntity } from '../../../entity/baseInitEntity';
+import { Badge } from './badge.entity';
+
 import { USER_CONSTANTS } from 'src/constants/constants';
 import { UserServiceNS } from 'src/modules/user/type/user';
+import { BaseInitEntity } from '../../../entity/baseInitEntity';
 import { UserGender, UserRole, UserStatus, UserTableName, ValidateType } from '../constants/entity.cfg';
-import { Badge } from './badge.entity';
+
 
 
 /**

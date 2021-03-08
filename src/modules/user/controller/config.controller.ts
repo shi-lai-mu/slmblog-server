@@ -1,14 +1,18 @@
+import { ApiBearerAuth, ApiOperation, ApiTags } from "@nestjs/swagger";
 import { Body, Controller, Get, Post, UseGuards } from "@nestjs/common";
-import { ApiBasicAuth, ApiBearerAuth, ApiOperation, ApiTags } from "@nestjs/swagger";
-import { CurUser } from "src/core/decorators/global.decorators";
-import { User } from "src/modules/user/entity/user.entity";
-import { JwtAuthGuard } from "src/core/strategy/jwt.strategy";
 
-import { _USER_PATH_NAME_ } from "src/modules/user/controller/account.controller";
-import { SaveUserConfigDto } from "../dto/config.dto";
+import { User } from "src/modules/user/entity/user.entity";
+
 import { UserConfigService } from "../service/config.service";
+import { _USER_PATH_NAME_ } from "src/modules/user/controller/account.controller";
+
+import { SaveUserConfigDto } from "../dto/config.dto";
+import { JwtAuthGuard } from "src/core/strategy/jwt.strategy";
+import { CurUser } from "src/core/decorators/global.decorators";
 
 export const _USER_CFG_PATH_NAME_ = _USER_PATH_NAME_ + '/config';
+
+
 
 /**
  * 用户业务 配置 控制层

@@ -1,23 +1,27 @@
 
 import { AuthGuard } from '@nestjs/passport';
-import { ApiBasicAuth, ApiBearerAuth, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { Body, Controller, Post, Request, UseGuards, Get, Req, Param } from '@nestjs/common';
 
-import { UserService } from '../service/user.service';
 import { User } from 'src/modules/user/entity/user.entity';
-import { UserLoginDto, UserRegisterDto } from '../dto/user.dto';
+
+import { UserService } from '../service/user.service';
 import { UserServiceBase } from '../service/user.service';
-import { JwtAuthGuard } from '../../../core/strategy/jwt.strategy';
+import { UserConfigService } from '../service/config.service';
+
 import { getClientIP } from 'src/utils/collection';
 import { APIPrefix } from 'src/constants/constants';
 import { ResponseEnum } from 'src/constants/response';
+import { UserSpace } from 'src/interface/user.interface';
 import { GlobalRequest } from 'src/interface/gloabl.interface';
 import { CurUser } from 'src/core/decorators/global.decorators';
+import { UserLoginDto, UserRegisterDto } from '../dto/user.dto';
+import { JwtAuthGuard } from '../../../core/strategy/jwt.strategy';
 import { ResBaseException } from 'src/core/exception/res.exception';
 import { FrequentlyGuards } from 'src/core/guards/frequently.guards';
-import { UserConfigService } from '../service/config.service';
-import { UserSpace } from 'src/interface/user.interface';
 // import { plainToClass } from 'class-transformer';
+
+
 
 export const _USER_PATH_NAME_ = APIPrefix + 'user';
 

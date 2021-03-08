@@ -1,12 +1,13 @@
 import { NestMiddleware } from "@nestjs/common";
+
 import { isDev } from "src/constants/system";
 import { getIPAdress } from "src/utils/network";
+
+
 
 const devDomian = getIPAdress() ?? 'dev.slmblog.com';
 const origin = 'http://' + (isDev ? devDomian  + ':8888' : 'slmblog.com');
 export class GlobalMiddleware implements NestMiddleware {
-
-
   use(request: Request, response: Response, next: any) {
     // const req: any = request;
     const res: any = response;

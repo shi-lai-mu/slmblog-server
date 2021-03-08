@@ -1,5 +1,7 @@
-import { MysqlConnectionOptions } from "typeorm/driver/mysql/MysqlConnectionOptions";
 import { RedisOptions } from 'ioredis';
+import { MysqlConnectionOptions } from "typeorm/driver/mysql/MysqlConnectionOptions";
+
+
 
 /**
  * 数据库 配置

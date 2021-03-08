@@ -1,6 +1,12 @@
 import { ArgumentsHost, Catch, ExceptionFilter, HttpException } from "@nestjs/common";
+
 import { ResponseBody, ResponseEnum } from "src/constants/response";
 
+
+
+/**
+ * 全局过滤器
+ */
 @Catch(HttpException)
 export class GlobalFilter implements ExceptionFilter {
   catch(exception: HttpException, host: ArgumentsHost) {

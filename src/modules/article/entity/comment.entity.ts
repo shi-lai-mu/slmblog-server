@@ -1,7 +1,12 @@
-import { BaseInitEntity } from "src/entity/baseInitEntity";
-import { User } from "src/modules/user/entity/user.entity";
+
 import { Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+
+import { User } from "src/modules/user/entity/user.entity";
+
+import { BaseInitEntity } from "src/entity/baseInitEntity";
 import { ArticleCommentIsDelete, ArticleTableName, ArticleCommentIsTop } from "../constants/entity.cfg";
+
+
 
 /**
  * 文章业务 评论 实体

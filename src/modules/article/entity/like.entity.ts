@@ -1,10 +1,12 @@
-import { Column, CreateDateColumn, Entity, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
-import { User } from "../../user/entity/user.entity";
-import { Article } from "./article.entity";
-import { ArticleLikeStatus, ArticleTableName } from "../constants/entity.cfg";
-import { BaseInitEntity } from "../../../entity/baseInitEntity";
 import { ArticleComment } from "./comment.entity";
+import { User } from "../../user/entity/user.entity";
+
+import { BaseInitEntity } from "../../../entity/baseInitEntity";
+import { ArticleLikeStatus, ArticleTableName } from "../constants/entity.cfg";
+
+
 
 /**
  * 点赞实体

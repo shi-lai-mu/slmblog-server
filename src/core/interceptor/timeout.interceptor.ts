@@ -1,16 +1,18 @@
 import { JwtService } from "@nestjs/jwt";
 import { throwError, TimeoutError } from "rxjs";
-import { catchError, map, timeout, tap } from 'rxjs/operators';
+import { catchError, map, timeout } from 'rxjs/operators';
 import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from "@nestjs/common";
 
 import { User } from "src/modules/user/entity/user.entity";
-import { ResBaseException } from "../exception/res.exception";
-import { RedisService } from "src/modules/coreModules/redis/redis.service";
+
 import { AuthService } from "src/modules/user/service/auth.service";
+import { RedisService } from "src/modules/coreModules/redis/redis.service";
+import ConfigsService from "src/modules/coreModules/config/configs.service";
+
+import { isDev } from "src/constants/system";
+import { ResBaseException } from "../exception/res.exception";
 import { ResponseBody, ResponseEnum } from "src/constants/response";
 
-import ConfigsService from "src/modules/coreModules/config/configs.service";
-import { isDev } from "src/constants/system";
 
 
 @Injectable()

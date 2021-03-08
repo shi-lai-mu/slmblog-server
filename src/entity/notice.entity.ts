@@ -1,5 +1,8 @@
-import { Column, Entity, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+
 import { BaseInitEntity } from "./baseInitEntity";
+
+
 
 /**
  * 公告启用状态

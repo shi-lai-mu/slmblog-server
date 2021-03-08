@@ -1,8 +1,12 @@
-import { Injectable, NotImplementedException } from '@nestjs/common';
 import * as Redis from 'ioredis';
+import { Injectable } from '@nestjs/common';
+
 import ConfigsService from 'src/modules/coreModules/config/configs.service';
-import { RedisConfig } from 'src/configs/type/db.cfg';
+
 import { isDev } from 'src/constants/system';
+import { RedisConfig } from 'src/configs/type/db.cfg';
+
+
 
 /**
  * 缓存键定义

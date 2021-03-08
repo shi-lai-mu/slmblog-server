@@ -1,10 +1,12 @@
 import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
-import { User } from "../../user/entity/user.entity";
 import { Article } from "./article.entity";
-import { ArticleLoveStatus, ArticleTableName, ArticleLoveTarget } from "../constants/entity.cfg";
-import { BaseInitEntity } from "../../../entity/baseInitEntity";
+
 import { ArticleCommentNS } from "../type/comment";
+import { BaseInitEntity } from "../../../entity/baseInitEntity";
+import { ArticleTableName, ArticleLoveTarget } from "../constants/entity.cfg";
+
+
 
 /**
  * 文章业务 踩赞 实体

@@ -1,8 +1,12 @@
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ArticleCategoryContorller } from "../controller/category.controller";
+
 import { ArticleCategory } from "../entity/categorys.entity";
+
 import { ArticleCategoryService } from "../service/category.service";
+import { ArticleCategoryContorller } from "../controller/category.controller";
+
+
 
 /**
  * 文章业务 类目 模块

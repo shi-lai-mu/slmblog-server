@@ -1,7 +1,10 @@
-import ConfigsService from "src/modules/coreModules/config/configs.service";
 import { BaseEntity } from "typeorm";
 
+import ConfigsService from "src/modules/coreModules/config/configs.service";
+
 const configsService = new ConfigsService();
+
+
 
 /**
  * 初始化实体基类 基础 typeorm BaseEntity ActiveRecord

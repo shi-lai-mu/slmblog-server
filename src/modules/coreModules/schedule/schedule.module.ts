@@ -1,15 +1,16 @@
 import { Logger, Module } from "@nestjs/common";
-import { ScheduleModule, SchedulerRegistry } from "@nestjs/schedule";
 import { TypeOrmModule } from "@nestjs/typeorm";
+import { ScheduleModule } from "@nestjs/schedule";
+
 import { Article } from "src/modules/article/entity/article.entity";
 import { ArticleComment } from "src/modules/article/entity/comment.entity";
 import { ArticleLove } from "src/modules/article/entity/comment.love.entity";
-import { ArticleModule } from "src/modules/article/module/article.module";
-import { ArticleService } from "src/modules/article/service/article.service";
-import { ArticleCommentService } from "src/modules/article/service/comment.service";
-import { RedisModule } from "../redis/redis.module";
+
 import { RedisService } from "../redis/redis.service";
 import { ScheduleSaveTaskService } from "./saveTask.service";
+import { ArticleCommentService } from "src/modules/article/service/comment.service";
+
+
 
 /**
  * 核心 定时器 主模块

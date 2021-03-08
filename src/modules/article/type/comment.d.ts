@@ -1,6 +1,8 @@
-import { User } from "src/modules/user/entity/user.entity";
-import { ArticleLoveStatus, ArticleLoveTarget } from "../constants/entity.cfg";
 import { Article } from "../entity/article.entity";
+
+import { ArticleLoveTarget } from "../constants/entity.cfg";
+
+
 
 /**
  * 文章业务 评论 接口
@@ -28,7 +30,7 @@ export namespace ArticleCommentNS {
     dbId: number;
   }
 
-  
+
   /**
    * 踩赞状态
    */

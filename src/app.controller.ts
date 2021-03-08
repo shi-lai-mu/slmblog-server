@@ -1,7 +1,9 @@
-import { Controller, Get, UseGuards } from '@nestjs/common';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Controller, Get } from '@nestjs/common';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
+
 import { AppService } from './app.service';
-import { JwtAuthGuard } from './core/strategy/jwt.strategy';
+
+
 
 /**
  * APP 控制层

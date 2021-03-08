@@ -1,6 +1,10 @@
 import { DynamicModule, Global, Module } from "@nestjs/common";
+
 import ConfigsService from "src/modules/coreModules/config/configs.service";
+
 import { RedisService } from "./redis.service";
+
+
 
 /**
  * 核心 Redis 模块

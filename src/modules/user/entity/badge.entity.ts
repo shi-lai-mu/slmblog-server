@@ -1,8 +1,12 @@
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+
+import { User } from "./user.entity";
+
+import { UserTableName } from "../constants/entity.cfg";
 import { USER_CONSTANTS } from "src/constants/constants";
 import { BaseInitEntity } from "src/entity/baseInitEntity";
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
-import { UserTableName } from "../constants/entity.cfg";
-import { User } from "./user.entity";
+
+
 
 /**
  * 用户 徽章实体

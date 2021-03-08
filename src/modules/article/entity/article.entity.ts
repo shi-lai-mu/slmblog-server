@@ -1,10 +1,12 @@
 import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 
-import { User } from '../../user/entity/user.entity';
 import { ArticleStat } from './stat.entity';
-import { BaseInitEntity } from '../../../entity/baseInitEntity';
+import { User } from '../../user/entity/user.entity';
+
 import { ARTICLE_CONSTANTS } from 'src/constants/constants';
+import { BaseInitEntity } from '../../../entity/baseInitEntity';
 import { ArticleAuditEnum, ArticleStateEnum, ArticleTableName } from 'src/modules/article/constants/entity.cfg';
+
 
 
 /**

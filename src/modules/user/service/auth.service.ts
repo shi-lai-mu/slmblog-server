@@ -1,9 +1,13 @@
-import { Injectable } from "@nestjs/common";
 import { JwtService } from '@nestjs/jwt';
+import { Injectable } from "@nestjs/common";
+
+import { User } from "src/modules/user/entity/user.entity";
+
+import { UserStatus } from "../constants/entity.cfg";
 import { ResponseEnum } from "src/constants/response";
 import { ResBaseException } from "src/core/exception/res.exception";
-import { User } from "src/modules/user/entity/user.entity";
-import { UserStatus } from "../constants/entity.cfg";
+
+
 
 /**
  * 用户业务 认证 逻辑层

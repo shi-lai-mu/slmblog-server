@@ -4,12 +4,15 @@ import { ExecutionContext, Injectable } from "@nestjs/common";
 import { AuthGuard, PassportStrategy } from "@nestjs/passport";
 import { Strategy, StrategyOptions, ExtractJwt } from "passport-jwt";
 
-import { ResponseEnum } from "src/constants/response";
 import { User } from "src/modules/user/entity/user.entity";
+
+import ConfigsService from "src/modules/coreModules/config/configs.service";
+
+import { ResponseEnum } from "src/constants/response";
 import { UserRole } from "src/modules/user/constants/entity.cfg";
 import { ResBaseException } from "src/core/exception/res.exception";
 
-import ConfigsService from "src/modules/coreModules/config/configs.service";
+
 
 const jwtConfig = new ConfigsService().jwt;
 @Injectable()

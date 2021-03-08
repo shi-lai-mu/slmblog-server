@@ -1,11 +1,16 @@
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
-import { TimeoutInterceptor } from './core/interceptor/timeout.interceptor';
 import { GlobalFilter } from './core/filter/global.filter';
+import { TimeoutInterceptor } from './core/interceptor/timeout.interceptor';
+
 import { NestExpressApplication } from '@nestjs/platform-express';
-import createApiDocument from './plugins/swagger';
-import ConfigsService from './modules/coreModules/config/configs.service';
 import { RedisService } from './modules/coreModules/redis/redis.service';
+import ConfigsService from './modules/coreModules/config/configs.service';
+
+import { AppModule } from './app.module';
+
+import createApiDocument from './plugins/swagger';
+
+
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {

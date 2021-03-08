@@ -1,9 +1,10 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsNumber } from "class-validator";
+
 import { ValidateThrow } from "src/constants/response";
-import { ArticleLoveStatus } from "../constants/entity.cfg";
 import { ArticleResponse } from "../constants/response.cfg";
-import { Article } from "../entity/article.entity";
+
+
 
 /**
  * 踩赞行为

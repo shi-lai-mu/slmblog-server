@@ -4,6 +4,8 @@ import { IsNotEmpty, Length, MinLength } from 'class-validator';
 import { USER_CONSTANTS } from '../../../constants/constants';
 import { ResponseEnum, ValidateThrow } from '../../../constants/response';
 
+
+
 /**
  * 用户基础数据入参
  */

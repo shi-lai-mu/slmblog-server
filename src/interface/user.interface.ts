@@ -1,6 +1,11 @@
-
+/**
+ * 用户
+ */
 export namespace UserSpace {
 
+  /**
+   * 用户基础数据
+   */
   export interface Base {
     /**
      * 用户ID

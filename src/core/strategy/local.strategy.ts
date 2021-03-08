@@ -1,12 +1,16 @@
-import { Strategy, IStrategyOptions } from "passport-local";
-import { PassportStrategy } from "@nestjs/passport";
-import { User } from "src/modules/user/entity/user.entity";
-import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
-import { UserServiceBase } from "src/modules/user/service/user.service";
-import { ResBaseException } from "src/core/exception/res.exception";
-import { ResponseBody } from "src/constants/response";
 import { Injectable } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
+import { PassportStrategy } from "@nestjs/passport";
+import { Strategy, IStrategyOptions } from "passport-local";
+
+import { User } from "src/modules/user/entity/user.entity";
+
+import { UserServiceBase } from "src/modules/user/service/user.service";
+
+import { ResponseBody } from "src/constants/response";
+import { ResBaseException } from "src/core/exception/res.exception";
+
 
 
 @Injectable()

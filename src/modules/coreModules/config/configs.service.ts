@@ -1,9 +1,12 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import { DBConfig, RedisConfig } from '../../../configs/type/db.cfg';
-import DefaultCfg from '../../../configs/default.cfg';
 import { defaultsDeep } from 'lodash';
 import { JwtModuleOptions } from '@nestjs/jwt';
+
+import DefaultCfg from '../../../configs/default.cfg';
+import { DBConfig, RedisConfig } from '../../../configs/type/db.cfg';
+
+
 
 /**
  * 核心 配置业务 逻辑层

@@ -1,5 +1,7 @@
 import { BaseInitEntity } from "src/entity/baseInitEntity";
 
+
+
 const { tablePerfix } = BaseInitEntity.dbConfig;
 /**
  * 用户实体表名
