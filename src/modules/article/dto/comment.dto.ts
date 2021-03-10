@@ -1,41 +1,65 @@
-import { ApiProperty } from "@nestjs/swagger";
-import { IsNumber } from "class-validator";
-
+import { Length } from "class-validator";
 import { ValidateThrow } from "src/constants/response";
+import { ApiProperty } from "_@nestjs_swagger@4.7.15@@nestjs/swagger";
+
+import { ArticleComment } from "../entity/comment.entity";
+
 import { ArticleResponse } from "../constants/response.cfg";
-
-
+import { ARTICLE_COMMENT } from "../constants/controller.cfg";
 
 /**
- * 踩赞行为
+ * 发表文章评论入参
  */
-export class LoveLogDto {
+export class SendArticleCommentDto {
   /**
-   * 文章ID
+   * 评论内容
    */
-  @IsNumber({}, ValidateThrow(ArticleResponse.ID_IS_NOT_NUMBER))
+  @Length(
+    ARTICLE_COMMENT.SEND_COMMENT_CONTENT_MIN,
+    ARTICLE_COMMENT.SEND_COMMENT_CONTENT_MAX,
+    ValidateThrow(ArticleResponse.SEND_COMMENT_CONTENT_LENGTH),
+  )
   @ApiProperty({
-    description: '文章ID'
+    description: '评论内容',
+    default: '这是一条评论内容...',
   })
-  articleId: number;
+  content: string;
 
   /**
-   * 踩赞状态
+   * 昵称
    */
-  @IsNumber({}, ValidateThrow(ArticleResponse.COMMENT_LOVE_TYPE))
   @ApiProperty({
-    description: '踩赞状态 (1: 赞， 2: 踩)',
-    enum: [1, 2],
+    description: '昵称',
+    required: false,
   })
-  loveType: number;
+  nickname?: string;
 
   /**
-   * 评论目标
+   * 邮箱
    */
-  @IsNumber({}, ValidateThrow(ArticleResponse.COMMENT_LOVE_TARGET))
   @ApiProperty({
-    description: '评论目标 (1: 文章， 2: 评论)',
-    enum: [1, 2],
+    description: '邮箱',
+    required: false,
   })
-  target: number;
+  email?: string;
+
+  /**
+   * 文章/微博
+   */
+  @ApiProperty({
+    description: '文章/微博',
+    required: false,
+  })
+  link?: string;
+
+  /**
+   * 父级评论ID
+   */
+  @ApiProperty({
+    description: '父级评论ID',
+    required: false,
+    default: 1,
+  })
+  parentId?: ArticleComment['id'];
+  
 }

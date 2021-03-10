@@ -1,6 +1,9 @@
 import { Article } from "../entity/article.entity";
 
-import { ArticleLoveTarget } from "../constants/entity.cfg";
+import { User } from "src/modules/user/entity/user.entity";
+import { ArticleComment } from "../entity/comment.entity";
+
+import { ListPage } from 'src/interface/gloabl.interface';
 
 
 
@@ -8,67 +11,49 @@ import { ArticleLoveTarget } from "../constants/entity.cfg";
  * 文章业务 评论 接口
  */
 export namespace ArticleCommentNS {
-  /**
-   * 踩赞状态ID表
-   */
-  export interface LoveIdList {
-    /**
-     * 赞ID列表
-     */
-    praise: number[];
-    /**
-     * 踩ID列表
-     */
-    criticism: number[];
-    /**
-     * 是否已更新
-     */
-    update: boolean;
-    /**
-     * 数据库记录ID
-     */
-    dbId: number;
-  }
-
 
   /**
-   * 踩赞状态
+   * 创建文章评论
    */
-  export interface LoveState {
-    /**
-     * 赞状态
-     */
-    praise: false | number;
-    /**
-     * 踩状态
-     */
-    criticism: false | number;
-  }
-
-
-  /**
-   * 创建文章评论点赞状态
-   */
-  export interface CreateArticleLove {
+  export interface CreateArticleComment {
     /**
      * 踩赞文章
      */
     article: Article['id'];
     /**
-     * 行为目标
+     * 评论内容
      */
-    target: ArticleLoveTarget;
+    content: string;
     /**
-     * 踩赞ids
+     * 评论用户ID
      */
-    json: string;
+    user?: User['id'];
     /**
-     * 点赞人数
+     * 父级评论ID
      */
-    praise: number;
+    parent?: ArticleComment['id'];
     /**
-     * 点踩人数
+     * 昵称
      */
-    criticism: number;
+    nickname?: string;
+    /**
+     * 网站/博客
+     */
+    link?: string;
+    /**
+     * 邮箱
+     */
+    email?: string;
+  }
+
+
+  /**
+   * 评论列表
+   */
+  export interface CommentListItem extends ArticleComment {
+    /**
+     * 子评论
+     */
+    subComment: ListPage<ArticleComment>;
   }
 }

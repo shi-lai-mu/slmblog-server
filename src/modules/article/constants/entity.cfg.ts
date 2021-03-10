@@ -31,6 +31,11 @@ export enum ArticleStateEnum {
 }
 
 /**
+ * 文章异常状态定义
+ */
+export const AbnormalState = [ ArticleStateEnum.isDelete, ArticleStateEnum.failed, ArticleStateEnum.examine ].map(v => String(v));
+
+/**
  * 点赞状态
  */
 export enum ArticleLikeStatus {
@@ -48,6 +53,14 @@ export enum ArticleAuditEnum {
 }
 
 /**
+ * 定位评论ID类型枚举
+ */
+export enum CommentFindIdType {
+  Article = 'atricle', // 文章
+  comment = 'comment', // 评论
+}
+
+/**
  * 文章评论是否已被置顶
  */
 export enum ArticleCommentIsTop {
@@ -59,8 +72,8 @@ export enum ArticleCommentIsTop {
  * 文章评论是否已被删除
  */
 export enum ArticleCommentIsDelete {
-  true  = 0,
-  false = 1,
+  false = 0, // 未删除
+  true  = 1, // 已删除
 }
 
 /**
