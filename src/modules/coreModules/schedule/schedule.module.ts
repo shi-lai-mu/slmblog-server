@@ -8,7 +8,7 @@ import { ArticleLove } from "src/modules/article/entity/comment.love.entity";
 
 import { RedisService } from "../redis/redis.service";
 import { ScheduleSaveTaskService } from "./saveTask.service";
-import { ArticleCommentService } from "src/modules/article/service/comment.service";
+import { ArticleBehaviorService } from "src/modules/article/service/behavior.service";
 
 
 
@@ -28,7 +28,7 @@ import { ArticleCommentService } from "src/modules/article/service/comment.servi
     Logger,
     ScheduleSaveTaskService,
     RedisService,
-    ArticleCommentService,
+    ArticleBehaviorService,
   ],
 })
 export class ScheduleBusinessModule {}

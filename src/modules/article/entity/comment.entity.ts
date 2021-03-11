@@ -5,6 +5,8 @@ import { User } from "src/modules/user/entity/user.entity";
 
 import { BaseInitEntity } from "src/entity/baseInitEntity";
 import { ArticleCommentIsDelete, ArticleTableName, ArticleCommentIsTop } from "../constants/entity.cfg";
+import { Article } from "./article.entity";
+import { ArticleCommentNS } from "../type/comment";
 
 
 
@@ -12,7 +14,7 @@ import { ArticleCommentIsDelete, ArticleTableName, ArticleCommentIsTop } from ".
  * 文章业务 评论 实体
  */
 @Entity({ name: ArticleTableName.COMMENT })
-export class ArticleComment extends BaseInitEntity<{}> {
+export class ArticleComment extends BaseInitEntity<ArticleCommentNS.CreateArticleComment> {
   /**
    * 评论ID
    */
@@ -20,12 +22,12 @@ export class ArticleComment extends BaseInitEntity<{}> {
     comment: '评论ID',
   })
   id: number;
-
+  
   /**
-   * 评论用户ID
+   * 文章ID
    */
-  @ManyToOne(type => User, user => user.id)
-  user_id: User['id'];
+  @ManyToOne(article => Article, article => article.id)
+  article: number;
 
   /**
    * 评论内容
@@ -42,6 +44,7 @@ export class ArticleComment extends BaseInitEntity<{}> {
    */
   @Column({
     name: 'love_num',
+    default: 0,
     comment: '点赞次数',
   })
   loveNum: number;
@@ -51,6 +54,7 @@ export class ArticleComment extends BaseInitEntity<{}> {
    */
   @Column({
     name: 'criticism_num',
+    default: 0,
     comment: '点踩次数',
   })
   criticismNum: number;
@@ -59,8 +63,48 @@ export class ArticleComment extends BaseInitEntity<{}> {
    * 父级评论ID
    */
   @ManyToOne(type => ArticleComment, commit => commit.id)
-  parent: ArticleComment['id'];
+  parent?: ArticleComment['id'];
 
+  /**
+   * 评论用户ID
+   */
+  @ManyToOne(user => User, user => user.id)
+  user?: User['id'];
+
+  /**
+   * 子评论数量
+   */
+  @Column({
+    name: 'sub_comment_count',
+    default: 0,
+    comment: '子评论数量',
+  })
+  subCommentCount: number;
+
+  /**
+   * 昵称
+   */
+  @Column({
+    comment: '昵称',
+  })
+  nickname?: string;
+
+  /**
+  * 网站/博客
+  */
+  @Column({
+    comment: '网站/博客',
+  })
+  link?: string;
+
+  /**
+  * 邮箱
+  */
+  @Column({
+    comment: '邮箱',
+  })
+  email?: string;
+  
   /**
    * 是否被置顶
    */

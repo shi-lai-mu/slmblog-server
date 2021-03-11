@@ -1,7 +1,7 @@
 import { Cron } from '@nestjs/schedule';
 import { Injectable, Logger } from "@nestjs/common";
 
-import { ArticleCommentService } from "src/modules/article/service/comment.service";
+import { ArticleBehaviorService } from "src/modules/article/service/behavior.service";
 
 
 
@@ -13,12 +13,12 @@ export class ScheduleSaveTaskService {
 
   constructor(
     private readonly Logger: Logger,
-    private readonly ArticleCommentService: ArticleCommentService,
+    private readonly ArticleBehaviorService: ArticleBehaviorService,
   ) {}
 
   @Cron('1 * * * * *')
   handleCron() {
     // this.Logger.debug('该方法将在45秒标记处每分钟运行一次');
-    this.ArticleCommentService.saveRedisData();
+    this.ArticleBehaviorService.saveRedisData();
   }
 }

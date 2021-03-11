@@ -2,7 +2,7 @@ import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } f
 
 import { Article } from "./article.entity";
 
-import { ArticleCommentNS } from "../type/comment";
+import { ArticleNS } from "../type/article";
 import { BaseInitEntity } from "../../../entity/baseInitEntity";
 import { ArticleTableName, ArticleLoveTarget } from "../constants/entity.cfg";
 
@@ -12,7 +12,7 @@ import { ArticleTableName, ArticleLoveTarget } from "../constants/entity.cfg";
  * 文章业务 踩赞 实体
  */
 @Entity({ name: ArticleTableName.COMMENT_LOVE })
-export class ArticleLove extends BaseInitEntity<ArticleCommentNS.CreateArticleLove> {
+export class ArticleLove extends BaseInitEntity<ArticleNS.CreateArticleLove> {
   @PrimaryGeneratedColumn({
     comment: '踩赞ID',
   })
