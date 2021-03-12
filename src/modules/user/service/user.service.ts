@@ -13,6 +13,7 @@ import ConfigsService from 'src/modules/coreModules/config/configs.service';
 import { UserServiceNS } from '../type/user';
 import { UserLoginDto } from '../dto/user.dto';
 import { generateHash } from 'src/utils/crypto';
+import { JwtToken } from 'src/interface/gloabl.interface';
 import { ResBaseException } from 'src/core/exception/res.exception';
 import { ResponseBody, ResponseEnum } from 'src/constants/response';
 // import { plainToClass } from 'class-transformer';
@@ -82,11 +83,13 @@ export class UserService {
    * @param token 令牌
    */
   async refreshJWT(token: string) {
-    const [, jwt] = token.split(' ');
     const { REFRESH_JWT_QUERY, REFRESH_JWT_ERROR, REFRESH_JWT_INVAL } = ResponseEnum.USER;
+    const [, jwt] = token?.split(/\s+/);
+    if (!token || !jwt) return ResponseEnum.UNAUTHORIZED;
+
 
     if (jwt) {
-      const jwtVerify = await new Promise(resolve => {
+      const jwtVerify = await new Promise<JwtToken | Error | string>(resolve => {
         JWT.verify(jwt, this.configsService.jwt.secret, {
           ignoreExpiration: true,
         }, (err, data) => {
@@ -96,10 +99,11 @@ export class UserService {
       });
 
       if (jwtVerify instanceof Error) return REFRESH_JWT_INVAL;
+      if (jwtVerify instanceof String) return { ...REFRESH_JWT_ERROR, result: jwtVerify };
 
-      const { iv, id } = jwtVerify as { iv?: string; id?: number; iat?: number; exp?: number; };
+      const { iv, id } = jwtVerify as JwtToken;
       if (iv && id) {
-        const userFind = await this.find({ id, iv }, [ 'status' ]);
+        const userFind = await this.find({ id, iv }, [ 'id', 'iv', 'status' ]);
         return { token: this.AuthService.signToken(userFind) }
       } else return REFRESH_JWT_QUERY;
     }

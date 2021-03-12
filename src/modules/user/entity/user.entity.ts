@@ -19,26 +19,40 @@ export class User extends BaseInitEntity<UserServiceNS.CreateUser> {
   /**
    * 用户ID
    */
-  @PrimaryGeneratedColumn({ comment: '用户ID' })
+  @PrimaryGeneratedColumn({
+    comment: '用户ID'
+  })
   id: number;
 
   /**
    * 账号
    */
-  @Column({ length: USER_CONSTANTS.ACCOUNT_MAX_LENGTH, unique: true, comment: '账号' })
+  @Column({
+    length: USER_CONSTANTS.ACCOUNT_MAX_LENGTH,
+    unique: true,
+    comment: '账号',
+  })
   @Exclude()
   account: string;
 
   /**
    * 昵称
    */
-  @Column({ length: USER_CONSTANTS.NICKNAME_MAX_LENGTH, comment: '昵称' })
+  @Column({
+    length: USER_CONSTANTS.NICKNAME_MAX_LENGTH,
+    comment: '昵称',
+  })
   nickname: string;
 
   /**
    * 头像
    */
-  @Column({ name: 'avatar_url', length: USER_CONSTANTS.AVATARURL_MAX_LENGTH, default: '', comment: '头像' })
+  @Column({
+    name: 'avatar_url',
+    length: USER_CONSTANTS.AVATARURL_MAX_LENGTH,
+    default: '',
+    comment: '头像',
+  })
   avatarUrl: string;
 
   /**
@@ -167,6 +181,16 @@ export class User extends BaseInitEntity<UserServiceNS.CreateUser> {
     select: false,
   })
   status: UserStatus;
+
+  /**
+   * 文章发布数量
+   */
+  @Column({
+    name: 'sub_article_count',
+    default: 0,
+    comment: '文章发布数量',
+  })
+  submitArticleCount: number;
 
   /**
    * 徽章关联

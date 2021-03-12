@@ -3,7 +3,7 @@ import { Injectable } from "@nestjs/common";
 
 import { User } from "src/modules/user/entity/user.entity";
 
-import { UserStatus } from "../constants/entity.cfg";
+import { UserRole, UserStatus } from "../constants/entity.cfg";
 import { ResponseEnum } from "src/constants/response";
 import { ResBaseException } from "src/core/exception/res.exception";
 
@@ -25,6 +25,12 @@ export class AuthService {
    * @param user 用户信息
    */
   signToken(user: User) {
+    // 游客权限
+    if (user.iv === UserRole.Tourist) {
+      delete user.iv;
+      return {};
+    }
+     
     // 此处为所有用户可获得身份信息的总入口
     if (user.status !== UserStatus.Actived) {
       throw new ResBaseException(ResponseEnum.USER.ACOOUNT_ABNORMAL);

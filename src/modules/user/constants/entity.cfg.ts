@@ -16,17 +16,19 @@ export const UserTableName = {
  * 用户权限
  */
 export enum UserRole {
-  Normal     = 1, // 普通用户
-  BlogUser   = 2, // 博主用户
-  Editor     = 3, // 网站编辑
-  Admin      = 4, // 管理员
-  SuperAdmin = 5, // 超级管理员
+  Tourist    = '0', // 游客
+  Normal     = 1,   // 普通用户
+  BlogUser   = 2,   // 博主用户
+  Editor     = 3,   // 网站编辑
+  Admin      = 4,   // 管理员
+  SuperAdmin = 5,   // 超级管理员
 }
 
 /**
  * 账号状态
  */
 export enum UserStatus {
+  Tourist  = 0, // 游客
   InActive = 1, // 未激活
   Actived  = 2, // 已激活
   Frozen   = 3, // 已冻结

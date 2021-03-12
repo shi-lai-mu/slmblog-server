@@ -46,7 +46,7 @@ export class UserAccountController {
   @UseGuards(FrequentlyGuards({ interval: 0.5 }))
   @ApiOperation({
     summary: '注册',
-    description: '用户注册账号入口'
+    description: '用户注册账号入口',
   })
   async register(@Body() body: UserRegisterDto, @Request() req?: GlobalRequest) {
     const { account } = body;
@@ -88,7 +88,10 @@ export class UserAccountController {
       ip: getClientIP(req),
       systemPlatform: req.headers['user-agent'],
     });
-    return this.UserService.find(user);
+    return this.UserService.find({
+      id: user.id,
+      iv: user.iv,
+    });
   }
 
 
