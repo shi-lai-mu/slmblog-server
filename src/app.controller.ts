@@ -1,7 +1,9 @@
 import { Controller, Get } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import { AppService } from './app.service';
+
+import { Response } from './interface/gloabl.interface';
 
 
 
@@ -18,7 +20,15 @@ export class AppController {
    */
   @Get()
   @ApiOperation({
-    summary: '测试状态',
+    summary: '测试请求状态',
+    description: '定义基础模型，测试访问是否成功!',
+  })
+  @ApiResponse({
+    type: Response,
+  })
+  @ApiResponse({
+    status: 200,
+    description: '请求测试成功! 响应正常...'
   })
   getHello(): string {
     return this.appService.getHello();

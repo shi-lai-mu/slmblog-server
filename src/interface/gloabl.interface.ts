@@ -2,10 +2,64 @@ import { Request } from "@nestjs/common";
 
 import { User } from "src/modules/user/entity/user.entity";
 
+import { ApiProperty } from "@nestjs/swagger";
 
-
+/**
+ * 公共请求
+ */
 export interface GlobalRequest extends Request {
+  /**
+   * 用户数据
+   */
   user: User;
+}
+
+/**
+ * 响应
+ */
+ export class Response<T> {
+  /**
+   * 响应码
+   */
+  @ApiProperty({
+    description: '响应代码 (每个错误的`唯一代码`，用于`鉴别错误类型`)',
+  })
+  code: number;
+  /**
+   * 响应内容
+   */
+  @ApiProperty({
+    description: '响应内容 (默认响应为 `success`，如果执行过程中遇到 `错误、提示、警告` 则会显示对应的内容)',
+  })
+  message: string;
+  /**
+   * 执行状态
+   */
+  @ApiProperty({
+    description: '执行状态 (`true`: 执行、获取、提交、修改、删除 成功，  `false`: 执行、获取、提交、修改、删除 失败)',
+  })
+  success?: boolean;
+  /**
+   * 执行结果
+   */
+  @ApiProperty({
+    description: '执行过程中返回的数据信息，可能为 `数据模型`、`字符串`、`布尔`、`空值`',
+  })
+  result?: T;
+}
+
+/**
+ * 列表
+ */
+export interface ListPage<T> {
+  /**
+   * 列表数据
+   */
+  list: T[];
+  /**
+   * 页数
+   */
+  total: number;
 }
 
 /**
@@ -16,37 +70,42 @@ export namespace ConstantsResponse {
   /**
    * 响应状态
    */
-  export interface Status {
-    /**
-     * 响应码
-     */
-    code: number;
-    /**
-     * 响应内容
-     */
-    message: string;
-    /**
-     * 执行状态
-     */
-    success?: boolean;
-    /**
-     * 执行结果
-     */
-    result?: any;
-  }
+  export type Status<T> = Response<T>;
 
 
   /**
    * 错误响应体
    */
-  export interface ErrorStatus extends Status {
+  export interface ErrorStatus<T> extends Status<T> {
     /**
      * 追踪UUID
      */
-    uuid: string;
+    uuid?: string;
     /**
      * 报错时间
      */
-    time: string;
+    time?: string;
   }
+}
+
+/**
+ * JWT策略Token
+ */
+export interface JwtToken {
+  /**
+   * 盐
+   */
+  iv?: string;
+  /**
+   * 用户ID
+   */
+  id?: number;
+  /**
+   * 过期时间
+   */
+  iat?: number;
+  /**
+   * 生成时间
+   */
+  exp?: number;
 } 

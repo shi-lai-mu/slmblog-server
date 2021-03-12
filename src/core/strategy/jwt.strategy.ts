@@ -111,6 +111,11 @@ export class JwtPermissionStrategy extends AuthGuard('jwt') {
   handleRequest(err, user, info) {
     const { PermissionRole } = this;
 
+    // 游客设定 越权访问
+    if (!user && PermissionRole === UserRole.Tourist) {
+      return { iv: UserRole.Tourist };
+    }
+
     if (err || !user) {
       let errMsg = ResponseEnum.UNAUTHORIZED_INVALID;
       if (info && info.toString().indexOf('expired') !== -1) {

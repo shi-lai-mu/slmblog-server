@@ -6,14 +6,14 @@ import { UserConfigResponse, UserResponse } from '../modules/user/constants/resp
 
 
 
-export type Status = ConstantsResponse.Status;
-export type ErrorStatus = ConstantsResponse.ErrorStatus;
+export type Status = ConstantsResponse.Status<string>;
+export type ErrorStatus = ConstantsResponse.ErrorStatus<string>;
 
 /**
  * 响应枚举类
  */
 export class ResponseEnum {
-  // 成功学院
+  // 成功
   static readonly SUCCESS:              Status = { code: 0,    message: 'success' };
   // 错误/无法识别的错误
   static readonly ERROR:                Status = { code: 1,    message: 'fail' };
