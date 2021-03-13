@@ -2,11 +2,13 @@ import Mint from 'mint-filter'
 import { Injectable } from "@nestjs/common";
 import { plainToClass } from "class-transformer";
 import { InjectRepository } from "@nestjs/typeorm";
-import { getConnection, Repository } from "typeorm";
+import { getConnection, Repository, Not, In, Any } from "typeorm";
 
 import { User } from "src/modules/user/entity/user.entity";
 import { Article } from "src/modules/article/entity/article.entity";
 import { ArticleStat } from "src/modules/article/entity/stat.entity";
+
+import { ArticleCommentService } from './comment.service';
 
 import { ArticleNS } from "../type/article";
 import { ArticleSubmitDto } from "../dto/article.dto";
@@ -14,7 +16,7 @@ import { sensitiveWord } from "src/configs/sensitive.word";
 import { ResponseBody, ResponseEnum } from "src/constants/response";
 import { UserTableName } from "src/modules/user/constants/entity.cfg";
 import { responseList, skipPage, ValidateParams } from "src/utils/collection";
-import { ArticleStateEnum, ArticleTableName } from "src/modules/article/constants/entity.cfg";
+import { AbnormalState, ArticleStateEnum, ArticleTableName } from "src/modules/article/constants/entity.cfg";
 
 
 
@@ -31,6 +33,7 @@ export class ArticleService {
 
   constructor(
     @InjectRepository(Article) private readonly ArticleRepository: Repository<Article>,
+    private readonly ArticleCommentService: ArticleCommentService,
   ) {}
 
 
@@ -103,11 +106,17 @@ export class ArticleService {
       .addSelect([
         'article.content',
       ])
-      .where({ id })
+      .where({
+        id,
+        state: Not(In(AbnormalState)),
+      })
       .getOne()
     ;
 
-    if (!article) return STATE_NOT_EXISTS;
+    if (!article) ResponseBody.throw({
+      ...STATE_NOT_EXISTS,
+      result: '文章可能 正在审核、未通过审核、已被删除、关闭!',
+    });
 
     // 文章状态检测
     const abnormalState = {
@@ -122,10 +131,8 @@ export class ArticleService {
     // 数据整合
     const information: ArticleNS.Information = {
       article: this.articleDataFilter(article),
-      comment: [],
+      comment: await this.ArticleCommentService.getArticleComment(article.id, 1, 10),
     };
-
-    (<any>information.article).replyCount = 0;
 
     return information;
   }
@@ -147,6 +154,9 @@ export class ArticleService {
       .createQueryBuilder('article')
       .leftJoinAndSelect('article.author', UserTableName.USER)
       .leftJoinAndSelect('article.stat', ArticleTableName.STAT)
+      .where({
+        state: Not(In(AbnormalState)),
+      })
     ;
 
     // 文章类型筛选
@@ -160,6 +170,7 @@ export class ArticleService {
       await BaseSelect
         .skip(skipPage(page, count))
         .take(count)
+        .cache(600 * 1000)
         .getManyAndCount()
     ;
 

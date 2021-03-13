@@ -1,7 +1,8 @@
 import { Body, Controller, Get, Param, Post, UseGuards } from "@nestjs/common";
-import { ApiBearerAuth, ApiOperation, ApiParam, ApiTags } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiParam, ApiResponse, ApiTags } from "@nestjs/swagger";
 
 import { User } from "src/modules/user/entity/user.entity";
+import { Article } from "../entity/article.entity";
 
 import { ArticleService } from "../service/article.service";
 
@@ -53,6 +54,7 @@ export class ArticleController {
     summary: '获取文章内容',
     description: '获取文章的详细信息，包含评论',
   })
+  @ApiOkResponse({ type: Article })
   async information(@Param('id') id: number) {
     return this.ArticleService.information(id);
   }

@@ -1,6 +1,6 @@
 
 import { Injectable } from "@nestjs/common";
-import { DeepPartial, Repository } from "typeorm";
+import { IsNull, Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
 
 import { Article } from "../entity/article.entity";
@@ -9,17 +9,18 @@ import { User } from "src/modules/user/entity/user.entity";
 import { ArticleLove } from "../entity/comment.love.entity";
 
 import { RedisService } from "src/modules/coreModules/redis/redis.service";
+import { ArticleService } from 'src/modules/article/service/article.service';
 
-import { LoveLogDto } from "../dto/comment.dto";
-import { ArticleCommentNS } from "../type/comment";
+import { skipPage } from "src/utils/collection";
+import { SendArticleCommentDto } from "../dto/comment.dto";
 import { ResponseBody } from "src/constants/response";
-import { ArticleLoveStatus } from "../constants/entity.cfg";
 import { ArticleResponse } from "../constants/response.cfg";
+import { ArticleCommentNS } from "../type/comment";
 
 
 
 /**
- * 文章业务 评论 逻辑层
+ * 文章业务 评论 逻辑层 
  */
 @Injectable()
 export class ArticleCommentService {
@@ -31,155 +32,99 @@ export class ArticleCommentService {
     @InjectRepository(ArticleLove) private readonly ArticleLove: Repository<ArticleLove>,
   ) {}
 
+
   /**
-   * 提交用户行为 对评论 点赞/点踩
-   * @param loveLog 踩赞行为
-   * @param user    行为用户
+   * 获取文章评论
+   * @param articleId 文章ID
+   * @param page      页数
+   * @param count     个数
+   * @param parentId  父级评论ID
    */
-  async doLoveCheckLog(loveLog: LoveLogDto, user: User) {
-    await this.saveRedisData();
-    const { articleId, loveType, target } = loveLog;
-    const userId = user.id;
-    const key = `${articleId}-${target}`;
-    const checkExists: null | ArticleCommentNS.LoveIdList = await this.RedisService.getItem('articleComment', key);
-    // 当前文章一点踩赞用户id
-    const loveIds: ArticleCommentNS.LoveIdList = {
-      praise: [],
-      criticism: [],
-      update: false,
-      dbId: 0,
-    };
-    // 当前用户对文章的踩赞状态
-    const loveState: ArticleCommentNS.LoveState = {
-      praise: false,
-      criticism: false,
-    }
-    const { praise: Lpraise, criticism: Lcriticism } = loveIds;
-    
-    if (!checkExists) {
-      const findArticle = await this.Article.findOne({ id: articleId });
-      const findLove = await this.ArticleLove.findOne({ article: articleId, target });
-      
-      if (!findArticle) {
-        ResponseBody.throw(ArticleResponse.STATE_NOT_EXISTS);
-      } else if (findLove) {
-        Lpraise
-          ? Lpraise.push(userId)
-          : Lcriticism.push(userId)
-        loveIds.dbId = findLove.id;
-      }
-    } else {
-      Lpraise.push(...checkExists.praise);
-      Lcriticism.push(...checkExists.criticism);
-      loveIds.dbId = checkExists.dbId;
-    }
-    loveState.praise = Lpraise.findIndex(v => v === userId) + 1;
-    loveState.criticism = Lcriticism.findIndex(v => v === userId) + 1;
-
-    // 读取最新状态
-    const { praise, criticism } = loveState;
-
-    // 重复进行踩赞操作判断
-    if ((praise && loveType === ArticleLoveStatus.Praise) || (criticism && loveType === ArticleLoveStatus.Criticism)) {
-      ResponseBody.throw(ArticleResponse.REPEAT_LOVE_ACTION);
-    }
-    if (praise || criticism) {
-      // 互换踩赞
-      if (praise) {
-        Lpraise.splice(praise - 1, 1);
-        Lcriticism.push(userId);
-      } else {
-        Lcriticism.splice(praise - 1, 1);
-        Lpraise.push(userId);
-      }
-    } else {
-      // 最新的行为 进行插入
-      const insertData = await new ArticleLove({
-        target,
+  async getArticleComment(articleId: Article['id'], page: number, count: number, parentId?: ArticleComment['id']) {
+    const commentList = await this.ArticleComment.findAndCount({
+      skip: skipPage(page, count),
+      take: count,
+      where: {
         article: articleId,
-        praise: Lpraise.length,
-        criticism: Lcriticism.length,
-        json: JSON.stringify({
-          praise: Lpraise,
-          criticism: Lcriticism,
-        }),
-      })
-      .save();
+        parent: parentId ?? IsNull(),
+      },
+      cache: 60 * 1000,
+    });
 
-      if (insertData.id) {
-        loveIds.dbId = insertData.id;
-        if (loveType === ArticleLoveStatus.Praise) {
-          loveIds.praise.push(userId);
-        } else {
-          loveIds.criticism.push(userId);
+    if (commentList[0]) {
+      for (const comment of commentList[0] as ArticleCommentNS.CommentListItem[]) {
+        if (comment.subCommentCount) {
+          comment.subComment = await this.getArticleComment(articleId, 1, 10, comment.id);
         }
       }
     }
-
-    // 缓存更新
-    if (loveIds) {
-      // 将用户ID添加入更新列队
-      loveIds.update = true;
-      // 异常数据过滤
-      this.RedisService.setItem('articleComment', key, loveIds);
-    }
-
-    delete loveIds.update;
-    delete loveIds.dbId;
-    return {
-      state: loveState,
-      list: loveIds,
-    };
+    
+    const [ list, total ] = commentList;
+    return { list, total };
   }
 
 
   /**
-   * 存储Redis缓存数据
+   * 发表评论
+   * @param articleId          文章ID
+   * @param sendArticleComment 评论入参
+   * @param user               评论用户
    */
-  async saveRedisData() {
-    let keyList = await this.RedisService.keys('*', 'articleComment');
-    const indexs = keyList.map(key => key.match(/\d+\-\d+$/)[0]);
-    const updateData: Array<{ index: string; data: ArticleCommentNS.LoveIdList }> = [];
+  async send( articleId: string, sendArticleComment: SendArticleCommentDto, user?: User) {
+    const { content, nickname, email, link, parentId } = sendArticleComment;
+    const article = await this.Article.findOne(articleId);
+    let parent: ArticleComment | null = null;
 
-    for (const index of indexs) {
-      const cache = await this.RedisService.getItem<ArticleCommentNS.LoveIdList>('articleComment', index);
-      if (cache && cache.update) {
-        updateData.push({
-          index,
-          data: cache,
-        });
-      }
+    if (!article) {
+      throw ResponseBody.throw(ArticleResponse.STATE_NOT_EXISTS);
     }
 
-    if (updateData.length) {
-      const saveData = await this.ArticleLove.save<DeepPartial<ArticleLove | null>>(
-        updateData
-        .map(item => {
-          const { data, index } = item;
-          const [ article, target ] = index.split('-');
-          const { dbId, criticism, praise } = data;
-
-          if (!dbId) return null;
-
-          return {
-            id: dbId,
-            article: Number(article),
-            target: Number(target),
-            praise: praise.length,
-            criticism: criticism.length,
-            json: JSON.stringify({ criticism, praise }),
-          }
-        })
-        .filter(v => !!v)
-      );
-
-      // TODO: 判断数据是否全量存储，如果数量不相等则不进行清除
-      if (saveData.length === updateData.length) {
-        for (const check of updateData) {
-          check.data.update = false;
-          await this.RedisService.setItem('articleComment', check.index, check.data);
-        }
+    // 查询父级
+    if (parentId !== undefined) {
+      parent = await this.ArticleComment.findOne(parentId);
+      if (!parent) {
+        throw ResponseBody.throw(ArticleResponse.SEND_SUB_COMMENT_PARENT_NOT);
       }
     }
+    
+    // 敏感词
+    const isMintContent = ArticleService.SensitiveWord.filterSync(content, { every: false, replace: false });
+    if (isMintContent.words.length) {
+      const errMsg = ArticleResponse.SUB_IS_SENSITIVE;
+      errMsg.message = errMsg.message.replace('%s', isMintContent.words.join(', '));
+      throw ResponseBody.throw(errMsg);
+    }
+
+    // 存储
+    const commentQuery = await new ArticleComment({
+        article: Number(articleId),
+        content,
+        user: user.id,
+        nickname,
+        email,
+        link,
+        parent: parentId,
+      })
+      .save()
+    ;
+
+    // 更新子评论数量
+    if (commentQuery.parent && parent) {
+      this.ArticleComment
+      .update({
+        id: commentQuery.parent,
+      }, {
+        subCommentCount: ++parent.subCommentCount,
+      });
+    }
+
+    // 更新评论数量
+    this.Article.update({
+      id: Number(articleId),
+    }, {
+      commentCount: article.commentCount + 1,
+    });
+    
+    return commentQuery;
   }
 }

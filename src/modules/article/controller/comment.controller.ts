@@ -1,14 +1,17 @@
-import { Body, Controller, Post, UseGuards } from "@nestjs/common";
-import { ApiBearerAuth, ApiOperation, ApiTags } from "@nestjs/swagger";
+import { Body, Controller, Param, Post, UseGuards } from "@nestjs/common";
+import { ApiBearerAuth, ApiOperation, ApiParam, ApiTags } from "@nestjs/swagger";
 
 import { User } from "src/modules/user/entity/user.entity";
 
 import { ArticleCommentService } from "../service/comment.service";
 
-import { LoveLogDto } from "../dto/comment.dto";
 import { MainCPrefix } from "../constants/controller.cfg";
-import { JwtAuthGuard } from "src/core/strategy/jwt.strategy";
+import { SendArticleCommentDto } from "../dto/comment.dto";
+import { ArticleResponse } from "../constants/response.cfg";
 import { CurUser } from "src/core/decorators/global.decorators";
+import { UserRole } from "src/modules/user/constants/entity.cfg";
+import { ResBaseException } from "src/core/exception/res.exception";
+import { JwtAuthGuard, JwtPermissionStrategy } from "src/core/strategy/jwt.strategy";
 
 
 
@@ -22,21 +25,37 @@ export class ArticleCommentController {
   constructor(
     private readonly ArticleCommentService: ArticleCommentService,
   ) {}
-
+  
 
   /**
-   * 提交用户行为 对评论 点赞/点踩
-   * @param loveLog 踩赞行为
+   * 发表评论
    */
-  @Post()
-  @UseGuards(JwtAuthGuard)
+  @Post('/:articleId')
   @ApiOperation({
-    summary: '提交用户行为 对评论 点赞/点踩',
-    description: '当用户点击评论赞或者踩时调用此接口记录行为',
+    summary: '发表评论',
+    description: '发表评论内容包含敏感词检测',
   })
+  @ApiParam({
+    name: 'articleId',
+    description: '文章ID',
+  })
+  @UseGuards(new JwtPermissionStrategy(UserRole.Tourist))
   @ApiBearerAuth()
-  async doLoveCheckLog(@Body() loveLog: LoveLogDto, @CurUser() user: User) {
-    return this.ArticleCommentService.doLoveCheckLog(loveLog, user);
+  async send(
+    @Body() sendArticleComment: SendArticleCommentDto,
+    @Param('articleId') articleId: string,
+    @CurUser() user?: User,
+  ) {
+    if (!user.id) {
+      if (!sendArticleComment.nickname) {
+        throw new ResBaseException(ArticleResponse.SEND_COMMENT_NICKNAME_EMPTY);
+      }
+      if (!sendArticleComment.email) {
+        throw new ResBaseException(ArticleResponse.SEND_COMMENT_EMAIL_EMPTY);
+      }
+    } else {
+      sendArticleComment.nickname = '';
+    }
+    return this.ArticleCommentService.send(articleId, sendArticleComment, user);
   }
-
 }
