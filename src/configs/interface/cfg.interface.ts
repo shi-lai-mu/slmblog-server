@@ -1,4 +1,5 @@
 import { JwtModuleOptions } from "@nestjs/jwt";
+import { MailerOptions } from "@nestjs-modules/mailer";
 
 import { DBConfig, RedisConfig } from "./db.interface";
 
@@ -20,4 +21,8 @@ export interface StandardConfig {
    * jwt 配置
    */
   jwt: JwtModuleOptions;
+  /**
+   * 邮箱配置
+   */
+  email: MailerOptions;
 }

@@ -3,6 +3,7 @@ import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, Up
 
 import { Badge } from './badge.entity';
 
+import { ApiProperty } from '@nestjs/swagger';
 import { USER_CONSTANTS } from 'src/constants/constants';
 import { UserServiceNS } from 'src/modules/user/type/user';
 import { BaseInitEntity } from '../../../entity/baseInitEntity';
@@ -94,17 +95,6 @@ export class User extends BaseInitEntity<UserServiceNS.CreateUser> {
   iv: string;
 
   /**
-   * 最后登录IP
-   */
-  @Column({
-    length: 20,
-    comment: '最后登录IP',
-    select: false,
-  })
-  @Exclude()
-  ip: string;
-
-  /**
    * 权限
    */
   @Column({
@@ -114,6 +104,29 @@ export class User extends BaseInitEntity<UserServiceNS.CreateUser> {
     comment: '权限',
   })
   role: UserRole;
+
+  /**
+   * 邮箱
+   */
+  @Column({
+    comment: '邮箱',
+  })
+  @ApiProperty({
+    description: '邮箱',
+  })
+  @Exclude()
+  email: string;
+
+  /**
+   * 最后登录IP
+   */
+  @Column({
+    length: 20,
+    comment: '最后登录IP',
+    select: false,
+  })
+  @Exclude()
+  ip: string;
 
   /**
    * 常用设备系统
@@ -126,26 +139,6 @@ export class User extends BaseInitEntity<UserServiceNS.CreateUser> {
   })
   @Exclude()
   systemPlatform: string;
-
-  /**
-   * 数据修改时间
-   */
-  @UpdateDateColumn({
-    name: 'update_time',
-    comment: '数据修改时间',
-    select: false,
-  })
-  updateTime: Date;
-
-  /**
-   * 账号注册时间
-   */
-  @CreateDateColumn({
-    name: 'create_time',
-    comment: '账号注册时间',
-    select: false,
-  })
-  createTime: Date;
 
   /**
    * 个人链接
@@ -203,6 +196,26 @@ export class User extends BaseInitEntity<UserServiceNS.CreateUser> {
    */
   @ManyToOne(type => UserConfigEntity, config => config.id)
   config: number;
+
+  /**
+   * 数据修改时间
+   */
+   @UpdateDateColumn({
+    name: 'update_time',
+    comment: '数据修改时间',
+    select: false,
+  })
+  updateTime: Date;
+
+  /**
+   * 账号注册时间
+   */
+  @CreateDateColumn({
+    name: 'create_time',
+    comment: '账号注册时间',
+    select: false,
+  })
+  createTime: Date;
 
   /**
    * 校验策略

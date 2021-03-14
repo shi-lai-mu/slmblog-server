@@ -1,12 +1,12 @@
 
-import { Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
+import { Article } from "./article.entity";
 import { User } from "src/modules/user/entity/user.entity";
 
+import { ArticleCommentNS } from "../type/comment";
 import { BaseInitEntity } from "src/entity/baseInitEntity";
 import { ArticleCommentIsDelete, ArticleTableName, ArticleCommentIsTop } from "../constants/entity.cfg";
-import { Article } from "./article.entity";
-import { ArticleCommentNS } from "../type/comment";
 
 
 

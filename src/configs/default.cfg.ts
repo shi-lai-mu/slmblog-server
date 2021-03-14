@@ -35,5 +35,15 @@ export default ((): StandardConfig => ({
     signOptions: {
       expiresIn: '7d',
     },
+  },
+  email: {
+    transport: {
+      host: 'smtp.exmail.qq.com',
+      port: '465',
+      auth: {
+        user: '',
+        pass: '',
+      },
+    },
   }
 }))();

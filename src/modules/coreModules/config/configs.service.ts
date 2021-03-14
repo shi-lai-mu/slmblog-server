@@ -2,6 +2,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { defaultsDeep } from 'lodash';
 import { JwtModuleOptions } from '@nestjs/jwt';
+import { MailerOptions } from '@nestjs-modules/mailer';
 
 import DefaultCfg from '../../../configs/default.cfg';
 import { DBConfig, RedisConfig } from '../../../configs/type/db.cfg';
@@ -25,6 +26,10 @@ export default class ConfigsService {
    * jwt 配置
    */
   readonly jwt: JwtModuleOptions;
+  /**
+   * 邮箱配置
+   */
+  readonly email: MailerOptions;
 
   constructor() {
     let cfg = DefaultCfg;
@@ -41,5 +46,6 @@ export default class ConfigsService {
     this.db = new DBConfig(cfg.db);
     this.redis = new RedisConfig(cfg.redis);
     this.jwt = cfg.jwt;
+    this.email = cfg.email;
   }
 }

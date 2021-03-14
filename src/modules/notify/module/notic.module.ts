@@ -3,8 +3,8 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 
 import { NoticeEntity } from 'src/entity/notice.entity';
 
-import { NoticService } from "./notic.service";
-import { NoticController } from "./notic.controller";
+import { NoticService } from "../service/notic.service";
+import { NoticController } from "../controller/notic.controller";
 
 
 

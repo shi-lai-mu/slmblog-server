@@ -7,7 +7,7 @@ import { RedisService } from './modules/coreModules/redis/redis.service';
 import ConfigService from './modules/coreModules/config/configs.service';
 
 import { UserModule } from './modules/user/user.module';
-import { NoticModule } from './modules/notify/notic/notic.module';
+import { NotifyModule } from './modules/notify/notify.module';
 import { RedisModule } from './modules/coreModules/redis/redis.module';
 import { ArticleBusinessModule } from './modules/article/index.module';
 import { ConfigsModule } from './modules/coreModules/config/configs.module';
@@ -31,7 +31,7 @@ import { GlobalMiddleware } from './core/middleware/global.middleware';
       inject: [ ConfigService ],
     }),
     UserModule,
-    NoticModule,
+    NotifyModule,
     ConfigsModule,
     ArticleBusinessModule,
     ScheduleBusinessModule,

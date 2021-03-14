@@ -1,6 +1,7 @@
 import { Module } from "@nestjs/common";
 
-import { NoticModule } from './notic/notic.module';
+import { NoticModule } from './module/notic.module';
+import { NotifyEmailModule } from "./module/email.module";
 
 
 
@@ -10,6 +11,7 @@ import { NoticModule } from './notic/notic.module';
 @Module({
   imports: [
     NoticModule,
+    NotifyEmailModule,
   ],
 })
-export class NotifyModule {}
+export class NotifyModule {};

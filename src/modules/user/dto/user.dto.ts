@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, Length, MinLength } from 'class-validator';
+import { IsEmail, IsNotEmpty, Length } from 'class-validator';
 
 import { USER_CONSTANTS } from '../../../constants/constants';
 import { ResponseEnum, ValidateThrow } from '../../../constants/response';
@@ -27,7 +27,7 @@ export class UserLoginDto {
   /**
    * 账号
    */
-  @IsNotEmpty(ResponseEnum.USER.ACCOUNT_EMPTY)
+  @IsNotEmpty(ValidateThrow(ResponseEnum.USER.ACCOUNT_EMPTY))
   @Length(USER_CONSTANTS.ACCOUNT_MIN_LENGTH, USER_CONSTANTS.ACCOUNT_MAX_LENGTH, ValidateThrow(ResponseEnum.USER.ACCOUNT_FORMAT))
   @ApiProperty({
     description: '账号',
@@ -35,13 +35,18 @@ export class UserLoginDto {
   })
   account: string;
 
+
   /**
    * 密码
    */
-  @IsNotEmpty(ResponseEnum.USER.PASSWORD_EMPTY)
-  @Length(USER_CONSTANTS.PASSWORD_MIN_LENGTH, USER_CONSTANTS.PASSWORD_MAX_LENGTH)
+  @IsNotEmpty(ValidateThrow(ResponseEnum.USER.ACCOUNT_EMPTY))
+  @Length(
+    USER_CONSTANTS.ACCOUNT_MIN_LENGTH,
+    USER_CONSTANTS.ACCOUNT_MAX_LENGTH,
+    ValidateThrow(ResponseEnum.USER.ACCOUNT_FORMAT)
+  )
   @ApiProperty({
-    description: '密码',
+    description: `账号 (长度限制：${USER_CONSTANTS.ACCOUNT_MIN_LENGTH}~${USER_CONSTANTS.ACCOUNT_MAX_LENGTH})`,
     default: 'shilaimu',
   })
   password: string;
@@ -55,22 +60,57 @@ export class UserRegisterDto {
   /**
    * 账号
    */
-  @MinLength(1, ResponseEnum.USER.ACCOUNT_EMPTY)
-  @Length(USER_CONSTANTS.ACCOUNT_MIN_LENGTH, USER_CONSTANTS.ACCOUNT_MAX_LENGTH, ResponseEnum.USER.ACCOUNT_FORMAT)
+  @IsNotEmpty(ValidateThrow(ResponseEnum.USER.ACCOUNT_EMPTY))
+  @Length(
+    USER_CONSTANTS.ACCOUNT_MIN_LENGTH,
+    USER_CONSTANTS.ACCOUNT_MAX_LENGTH,
+    ValidateThrow(ResponseEnum.USER.ACCOUNT_FORMAT)
+  )
   @ApiProperty({
-    description: '账号',
+    description: `账号 (长度限制：${USER_CONSTANTS.ACCOUNT_MIN_LENGTH}~${USER_CONSTANTS.ACCOUNT_MAX_LENGTH})`,
     default: 'shilaimu',
   })
   account: string;
 
+
   /**
    * 密码
    */
-  @MinLength(1, ResponseEnum.USER.PASSWORD_EMPTY)
-  @Length(USER_CONSTANTS.PASSWORD_MIN_LENGTH, USER_CONSTANTS.PASSWORD_MAX_LENGTH)
+  @IsNotEmpty(ValidateThrow(ResponseEnum.USER.PASSWORD_EMPTY))
+  @Length(
+    USER_CONSTANTS.PASSWORD_MIN_LENGTH,
+    USER_CONSTANTS.PASSWORD_MAX_LENGTH,
+    ValidateThrow(ResponseEnum.USER.PASSWORD_FORMAT),
+  )
   @ApiProperty({
-    description: '密码',
+    description: `密码 (长度限制：${USER_CONSTANTS.PASSWORD_MIN_LENGTH}~${USER_CONSTANTS.PASSWORD_MAX_LENGTH})`,
     default: 'shilaimu',
   })
   password: string;
+
+
+  /**
+   * 邮箱
+   */
+  @IsNotEmpty(ValidateThrow(ResponseEnum.USER.EMAIL_EMPTY))
+  @IsEmail({}, ValidateThrow(ResponseEnum.USER.EMAIL_FORMA))
+  @ApiProperty({
+    description: '邮箱 (必须为邮箱格式)',
+  })
+  email: string;
+
+
+  /**
+   * 验证码
+   */
+  @IsNotEmpty(ValidateThrow(ResponseEnum.USER.CODE_EMPTY))
+  @Length(
+    USER_CONSTANTS.CODE_LENGTH,
+    USER_CONSTANTS.CODE_LENGTH,
+    ResponseEnum.USER.CODE_LENGTH,
+  )
+  @ApiProperty({
+    description: `验证码 (长度限制：${USER_CONSTANTS.CODE_LENGTH})`,
+  })
+  code: string;
 }

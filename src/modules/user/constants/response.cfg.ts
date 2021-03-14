@@ -8,9 +8,9 @@ import { USER_CONSTANTS } from '../../../constants/constants';
  */
 export class UserResponse {
   // 账号为空
-  static readonly ACCOUNT_EMPTY:     Status = { code: 1100, message: '账号不能为空！' };
+  static readonly ACCOUNT_EMPTY:     Status = { code: 1100, message: '账号不能为空!' };
   // 密码为空
-  static readonly PASSWORD_EMPTY:    Status = { code: 1101, message: '密码不能为空！' };
+  static readonly PASSWORD_EMPTY:    Status = { code: 1101, message: '密码不能为空!' };
   // 账号格式问题
   static readonly ACCOUNT_FORMAT:    Status = { code: 1102, message: `账号 格式不正确，只能在${USER_CONSTANTS.ACCOUNT_MIN_LENGTH}-${USER_CONSTANTS.ACCOUNT_MAX_LENGTH}之间，只能包含中英文和下划线。` };
   // 密码格式问题
@@ -35,6 +35,14 @@ export class UserResponse {
   static readonly REFRESH_JWT_QUERY: Status = { code: 1112, message: '置换JWT失败，必要参数不存在!' };
   // 置换JWT：无效令牌
   static readonly REFRESH_JWT_INVAL: Status = { code: 1113, message: '置换JWT失败，无效令牌!' };
+  // 邮箱为空
+  static readonly EMAIL_EMPTY:       Status = { code: 1114, message: '邮箱不能为空!' };
+  // 邮箱格式错误
+  static readonly EMAIL_FORMA:       Status = { code: 1115, message: '邮箱格式错误!' };
+  // 验证码为空
+  static readonly CODE_EMPTY:        Status = { code: 1116, message: '验证码为空!' };
+  // 验证码长度错误
+  static readonly CODE_LENGTH:       Status = { code: 1117, message: '验证码长度错误!' };
 }
 
 /**
