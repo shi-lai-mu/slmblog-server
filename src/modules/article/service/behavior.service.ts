@@ -4,7 +4,7 @@ import { InjectRepository } from "@nestjs/typeorm";
 
 import { Article } from "../entity/article.entity";
 import { ArticleComment } from "../entity/comment.entity";
-import { User } from "src/modules/user/entity/user.entity";
+import { UserEntity } from "src/modules/user/entity/user.entity";
 import { ArticleLove } from "../entity/comment.love.entity";
 
 import { RedisService } from "src/modules/coreModules/redis/redis.service";
@@ -35,7 +35,7 @@ export class ArticleBehaviorService {
      * @param loveLog 踩赞行为
      * @param user    行为用户
      */
-    async doLoveCheckLog(loveLog: LoveLogDto, user: User) {
+    async doLoveCheckLog(loveLog: LoveLogDto, user: UserEntity) {
       await this.saveRedisData();
       const { articleId, loveType, target } = loveLog;
       const userId = user.id;

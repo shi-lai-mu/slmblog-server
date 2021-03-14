@@ -1,5 +1,13 @@
 import { Injectable } from "@nestjs/common";
-import { MailerService } from '@nestjs-modules/mailer';
+import { SentMessageInfo } from 'nodemailer';
+import { ISendMailOptions, MailerService } from '@nestjs-modules/mailer';
+
+import ConfigsService from "src/modules/coreModules/config/configs.service";
+
+import { ResponseBody, Status } from "src/constants/response";
+import { NotifyResponse } from "../constants/response.cfg";
+import { RedisService } from "src/modules/coreModules/redis/redis.service";
+
 
 
 /**
@@ -9,32 +17,54 @@ import { MailerService } from '@nestjs-modules/mailer';
 export class NotifyEmailService {
 
   constructor(
-    private readonly mailerService: MailerService,
+    private readonly MailerService: MailerService,
+    private readonly configService: ConfigsService,
+    private readonly RedisService: RedisService,
   ) {}
 
+
   /**
-   * 发送注册账号验证码
-   * @param email 邮箱号
+   * 发送邮件
+   * @param options 发送配置信息
    */
-  async registerAccountCode(email: string) {
-    this
-      .mailerService
-      .sendMail({
-        to: '478889187@qq.com',
-        subject: '测试发送',
-        // text: '测试内容',
-        template: 'email',
-        from: {
-          name: '史莱姆博客管理',
-          address: 'service@slmblog.com',
-        },
-        context: {
-          code: '123456',
-        }
-      })
-      .then(res => console.log({res}))
-      .catch(err => {
-        throw err;
-      })
+  async send(options: ISendMailOptions): Promise<SentMessageInfo | Status> {
+    return new Promise(async (res: SentMessageInfo, rej: (value: Status) => void) => {
+      try {
+        const send: SentMessageInfo = await this.MailerService.sendMail(options);
+        send.status = send.response === '250 Ok: queued as ';
+        res(send);
+      } catch(err) {
+        rej(NotifyResponse.EMAIL_SEND_ERROR);
+        // TODO: 记录错误 code...
+      }
+    });
+  }
+
+
+  /**
+   * 记录发送邮件日志
+   * @param key  键
+   * @param data 值
+   */
+  async logger(key: string, data: string, expiryMode?: string | any[], time?: string | number) {
+    return this.RedisService.setItem('notify', `email:${key}`, data, expiryMode, time);
+  }
+
+
+  /**
+   * 模糊获取记录发送邮件日志
+   * @param key  键
+   */
+  async getLogs(key: string) {
+    return this.RedisService.keys(`:email:${key}*`, 'notify');
+  }
+
+
+  /**
+   * 获取记录发送邮件日志
+   * @param key  键
+   */
+  async getLog<T>(key: string): Promise<T | null> {
+    return this.RedisService.getItem('notify', `email:${key}`);
   }
 }

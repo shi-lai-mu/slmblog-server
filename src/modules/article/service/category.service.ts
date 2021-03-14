@@ -2,7 +2,7 @@ import { Repository } from "typeorm";
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 
-import { User } from "src/modules/user/entity/user.entity";
+import { UserEntity } from "src/modules/user/entity/user.entity";
 import { ArticleCategory } from "../entity/categorys.entity";
 
 import { CreateArticleCategoryDto } from "../dto/category.dto";
@@ -26,7 +26,7 @@ export class ArticleCategoryService {
    * @param createCategory 创建类目入参
    * @param user           创建人用户信息
    */
-  async create(createCategory: CreateArticleCategoryDto, user: User) {
+  async create(createCategory: CreateArticleCategoryDto, user: UserEntity) {
     const { names, parentId, link } = createCategory;
     const findList = await this.ArticleCategoryRepository.find({ names });
 

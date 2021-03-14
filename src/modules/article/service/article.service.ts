@@ -4,7 +4,7 @@ import { plainToClass } from "class-transformer";
 import { InjectRepository } from "@nestjs/typeorm";
 import { getConnection, Repository, Not, In } from "typeorm";
 
-import { User } from "src/modules/user/entity/user.entity";
+import { UserEntity } from "src/modules/user/entity/user.entity";
 import { Article } from "src/modules/article/entity/article.entity";
 import { ArticleStat } from "src/modules/article/entity/stat.entity";
 
@@ -42,7 +42,7 @@ export class ArticleService {
    * @param articleData 文章数据
    * @param author      发布者
    */
-  async submit(articleData: ArticleSubmitDto, author: User) {
+  async submit(articleData: ArticleSubmitDto, author: UserEntity) {
     // 敏感词
     const content = (articleData.content + articleData.description + articleData.subject).replace(/\s|\n|\r|\t|\-|\_|[a-z0-9]/g, '');
     const isMintContent = ArticleService.SensitiveWord.filterSync(content, { every: false, replace: false });
@@ -189,7 +189,7 @@ export class ArticleService {
    */
   articleDataFilter(article: ArticleNS.BaseData) {
     article.stat = plainToClass(ArticleStat, article.stat);
-    article.author = plainToClass(User, article.author);
+    article.author = plainToClass(UserEntity, article.author);
     return article;
   }
 }

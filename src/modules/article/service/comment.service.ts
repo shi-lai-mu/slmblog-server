@@ -5,7 +5,7 @@ import { InjectRepository } from "@nestjs/typeorm";
 
 import { Article } from "../entity/article.entity";
 import { ArticleComment } from "../entity/comment.entity";
-import { User } from "src/modules/user/entity/user.entity";
+import { UserEntity } from "src/modules/user/entity/user.entity";
 import { ArticleLove } from "../entity/comment.love.entity";
 
 import { RedisService } from "src/modules/coreModules/redis/redis.service";
@@ -70,7 +70,7 @@ export class ArticleCommentService {
    * @param sendArticleComment 评论入参
    * @param user               评论用户
    */
-  async send( articleId: string, sendArticleComment: SendArticleCommentDto, user?: User) {
+  async send( articleId: string, sendArticleComment: SendArticleCommentDto, user?: UserEntity) {
     const { content, nickname, email, link, parentId } = sendArticleComment;
     const article = await this.Article.findOne(articleId);
     let parent: ArticleComment | null = null;
