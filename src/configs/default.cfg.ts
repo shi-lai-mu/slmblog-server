@@ -1,11 +1,22 @@
 import * as path from 'path';
 
 import { isProd } from 'src/constants/system';
+import { getIPAdress } from 'src/utils/network';
 import { StandardConfig } from './interface/cfg.interface';
 
 
 
 export default ((): StandardConfig => ({
+  web: {
+    host: isProd ? 'https://slmblog.com' : `http://${getIPAdress()}:8888`,
+    email: {
+      support: 'admin@slmblog.com',
+      from: {
+        name: '史莱姆博客',
+        address: 'service@slmblog.com',
+      },
+    },
+  },
   db: {
     type: 'mysql',
     host: '',
@@ -39,11 +50,11 @@ export default ((): StandardConfig => ({
   email: {
     transport: {
       host: 'smtp.exmail.qq.com',
-      port: '465',
+      port: 465,
       auth: {
         user: '',
         pass: '',
       },
     },
-  }
+  },
 }))();

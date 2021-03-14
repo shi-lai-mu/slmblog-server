@@ -10,6 +10,37 @@ import { DBConfig, RedisConfig } from "./db.interface";
  */
 export interface StandardConfig {
   /**
+   * 站点设置
+   */
+  web: {
+    /**
+     * 域名
+     */
+    host: string;
+    /**
+     * 邮箱业务配置
+     */
+    email: {
+      /**
+       * 提供支持的邮箱
+       */
+      support: string;
+      /**
+       * 发送业务的邮箱
+       */
+      from: {
+        /**
+         * 显示名称
+         */
+        name: string;
+        /**
+         * 邮箱号
+         */
+        address: string;
+      },
+    },
+  },
+  /**
    * 数据库 配置
    */
   db: DBConfig;
