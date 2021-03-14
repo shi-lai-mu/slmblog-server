@@ -9,6 +9,7 @@ import ConfigsService from './modules/coreModules/config/configs.service';
 import { AppModule } from './app.module';
 
 import createApiDocument from './plugins/swagger';
+import { UserAuthService } from './modules/user/service/auth.service';
 
 
 
@@ -18,8 +19,9 @@ async function bootstrap() {
   });
   const configsService = app.get(ConfigsService);
   const redisService = app.get(RedisService);
+  const userAuthService = app.get(UserAuthService);
 
-  app.useGlobalInterceptors(new TimeoutInterceptor(configsService, redisService));
+  app.useGlobalInterceptors(new TimeoutInterceptor(configsService, redisService, userAuthService));
   app.useGlobalFilters(new GlobalFilter());
   app.useStaticAssets('public');
 

@@ -20,22 +20,32 @@ export class UserBaseDto {
   nickname: string;
 }
 
+
 /**
- * 用户登录
+ * 用户账号
  */
-export class UserLoginDto {
+export class UserAccountDto {
   /**
    * 账号
    */
   @IsNotEmpty(ValidateThrow(ResponseEnum.USER.ACCOUNT_EMPTY))
-  @Length(USER_CONSTANTS.ACCOUNT_MIN_LENGTH, USER_CONSTANTS.ACCOUNT_MAX_LENGTH, ValidateThrow(ResponseEnum.USER.ACCOUNT_FORMAT))
+  @Length(
+    USER_CONSTANTS.ACCOUNT_MIN_LENGTH,
+    USER_CONSTANTS.ACCOUNT_MAX_LENGTH,
+    ValidateThrow(ResponseEnum.USER.ACCOUNT_FORMAT)
+  )
   @ApiProperty({
-    description: '账号',
+    description: `账号 (长度限制：${USER_CONSTANTS.ACCOUNT_MIN_LENGTH}~${USER_CONSTANTS.ACCOUNT_MAX_LENGTH})`,
     default: 'shilaimu',
   })
   account: string;
+}
 
 
+/**
+ * 用户登录
+ */
+export class UserLoginDto extends UserAccountDto {
   /**
    * 密码
    */
@@ -56,23 +66,7 @@ export class UserLoginDto {
 /**
  * 用户注册
  */
-export class UserRegisterDto {
-  /**
-   * 账号
-   */
-  @IsNotEmpty(ValidateThrow(ResponseEnum.USER.ACCOUNT_EMPTY))
-  @Length(
-    USER_CONSTANTS.ACCOUNT_MIN_LENGTH,
-    USER_CONSTANTS.ACCOUNT_MAX_LENGTH,
-    ValidateThrow(ResponseEnum.USER.ACCOUNT_FORMAT)
-  )
-  @ApiProperty({
-    description: `账号 (长度限制：${USER_CONSTANTS.ACCOUNT_MIN_LENGTH}~${USER_CONSTANTS.ACCOUNT_MAX_LENGTH})`,
-    default: 'shilaimu',
-  })
-  account: string;
-
-
+export class UserRegisterDto extends UserAccountDto {
   /**
    * 密码
    */
@@ -92,8 +86,8 @@ export class UserRegisterDto {
   /**
    * 邮箱
    */
-  @IsNotEmpty(ValidateThrow(ResponseEnum.USER.EMAIL_EMPTY))
-  @IsEmail({}, ValidateThrow(ResponseEnum.USER.EMAIL_FORMA))
+  @IsNotEmpty(ValidateThrow(ResponseEnum.NOTIFY.EMAIL_PARAMS_EMPTY))
+  @IsEmail({}, ValidateThrow(ResponseEnum.NOTIFY.EMAIL_PARAMS_FORMAT))
   @ApiProperty({
     description: '邮箱 (必须为邮箱格式)',
   })
@@ -113,4 +107,20 @@ export class UserRegisterDto {
     description: `验证码 (长度限制：${USER_CONSTANTS.CODE_LENGTH})`,
   })
   code: string;
+}
+
+
+/**
+ * 注册账号 邮箱验证码通知 输入校验
+ */
+export class ValidateEmailDto extends UserAccountDto {
+  /**
+   * 邮箱
+   */
+   @IsNotEmpty(ValidateThrow(ResponseEnum.NOTIFY.EMAIL_PARAMS_EMPTY))
+   @IsEmail({}, ValidateThrow(ResponseEnum.NOTIFY.EMAIL_PARAMS_FORMAT))
+   @ApiProperty({
+     description: '邮箱 (必须为邮箱格式)',
+   })
+   email: string;
 }

@@ -1,40 +1,37 @@
 
 import { AuthGuard } from '@nestjs/passport';
-import { ApiBearerAuth, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
-import { Body, Controller, Post, Request, UseGuards, Get, Req, Param } from '@nestjs/common';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Post, Request, UseGuards, Get, Req, Query } from '@nestjs/common';
 
-import { User } from 'src/modules/user/entity/user.entity';
+import { UserEntity } from 'src/modules/user/entity/user.entity';
 
 import { UserService } from '../service/user.service';
-import { UserServiceBase } from '../service/user.service';
-import { UserConfigService } from '../service/config.service';
+import { UserServiceBase } from '../service/base.service';
+import { UserAccountService } from '../service/account.service';
 
 import { getClientIP } from 'src/utils/collection';
-import { APIPrefix } from 'src/constants/constants';
 import { ResponseEnum } from 'src/constants/response';
-import { UserSpace } from 'src/interface/user.interface';
+import { UserResponse } from '../constants/response.cfg';
 import { GlobalRequest } from 'src/interface/gloabl.interface';
 import { CurUser } from 'src/core/decorators/global.decorators';
-import { UserLoginDto, UserRegisterDto } from '../dto/user.dto';
-import { JwtAuthGuard } from '../../../core/strategy/jwt.strategy';
 import { ResBaseException } from 'src/core/exception/res.exception';
 import { FrequentlyGuards } from 'src/core/guards/frequently.guards';
-// import { plainToClass } from 'class-transformer';
+import { MainCPrefix } from 'src/modules/user/constants/controller.cfg';
+import { UserLoginDto, UserRegisterDto, UserAccountDto } from '../dto/user.dto';
 
 
 
-export const _USER_PATH_NAME_ = APIPrefix + 'user';
-
+const controllerPerfix = MainCPrefix;
 /**
  * 用户业务 账号 控制层
  */
-@Controller(_USER_PATH_NAME_)
+@Controller(controllerPerfix)
 @ApiTags('用户')
 export class UserAccountController {
 
   constructor(
-    private readonly UserService: UserService,
-    private readonly UserConfigService: UserConfigService,
+    private readonly UserAccountService: UserAccountService,
+    private readonly UserService?: UserService,
   ) {}
 
 
@@ -65,7 +62,7 @@ export class UserAccountController {
       userAgent = UserServiceBase.getSystemPlatform(userAgent);
     }
 
-    const user = await this.UserService.create(body, {
+    const user = await this.UserAccountService.create(body, {
       ip: getClientIP(req),
       systemPlatform: userAgent,
     });
@@ -83,8 +80,8 @@ export class UserAccountController {
   @ApiOperation({
     summary: '登录',
   })
-  async login(@CurUser() user: User, @Body() _body: UserLoginDto, @Req() req?: GlobalRequest) {
-    this.UserService.login(user, {
+  async login(@CurUser() user: UserEntity, @Body() _body: UserLoginDto, @Req() req?: GlobalRequest) {
+    this.UserAccountService.login(user, {
       ip: getClientIP(req),
       systemPlatform: req.headers['user-agent'],
     });
@@ -96,53 +93,14 @@ export class UserAccountController {
 
 
   /**
-   * 获取个人信息
+   * 检测账号注册状态
    */
-  @Get()
-  @UseGuards(JwtAuthGuard)
+  @Get('/check/register')
   @ApiOperation({
-    summary: '获取个人信息',
+    summary: '检测 账号/邮箱 是否可注册',
+    description: '检测账号或者邮箱是否可注册，如果邮箱处于未认证状态也同样会被检测为占用!<br>code为0是可注册，否则为不可注册!'
   })
-  @ApiBearerAuth()
-  async info(@CurUser() user: UserSpace.UserInfo) {
-    delete user.password;
-    delete user.iv;
-    user.config = await this.UserConfigService.getConfig(user.id);
-    return user;
-  }
-
-
-  /**
-   * 获取其他用户数据
-   * @param id 用户ID
-   */
-  @Get(':id')
-  @ApiOperation({
-    summary: '获取其他用户数据',
-  })
-  @ApiParam({
-    name: 'id',
-    description: '用户ID',
-  })
-  async outherUser(@Param('id') id: User['id']) {
-    const user = await this.UserService.outherUser(id);
-    if (!user) {
-      throw new ResBaseException(ResponseEnum.USER.FIND_USER_NULL);
-    }
-    return user;
-  }
-
-
-  /**
-   * 刷新令牌
-   */
-  @Get('refresh/token')
-  @ApiOperation({
-    summary: '刷新令牌',
-    description: '置换旧令牌',
-  })
-  @ApiBearerAuth()
-  async refreshJWT(@Req() req?: GlobalRequest) {
-    return this.UserService.refreshJWT(req.headers['authorization']);
+  async checkAccountRegister(@Query() query: UserAccountDto) {
+    return !(await this.UserAccountService.isRegister(query.account)) || UserResponse.REG_AC_EXISTS;
   }
 }
