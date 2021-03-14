@@ -1,7 +1,7 @@
 import { ApiBearerAuth, ApiOperation, ApiTags } from "@nestjs/swagger";
 import { Body, Controller, Get, Post, Query, UseGuards } from "@nestjs/common";
 
-import { User } from "src/modules/user/entity/user.entity";
+import { UserEntity } from "src/modules/user/entity/user.entity";
 
 import { ArticleCategoryService } from "../service/category.service";
 
@@ -35,7 +35,7 @@ export class ArticleCategoryContorller {
     summary: '新增类目',
     description: '`[超管权限]` 新增类目',
   })
-  async create(@Body() CreateCategoryDto: CreateArticleCategoryDto, @CurUser() user: User) {
+  async create(@Body() CreateCategoryDto: CreateArticleCategoryDto, @CurUser() user: UserEntity) {
     return this.CategoryService.create(CreateCategoryDto, user);
   }
 

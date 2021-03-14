@@ -1,6 +1,6 @@
 import { Request } from "@nestjs/common";
 
-import { User } from "src/modules/user/entity/user.entity";
+import { UserEntity } from "src/modules/user/entity/user.entity";
 
 import { ApiProperty } from "@nestjs/swagger";
 
@@ -11,7 +11,7 @@ export interface GlobalRequest extends Request {
   /**
    * 用户数据
    */
-  user: User;
+  user: UserEntity;
 }
 
 /**

@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Param, Post, UseGuards } from "@nestjs/common";
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiParam, ApiResponse, ApiTags } from "@nestjs/swagger";
 
-import { User } from "src/modules/user/entity/user.entity";
+import { UserEntity } from "src/modules/user/entity/user.entity";
 import { Article } from "../entity/article.entity";
 
 import { ArticleService } from "../service/article.service";
@@ -36,7 +36,7 @@ export class ArticleController {
     description: '用于发布文章',
   })
   @ApiBearerAuth()
-  async submit(@Body() articleData: ArticleSubmitDto, @CurUser() user: User) {
+  async submit(@Body() articleData: ArticleSubmitDto, @CurUser() user: UserEntity) {
     // 发布权
     if (user.status !== UserStatus.Actived) {
       ResponseBody.throw(ResponseEnum.ARTICLE.AC_SUBMIT_ERROR);

@@ -5,7 +5,7 @@ import { ARTICLE_COMMENT } from "./controller.cfg";
 
 
 /**
- * 文章业务响应
+ * 文章业务 响应
  */
 export class ArticleResponse {
   // 文章标题为空
@@ -49,7 +49,7 @@ export class ArticleResponse {
   // 评论内容长度不对
   static readonly SEND_COMMENT_CONTENT_LENGTH: Status = { code: 1222, message: `评论内容长度错误，字数应在${ARTICLE_COMMENT.SEND_COMMENT_CONTENT_MIN}~${ARTICLE_COMMENT.SEND_COMMENT_CONTENT_MAX}之间!` };
   // 评论 邮箱为空
-  static readonly SEND_COMMENT_EMAIL_EMPTY:    Status = { code: 1223, message: '邮箱不能为空!' };
+  // static readonly SEND_COMMENT_EMAIL_EMPTY:    Status = { code: 1223, message: '邮箱不能为空!' }; TODO: 注意补上CODE
   // 评论 昵称为空
   static readonly SEND_COMMENT_NICKNAME_EMPTY: Status = { code: 1224, message: '昵称不能为空!' };
   // 在父级下留子评论

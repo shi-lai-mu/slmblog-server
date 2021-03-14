@@ -20,7 +20,7 @@ export class UserResponse {
   // 账号或密码错误
   static readonly LOG_AC_PW_ERROR:   Status = { code: 1105, message: '账号或密码错误!' };
   // 用户信息不存在
-  static readonly FIND_USER_NULL:    Status = { code: 1106, message: '用户信息不存在!' };
+  static readonly FIND_USER_NULL:    Status = { code: 1106, message: '目标用户不存在!' };
   // 重新登录：已在其他设备上登录
   static readonly UNLOG_BUSY_LINE:   Status = { code: 1107, message: '登录状态失效，请重新登录!' };
   // 登录账号异常：已被冻结或转移
@@ -35,14 +35,16 @@ export class UserResponse {
   static readonly REFRESH_JWT_QUERY: Status = { code: 1112, message: '置换JWT失败，必要参数不存在!' };
   // 置换JWT：无效令牌
   static readonly REFRESH_JWT_INVAL: Status = { code: 1113, message: '置换JWT失败，无效令牌!' };
-  // 邮箱为空
-  static readonly EMAIL_EMPTY:       Status = { code: 1114, message: '邮箱不能为空!' };
-  // 邮箱格式错误
-  static readonly EMAIL_FORMA:       Status = { code: 1115, message: '邮箱格式错误!' };
+  // 登录账号异常：已被冻
+  static readonly ACOOUNT_BANLIST:   Status = { code: 1114, message: '账号状态异常，已冻结!' };
+  // 登录账号异常：未激活
+  static readonly ACOOUNT_INACTIVE:  Status = { code: 1115, message: '账号未激活，请先验证邮箱!' };
   // 验证码为空
   static readonly CODE_EMPTY:        Status = { code: 1116, message: '验证码为空!' };
   // 验证码长度错误
   static readonly CODE_LENGTH:       Status = { code: 1117, message: '验证码长度错误!' };
+  // 未登录账号
+  static readonly ACOOUNT_NOT_LOGIN: Status = { code: 1118, message: '必须登录账号才能进行此操作!' };
 }
 
 /**

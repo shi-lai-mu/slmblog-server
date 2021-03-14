@@ -6,6 +6,7 @@ import { MailerOptions } from '@nestjs-modules/mailer';
 
 import DefaultCfg from '../../../configs/default.cfg';
 import { DBConfig, RedisConfig } from '../../../configs/type/db.cfg';
+import { StandardConfig } from 'src/configs/interface/cfg.interface';
 
 
 
@@ -13,7 +14,11 @@ import { DBConfig, RedisConfig } from '../../../configs/type/db.cfg';
  * 核心 配置业务 逻辑层
  */
 export default class ConfigsService {
-  
+
+  /**
+   * 站点配置
+   */
+  readonly web: StandardConfig['web'];
   /**
    * 数据库 配置
    */
@@ -47,5 +52,6 @@ export default class ConfigsService {
     this.redis = new RedisConfig(cfg.redis);
     this.jwt = cfg.jwt;
     this.email = cfg.email;
+    this.web = cfg.web;
   }
 }

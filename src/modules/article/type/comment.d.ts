@@ -1,7 +1,7 @@
 import { Article } from "../entity/article.entity";
 
-import { User } from "src/modules/user/entity/user.entity";
 import { ArticleComment } from "../entity/comment.entity";
+import { UserEntity } from "src/modules/user/entity/user.entity";
 
 import { ListPage } from 'src/interface/gloabl.interface';
 
@@ -27,7 +27,7 @@ export namespace ArticleCommentNS {
     /**
      * 评论用户ID
      */
-    user?: User['id'];
+    user?: UserEntity['id'];
     /**
      * 父级评论ID
      */

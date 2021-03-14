@@ -1,7 +1,7 @@
 import { Body, Controller, Param, Post, UseGuards } from "@nestjs/common";
 import { ApiBearerAuth, ApiOperation, ApiParam, ApiTags } from "@nestjs/swagger";
 
-import { User } from "src/modules/user/entity/user.entity";
+import { UserEntity } from "src/modules/user/entity/user.entity";
 
 import { ArticleCommentService } from "../service/comment.service";
 
@@ -11,7 +11,8 @@ import { ArticleResponse } from "../constants/response.cfg";
 import { CurUser } from "src/core/decorators/global.decorators";
 import { UserRole } from "src/modules/user/constants/entity.cfg";
 import { ResBaseException } from "src/core/exception/res.exception";
-import { JwtAuthGuard, JwtPermissionStrategy } from "src/core/strategy/jwt.strategy";
+import { JwtPermissionStrategy } from "src/core/strategy/jwt.strategy";
+import { NotifyResponse } from "src/modules/notify/constants/response.cfg";
 
 
 
@@ -44,14 +45,14 @@ export class ArticleCommentController {
   async send(
     @Body() sendArticleComment: SendArticleCommentDto,
     @Param('articleId') articleId: string,
-    @CurUser() user?: User,
+    @CurUser() user?: UserEntity,
   ) {
     if (!user.id) {
       if (!sendArticleComment.nickname) {
         throw new ResBaseException(ArticleResponse.SEND_COMMENT_NICKNAME_EMPTY);
       }
       if (!sendArticleComment.email) {
-        throw new ResBaseException(ArticleResponse.SEND_COMMENT_EMAIL_EMPTY);
+        throw new ResBaseException(NotifyResponse.EMAIL_PARAMS_EMPTY);
       }
     } else {
       sendArticleComment.nickname = '';

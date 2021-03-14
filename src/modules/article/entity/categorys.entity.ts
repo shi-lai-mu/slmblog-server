@@ -1,6 +1,6 @@
 import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
-import { User } from "src/modules/user/entity/user.entity";
+import { UserEntity } from "src/modules/user/entity/user.entity";
 
 import { ArticleCategoryNS } from "../type/category";
 import { BaseInitEntity } from "../../../entity/baseInitEntity";
@@ -63,6 +63,6 @@ export class ArticleCategory extends BaseInitEntity<ArticleCategoryNS.CreateCate
   /**
    * 创建用户ID
    */
-  @ManyToOne(type => User, user => user.id)
+  @ManyToOne(type => UserEntity, user => user.id)
   create_user: number;
 }

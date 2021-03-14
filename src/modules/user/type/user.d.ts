@@ -1,4 +1,4 @@
-import { User } from "src/modules/user/entity/user.entity";
+import { UserEntity } from "src/modules/user/entity/user.entity";
 
 
 
@@ -13,11 +13,11 @@ export namespace UserServiceNS {
     /**
      * IP
      */
-    ip: User['ip'];
+    ip: UserEntity['ip'];
     /**
      * 操作平台
      */
-    systemPlatform: User['systemPlatform'];
+    systemPlatform: UserEntity['systemPlatform'];
   }
 
   /**
@@ -27,18 +27,18 @@ export namespace UserServiceNS {
     /**
      * 账号
      */
-    account: User['account'];
+    account: UserEntity['account'];
     /**
      * 昵称
      */
-    nickname: User['nickname'];
+    nickname: UserEntity['nickname'];
     /**
      * 密码
      */
-    password: User['password'];
+    password: UserEntity['password'];
     /**
      * 盐值
      */
-    iv: User['iv'];
+    iv: UserEntity['iv'];
   }
 }

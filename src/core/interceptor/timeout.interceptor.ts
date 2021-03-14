@@ -1,11 +1,10 @@
-import { JwtService } from "@nestjs/jwt";
 import { throwError, TimeoutError } from "rxjs";
 import { catchError, map, timeout } from 'rxjs/operators';
 import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from "@nestjs/common";
 
-import { User } from "src/modules/user/entity/user.entity";
+import { UserEntity } from "src/modules/user/entity/user.entity";
 
-import { AuthService } from "src/modules/user/service/auth.service";
+import { UserAuthService } from "src/modules/user/service/auth.service";
 import { RedisService } from "src/modules/coreModules/redis/redis.service";
 import ConfigsService from "src/modules/coreModules/config/configs.service";
 
@@ -18,24 +17,25 @@ import { ResponseBody, ResponseEnum } from "src/constants/response";
 @Injectable()
 export class TimeoutInterceptor implements NestInterceptor {
 
-  private AuthService!: AuthService;
+  // private AuthService!: UserAuthService;
 
   constructor(
     private readonly configService: ConfigsService,
     private readonly redisService: RedisService,
+    private readonly AuthService: UserAuthService,
   ) {
-    this.AuthService = new AuthService(new JwtService(this.configService.jwt));
+    // this.AuthService = new UserAuthService(new JwtService(this.configService.jwt));
   }
 
 
   async intercept(context: ExecutionContext, next: CallHandler) {
     const req = context.switchToHttp().getRequest();
     const res = context.switchToHttp().getResponse();
-    const user: User | undefined = req.user;
+    const user: UserEntity | undefined = req.user;
 
     // 已登录用户带上新token
     if (user) {
-      const token = this.AuthService.signToken(user);
+      const token = await this.AuthService.signToken(user);
       res.header('token', token);
       res.cookie('token', token, {
         maxAge: 1000 * 60 * 60 * 24 * 7,
@@ -68,7 +68,7 @@ export class TimeoutInterceptor implements NestInterceptor {
     return next.handle()
       // 对没有带标准输出格式的响应包装
       .pipe(map(data => {
-        if (data && (data.code === undefined || data.success === undefined)) {
+        if (data !== undefined && (data.code === undefined || data.success === undefined)) {
           if (data.token) {
             res.header('token', data.token);
             delete data.token;
@@ -79,7 +79,7 @@ export class TimeoutInterceptor implements NestInterceptor {
       }))
       // 5s超时拦截
       .pipe(
-        timeout(5000),
+        timeout(10000),
         catchError(err => {
           if (err instanceof TimeoutError) {
             throw new ResBaseException(ResponseEnum.TIME_OUT_LONG);
@@ -95,11 +95,11 @@ export class TimeoutInterceptor implements NestInterceptor {
           if (isDev) {
             console.error(err);
           }
-          if (!err?.response?.code) {
+          if (!err?.code) {
             // TODO: write log file code...
             throw new ResBaseException(ResponseEnum.SERVER_ERROR);
           }
-          return throwError(err);
+          return throwError(new ResBaseException(err));
         })
       )
     ;

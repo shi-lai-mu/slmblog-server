@@ -15,7 +15,7 @@ import { UserGender, UserRole, UserStatus, UserTableName, ValidateType } from '.
  * 用户实体
  */
 @Entity({ name: UserTableName.USER })
-export class User extends BaseInitEntity<UserServiceNS.CreateUser> {
+export class UserEntity extends BaseInitEntity<UserServiceNS.CreateUser> {
 
   /**
    * 用户ID
@@ -238,7 +238,7 @@ export class UserConfigEntity {
   /**
    * 用户ID
    */
-  @ManyToOne(type => User, user => user.id)
+  @ManyToOne(type => UserEntity, user => user.id)
   user: number;
 
   /**

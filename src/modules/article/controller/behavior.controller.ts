@@ -1,7 +1,7 @@
 import { Body, Controller, Post, UseGuards } from "@nestjs/common";
 import { ApiBearerAuth, ApiOperation, ApiTags } from "@nestjs/swagger";
 
-import { User } from "src/modules/user/entity/user.entity";
+import { UserEntity } from "src/modules/user/entity/user.entity";
 
 import { ArticleBehaviorService } from "../service/behavior.service";
 
@@ -34,7 +34,7 @@ export class ArticleBehaviorController {
      description: '当用户点击评论赞或者踩时调用此接口记录行为',
    })
    @ApiBearerAuth()
-   async doLoveCheckLog(@Body() loveLog: LoveLogDto, @CurUser() user: User) {
+   async doLoveCheckLog(@Body() loveLog: LoveLogDto, @CurUser() user: UserEntity) {
      return this.ArticleBehaviorService.doLoveCheckLog(loveLog, user);
    }
 }

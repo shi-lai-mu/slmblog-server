@@ -16,6 +16,7 @@ enum CacheKeys {
   user           = 'user:%d',
   guards         = 'guards:%d',
   articleComment = 'articleComment:%d',
+  notify         = 'notify:%d',
 }
 
 // 实例缓存
@@ -90,6 +91,7 @@ export class RedisService {
    * @param keys keys
    */
   async keys(keys: string, business?: keyof typeof CacheKeys) {
+    if (isDev) console.warn('[debug] redis keys:', RedisCache.config.keyPrefix + (business || '') + keys);
     return this.client.keys(RedisCache.config.keyPrefix + (business || '') + keys);
   }
 

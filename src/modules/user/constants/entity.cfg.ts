@@ -28,10 +28,10 @@ export enum UserRole {
  * 账号状态
  */
 export enum UserStatus {
-  Tourist  = 0, // 游客
-  InActive = 1, // 未激活
-  Actived  = 2, // 已激活
-  Frozen   = 3, // 已冻结
+  Frozen   = -1, // 已冻结
+  Tourist  = 0,  // 游客
+  InActive = 1,  // 未激活
+  Actived  = 2,  // 已激活
 }
 
 /**

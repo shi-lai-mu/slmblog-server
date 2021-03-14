@@ -4,9 +4,9 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { PassportStrategy } from "@nestjs/passport";
 import { Strategy, IStrategyOptions } from "passport-local";
 
-import { User } from "src/modules/user/entity/user.entity";
+import { UserEntity } from "src/modules/user/entity/user.entity";
 
-import { UserServiceBase } from "src/modules/user/service/user.service";
+import { UserServiceBase } from "src/modules/user/service/base.service";
 
 import { ResponseBody } from "src/constants/response";
 import { ResBaseException } from "src/core/exception/res.exception";
@@ -16,7 +16,7 @@ import { ResBaseException } from "src/core/exception/res.exception";
 @Injectable()
 export class LocalStrategy extends PassportStrategy(Strategy) {
   constructor(
-    @InjectRepository(User) private readonly userRepository: Repository<User>,
+    @InjectRepository(UserEntity) private readonly userRepository: Repository<UserEntity>,
   ) {
     super({
       usernameField: 'account',

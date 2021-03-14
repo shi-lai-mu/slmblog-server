@@ -1,6 +1,6 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
-import { User } from "./user.entity";
+import { UserEntity } from "./user.entity";
 
 import { UserTableName } from "../constants/entity.cfg";
 import { USER_CONSTANTS } from "src/constants/constants";
@@ -42,6 +42,6 @@ export class Badge extends BaseInitEntity<{}> {
   /**
    * 拥有者
    */
-  @OneToMany(type => User, user => user.id)
-  owner: User[];
+  @OneToMany(type => UserEntity, user => user.id)
+  owner: UserEntity[];
 }

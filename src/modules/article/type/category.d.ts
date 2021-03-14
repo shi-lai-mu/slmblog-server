@@ -1,4 +1,4 @@
-import { User } from "src/modules/user/entity/user.entity";
+import { UserEntity } from "src/modules/user/entity/user.entity";
 import { ArticleCategory } from "../entity/categorys.entity";
 
 
@@ -33,7 +33,7 @@ export namespace ArticleCategoryNS {
     /**
      * 创建用户ID
      */
-    create_user_id: User['id'];
+    create_user_id: UserEntity['id'];
   }
 
 

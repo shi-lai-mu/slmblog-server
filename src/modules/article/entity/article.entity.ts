@@ -1,7 +1,7 @@
 import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 
 import { ArticleStat } from './stat.entity';
-import { User } from '../../user/entity/user.entity';
+import { UserEntity } from '../../user/entity/user.entity';
 
 import { ApiProperty } from '@nestjs/swagger';
 import { ARTICLE_CONSTANTS } from 'src/constants/constants';
@@ -26,8 +26,8 @@ export class Article extends BaseInitEntity<{}> {
   /**
    * 作者
    */
-  @ManyToOne(type => User, user => user.id)
-  author: User | User['id'];
+  @ManyToOne(type => UserEntity, user => user.id)
+  author: UserEntity | UserEntity['id'];
 
   /**
    * 标题

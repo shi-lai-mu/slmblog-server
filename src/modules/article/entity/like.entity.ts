@@ -1,7 +1,7 @@
 import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 import { ArticleComment } from "./comment.entity";
-import { User } from "../../user/entity/user.entity";
+import { UserEntity } from "../../user/entity/user.entity";
 
 import { BaseInitEntity } from "../../../entity/baseInitEntity";
 import { ArticleLikeStatus, ArticleTableName } from "../constants/entity.cfg";
@@ -22,7 +22,7 @@ export class ArticleCommentLike extends BaseInitEntity<{}> {
   /**
    * 点赞用户
    */
-  @ManyToOne(ts => User, user => user.id)
+  @ManyToOne(ts => UserEntity, user => user.id)
   user: number;
 
   /**

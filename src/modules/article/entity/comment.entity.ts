@@ -2,7 +2,7 @@
 import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 import { Article } from "./article.entity";
-import { User } from "src/modules/user/entity/user.entity";
+import { UserEntity } from "src/modules/user/entity/user.entity";
 
 import { ArticleCommentNS } from "../type/comment";
 import { BaseInitEntity } from "src/entity/baseInitEntity";
@@ -68,8 +68,8 @@ export class ArticleComment extends BaseInitEntity<ArticleCommentNS.CreateArticl
   /**
    * 评论用户ID
    */
-  @ManyToOne(user => User, user => user.id)
-  user?: User['id'];
+  @ManyToOne(user => UserEntity, user => user.id)
+  user?: UserEntity['id'];
 
   /**
    * 子评论数量
