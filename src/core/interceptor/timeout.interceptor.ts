@@ -68,7 +68,7 @@ export class TimeoutInterceptor implements NestInterceptor {
     return next.handle()
       // 对没有带标准输出格式的响应包装
       .pipe(map(data => {
-        if (data !== undefined && (data.code === undefined || data.success === undefined)) {
+        if (data !== undefined && (data.code === undefined || (data.success === undefined && !data.result))) {
           if (data.token) {
             res.header('token', data.token);
             delete data.token;
@@ -90,6 +90,9 @@ export class TimeoutInterceptor implements NestInterceptor {
       .pipe(
         catchError(err => {
           if (err instanceof ResBaseException) {
+            if (err.transferLog) {
+              err.transferLog(req);
+            }
             return throwError(err);
           }
           if (isDev) {

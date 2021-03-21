@@ -3,6 +3,7 @@ import { Request } from "@nestjs/common";
 import { UserEntity } from "src/modules/user/entity/user.entity";
 
 import { ApiProperty } from "@nestjs/swagger";
+import { ResponseDocument } from "src/plugins/slm/resCodeDoc/type";
 
 /**
  * 公共请求
@@ -22,9 +23,9 @@ export interface GlobalRequest extends Request {
    * 响应码
    */
   @ApiProperty({
-    description: '响应代码 (每个错误的`唯一代码`，用于`鉴别错误类型`)',
+    description: '响应代码 (每个错误的`唯一代码`，用于`鉴别错误类型`) 具体参考 [文档](/api/code)',
   })
-  code: number;
+  code?: string | number = 0;
   /**
    * 响应内容
    */
@@ -46,6 +47,31 @@ export interface GlobalRequest extends Request {
     description: '执行过程中返回的数据信息，可能为 `数据模型`、`字符串`、`布尔`、`空值`',
   })
   result?: T;
+  /**
+   * 响应类型
+   */
+  @ApiProperty({
+    description: '响应类型',
+  })
+  codeType?: ResponseDocument.CodeType;
+  /**
+   * 是否保留原code
+   */
+  @ApiProperty({
+    description: '是否保留原code',
+  })
+  codeKeep?: boolean;
+  /**
+   * 备注
+   */
+  @ApiProperty({
+    description: '备注',
+  })
+  note?: string;
+  /**
+   * 调用时记录log
+   */
+  transferLog?(res?: Request): void;
 }
 
 /**

@@ -8,8 +8,10 @@ import ConfigsService from './modules/coreModules/config/configs.service';
 
 import { AppModule } from './app.module';
 
+import pluginsCfg from 'src/configs/plugins.cfg';
 import createApiDocument from './plugins/swagger';
 import { UserAuthService } from './modules/user/service/auth.service';
+import { createResponseDocument } from 'src/plugins/slm/resCodeDoc';
 
 
 
@@ -26,6 +28,7 @@ async function bootstrap() {
   app.useStaticAssets('public');
 
   createApiDocument(app);
+  createResponseDocument(app, pluginsCfg.codeDoc);
 
   await app.listen(3000, '0.0.0.0');
 }
