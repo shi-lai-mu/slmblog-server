@@ -18,7 +18,6 @@
     文档为插件自动生成，本页为响应总汇点击下方链接可跳转到对应业务文档，同时开发环境下会在业务模块文件夹内生成对应业务的响应markdown文档。
     每个文档标题后方会携带业务的码响应范围。
   </p>
-  <p>&nbsp;</p>
   <blockquote>
     <p>当前文档录入响应总数：{{responseMap.total}}个。
       其中（
@@ -67,6 +66,7 @@
               <th>响应码</th>
               <th>响应内容</th>
               <th>调用键</th>
+              <th>拓展模块</th>
               <th>备注</th>
             </tr>
           </thead>
@@ -76,6 +76,7 @@
                 <td>{{code}}</td>
                 <td>{{message}}</td>
                 <td>{{key}}</td>
+                <td>{{extends}}</td>
                 <td>{{note}}</td>
               </tr>
             {{/each}}

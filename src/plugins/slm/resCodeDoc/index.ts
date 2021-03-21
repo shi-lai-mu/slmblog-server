@@ -105,10 +105,11 @@ export class ResponseCodeDocument {
    * @param options  入参
    */
   static addResponseBusiness(resClass: Object, options: ResponseDocument.InsterOptions) {
-    const codeTypeObj: ResponseDocument.CodeTypeObject = {
-
-    };
-    ResponseCodeDocument.codeType.forEach(item => codeTypeObj[item.name] = {
+    const codeTypeObj: ResponseDocument.CodeTypeObject = ResponseCodeDocument.responseMap[options.name]?.map || {};
+    console.log(codeTypeObj);
+    
+    // 初始化或者继承code
+    ResponseCodeDocument.codeType.forEach(item => !codeTypeObj[item.name] && (codeTypeObj[item.name] = {
       type: item.type,
       resMap: [],
       code: {
@@ -116,7 +117,7 @@ export class ResponseCodeDocument {
         end: options.startCode || 0,
         transferLogCount: 0,
       },
-    });
+    }));
 
     // 注入
     Object.keys(resClass).map(key => {
@@ -148,6 +149,7 @@ export class ResponseCodeDocument {
 
       currentMap.push({
         key,
+        extends: options.extends || '-',
         ...item,
       });
 
@@ -164,7 +166,6 @@ export class ResponseCodeDocument {
         }
       );
       currentResponseBusiness.resMap.push(item);
-      console.log({code: codeTypeObj.code});
 
       ResponseCodeDocument.responseBusiness.SUM.resMap.push(item);
     });

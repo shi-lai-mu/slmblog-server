@@ -22,7 +22,14 @@ export namespace ResponseDocument {
    * 响应
    */
   export interface ResStatus extends Status {
+    /**
+     * 调用键
+     */
     key: string;
+    /**
+     * 业务拓展模块名
+     */
+    extends?: string;
   }
 
 
@@ -38,6 +45,10 @@ export namespace ResponseDocument {
      * 本业务其实码
      */
     startCode?: number;
+    /**
+     * 业务拓展模块名
+     */
+    extends?: string;
   }
 
 
