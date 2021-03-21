@@ -6,11 +6,12 @@ import { USER_ACCOUNT_CONSTANTS } from '.';
 
 const { ACCOUNT_MIN_LENGTH, ACCOUNT_MAX_LENGTH, PASSWORD_MIN_LENGTH, PASSWORD_MAX_LENGTH } = USER_ACCOUNT_CONSTANTS;
 /**
- * 用户类 响应信息
+ * 用户类 账号模块 响应信息
  */
 @RegisterResponse({
   name: '用户业务',
   startCode: 1100,
+  extends: '账号模块',
 })
 export class UserAccountResponse {
   // 账号为空
