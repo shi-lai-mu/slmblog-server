@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ title }}</title>
+  <style>
+    {{ styles }}
+  </style>
+</head>
+
+<body id="write">
+  <h1>{{ title }} ({{ business }})</h1>
+  <p>此文档记录了本站所有已录入的<strong>响应信息</strong>及<strong>状态码</strong>，注明响应信息对应业务模块及备注便于快速逆源查找问题和管理响应码。</p>
+  <p>
+    文档为插件自动生成，本页为响应总汇点击下方链接可跳转到对应业务文档，同时开发环境下会在业务模块文件夹内生成对应业务的响应markdown文档。
+    每个文档标题后方会携带业务的码响应范围。
+  </p>
+  <p>&nbsp;</p>
+  <blockquote>
+    <p>当前文档录入响应总数：{{responseMap.total}}个。
+      其中（
+        {{#each responseMap.map}}
+          {{#if resMap.length}}
+            {{type}}:<strong>{{resMap.length}}</strong>{{#unless @last}}、{{/unless}}
+          {{/if}}
+        {{/each}}
+      ）。</p>
+    <p>
+      在阅读下方文档前需知，本站响应码设计采用（错误产生来源+四位数字编号）为字符串类型，共5位(列: P0001)。
+      前置的错误来源用于快速定位错误类型及为后续监控大盘做铺垫。
+    </p>
+  </blockquote>
+  <figure>
+    <table>
+      <thead>
+        <tr>
+          <th>错误代号</th>
+          <th>错误类型</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each codeType}}
+        <tr>
+          <td>{{name}}</td>
+          <td>{{type}}</td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </figure>
+  <p>&nbsp;</p>
+  
+  {{#each responseMap.map}}
+    {{#if resMap.length}}
+      <h2 id="{{type}}">{{type}} ({{resMap.length}})</h2>
+      <blockquote>
+        响应码范围：{{code.end}}~{{code.start}}<br>
+        被调用次数：{{code.transferLogCount}}<br>
+      </blockquote>
+      <figure>
+        <table>
+          <thead>
+            <tr>
+              <th>响应码</th>
+              <th>响应内容</th>
+              <th>调用键</th>
+              <th>备注</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each resMap}}
+              <tr>
+                <td>{{code}}</td>
+                <td>{{message}}</td>
+                <td>{{key}}</td>
+                <td>{{note}}</td>
+              </tr>
+            {{/each}}
+          </tbody>
+        </table>
+      </figure>
+    {{/if}}
+  {{/each}}
+</body>
+
+</html>

@@ -1,7 +1,7 @@
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { HttpException, HttpStatus, INestApplication, ValidationPipe } from '@nestjs/common';
 
-import pluginsCfg from '../configs/plugins.cfg';
+import pluginsCfg from 'src/configs/plugins.cfg';
 import { ResponseBody } from '../constants/response';
 
 
