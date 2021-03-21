@@ -106,7 +106,6 @@ export class ResponseCodeDocument {
    */
   static addResponseBusiness(resClass: Object, options: ResponseDocument.InsterOptions) {
     const codeTypeObj: ResponseDocument.CodeTypeObject = ResponseCodeDocument.responseMap[options.name]?.map || {};
-    console.log(codeTypeObj);
     
     // 初始化或者继承code
     ResponseCodeDocument.codeType.forEach(item => !codeTypeObj[item.name] && (codeTypeObj[item.name] = {
@@ -143,13 +142,15 @@ export class ResponseCodeDocument {
       }
 
       item.transferLog = (res: Request) => {
-        currentResponseBusiness.code.transferLogCount++;
+        // console.log(currentResponseBusiness);
+        // currentResponseBusiness.code.transferLogCount++;
         // TODO: 记录日志code...
       }
 
       currentMap.push({
         key,
         extends: options.extends || '-',
+        extendsTips: options.tips,
         ...item,
       });
 
@@ -166,6 +167,8 @@ export class ResponseCodeDocument {
         }
       );
       currentResponseBusiness.resMap.push(item);
+
+      delete item.codeType;
 
       ResponseCodeDocument.responseBusiness.SUM.resMap.push(item);
     });

@@ -6,6 +6,7 @@ import { ResponseDocument } from "./type";
  */
 export const RegisterResponse = (option: ResponseDocument.InsterOptions) => {
   return function (res: any) {
+    option.tips = option.tips || res.name;
     ResponseCodeDocument.addResponseBusiness(res, option);
   }
 }

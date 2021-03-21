@@ -30,6 +30,10 @@ export namespace ResponseDocument {
      * 业务拓展模块名
      */
     extends?: string;
+    /**
+     * 拓展模块上方的提示
+     */
+    extendsTips?: string;
   }
 
 
@@ -49,6 +53,10 @@ export namespace ResponseDocument {
      * 业务拓展模块名
      */
     extends?: string;
+    /**
+     * 拓展模块上方的提示
+     */
+    tips?: string;
   }
 
 
