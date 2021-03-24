@@ -4,16 +4,18 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { PassportModule } from "@nestjs/passport";
 import ConfigsService from "src/modules/coreModules/config/configs.service";
 
-import { UserConfigEntity, UserEntity } from "../entity/user.entity";
+import { UserConfigEntity, UserEntity } from "../../entity/user.entity";
 
-import { UserModule } from "../module/user.moudle";
+import { UserService } from "../../user.service";
 import { UserAuthService } from "./service/auth.service";
 import { UserAuthController } from "./controller/auth.controller";
+import { UserConfigService } from "../config/service/config.service";
+import { UserAccountService } from "../account/service/account.service";
 import { RedisService } from "src/modules/coreModules/redis/redis.service";
+import { NotifyEmailService } from "src/modules/notify/service/email.service";
 
 import { JwtStrategy } from "src/core/strategy/jwt.strategy";
 import { LocalStrategy } from "src/core/strategy/local.strategy";
-import { NotifyEmailService } from "src/modules/notify/service/email.service";
 
 
 
@@ -22,7 +24,6 @@ import { NotifyEmailService } from "src/modules/notify/service/email.service";
  */
 @Module({
   imports: [
-    UserModule,
     PassportModule,
     JwtModule.registerAsync({
       useFactory: (configsService: ConfigsService) => configsService.jwt,
@@ -34,10 +35,13 @@ import { NotifyEmailService } from "src/modules/notify/service/email.service";
     UserAuthController,
   ],
   providers: [
+    UserService,
     JwtStrategy,
     RedisService,
     LocalStrategy,
     UserAuthService,
+    UserConfigService,
+    UserAccountService,
     NotifyEmailService,
   ],
 })

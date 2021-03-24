@@ -3,13 +3,13 @@ import { plainToClass } from 'class-transformer';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
-import { UserEntity } from '../../entity/user.entity';
+import { UserEntity } from '../../../entity/user.entity';
 
-import { UserServiceBase } from '../../user.service';
-import { UserService } from '../../service/user.service';
-import { RedisService } from '../../../coreModules/redis/redis.service';
+import { UserService } from 'src/modules/user/user.service';
+import { UserServiceBase } from 'src/modules/user/user.utils';
+import { RedisService } from '../../../../coreModules/redis/redis.service';
 
-import { UserServiceNS } from '../../type/user';
+import { UserServiceNS } from '../../../type/user';
 import { UserLoginDto } from '../dto/account.dto';
 import { ResponseBody } from 'src/constants/response';
 import { UserAccountResponse } from '../constants/account.response';

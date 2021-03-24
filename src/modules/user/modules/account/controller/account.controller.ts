@@ -5,8 +5,8 @@ import { Body, Controller, Post, Request, UseGuards, Get, Req, Query } from '@ne
 
 import { UserEntity } from 'src/modules/user/entity/user.entity';
 
-import { UserService } from '../../service/user.service';
-import { UserServiceBase } from '../../user.service';
+import { UserService } from '../../../user.service';
+import { UserServiceBase } from '../../../user.utils';
 import { UserAccountService } from '../service/account.service';
 
 import { getClientIP } from 'src/utils/collection';
@@ -22,7 +22,7 @@ import { UserLoginDto, UserAccountDto } from '../dto/account.dto';
 
 const controllerPerfix = MainCPrefix;
 /**
- * 用户业务 账号 控制层
+ * 用户业务 账号 控制层吧    
  */
 @Controller(controllerPerfix)
 @ApiTags('用户')

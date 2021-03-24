@@ -2,15 +2,15 @@ import { Module } from "@nestjs/common";
 import { JwtModule, JwtService } from "@nestjs/jwt";
 import { TypeOrmModule } from "_@nestjs_typeorm@7.1.5@@nestjs/typeorm";
 
-import { UserEntity, UserConfigEntity } from "../entity/user.entity";
+import { UserEntity, UserConfigEntity } from "../../entity/user.entity";
 
-import { UserService } from "../service/user.service";
 import { UserAuthService } from "../auth/service/auth.service";
 import { UserConfigService } from "../config/service/config.service";
 import { UserAccountService } from "./service/account.service";
 import { UserAccountController } from "./controller/account.controller";
 import { RedisService } from "src/modules/coreModules/redis/redis.service";
 import ConfigsService from "src/modules/coreModules/config/configs.service";
+import { UserService } from "../../user.service";
 
 
 

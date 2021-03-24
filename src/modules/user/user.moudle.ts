@@ -1,12 +1,12 @@
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { UserConfigEntity, UserEntity } from "../entity/user.entity";
+import { UserConfigEntity, UserEntity } from "./entity/user.entity";
 
-import { UserAccountModule } from "./account.module";
-import { UserService } from "../service/user.service";
-import { UserConfigService } from "../service/config.service";
-import { UserController } from "../controller/user.controller";
-import { UserAccountService } from "../service/account.service";
+import { UserService } from "./user.service";
+import { UserController } from "./user.controller";
+import { UserAccountService } from "./modules/account/service/account.service";
+import { UserConfigService } from "./modules/config/service/config.service";
+import { UserAccountModule } from "./modules/account/account.module";
 
 
 

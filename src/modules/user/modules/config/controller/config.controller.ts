@@ -8,7 +8,7 @@ import { UserConfigService } from "../service/config.service";
 import { SaveUserConfigDto } from "../dto/config.dto";
 import { JwtAuthGuard } from "src/core/strategy/jwt.strategy";
 import { CurUser } from "src/core/decorators/global.decorators";
-import { MainCPrefix } from "../../constants/controller.cfg";
+import { MainCPrefix } from "../../../constants/controller.cfg";
 
 
 

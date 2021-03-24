@@ -6,13 +6,13 @@ import { InjectRepository } from '@nestjs/typeorm';
 
 import { UserEntity } from "src/modules/user/entity/user.entity";
 
-import { UserService } from '../../service/user.service';
+import { UserService } from 'src/modules/user/user.service';
 import { UserAccountService } from '../../account/service/account.service';
 import ConfigsService from 'src/modules/coreModules/config/configs.service';
 
 import { UserAuthResponse } from '../constants/response';
 import { JwtToken } from 'src/interface/gloabl.interface';
-import { UserRole, UserStatus } from "../../constants/entity.cfg";
+import { UserRole, UserStatus } from "../../../constants/entity.cfg";
 import { ResBaseException } from "src/core/exception/res.exception";
 import { NotifyResponse } from 'src/modules/notify/constants/response.cfg';
 import { ResponseBody, ResponseEnum, Status } from "src/constants/response";

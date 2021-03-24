@@ -2,7 +2,7 @@ import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "_@nestjs_typeorm@7.1.5@@nestjs/typeorm";
 
 import { UserConfigController } from "./controller/config.controller";
-import { UserConfigEntity } from "../entity/user.entity";
+import { UserConfigEntity } from "../../entity/user.entity";
 import { UserConfigService } from "./service/config.service";
 
 

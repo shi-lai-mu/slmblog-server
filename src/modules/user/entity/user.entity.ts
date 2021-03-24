@@ -6,6 +6,7 @@ import { Badge } from './badge.entity';
 import { ApiProperty } from '@nestjs/swagger';
 import { USER_CONSTANTS } from 'src/constants/constants';
 import { UserServiceNS } from 'src/modules/user/type/user';
+import { USER_ACCOUNT_CONSTANTS } from '../modules/account/constants';
 import { BaseInitEntity } from '../../../entity/baseInitEntity';
 import { UserGender, UserRole, UserStatus, UserTableName, ValidateType } from '../constants/entity.cfg';
 
@@ -29,7 +30,7 @@ export class UserEntity extends BaseInitEntity<UserServiceNS.CreateUser> {
    * 账号
    */
   @Column({
-    length: USER_CONSTANTS.ACCOUNT_MAX_LENGTH,
+    length: USER_ACCOUNT_CONSTANTS.ACCOUNT_MAX_LENGTH,
     unique: true,
     comment: '账号',
   })
@@ -40,7 +41,7 @@ export class UserEntity extends BaseInitEntity<UserServiceNS.CreateUser> {
    * 昵称
    */
   @Column({
-    length: USER_CONSTANTS.NICKNAME_MAX_LENGTH,
+    length: USER_ACCOUNT_CONSTANTS.NICKNAME_MAX_LENGTH,
     comment: '昵称',
   })
   nickname: string;
@@ -50,7 +51,7 @@ export class UserEntity extends BaseInitEntity<UserServiceNS.CreateUser> {
    */
   @Column({
     name: 'avatar_url',
-    length: USER_CONSTANTS.AVATARURL_MAX_LENGTH,
+    length: USER_ACCOUNT_CONSTANTS.AVATARURL_MAX_LENGTH,
     default: '',
     comment: '头像',
   })
@@ -145,7 +146,7 @@ export class UserEntity extends BaseInitEntity<UserServiceNS.CreateUser> {
    */
   @Column({
     name: 'link_json',
-    length: USER_CONSTANTS.LINKJSON_MAX_LENGTH,
+    length: USER_ACCOUNT_CONSTANTS.LINKJSON_MAX_LENGTH,
     default: '',
     comment: '个人链接',
     select: false,
@@ -156,7 +157,7 @@ export class UserEntity extends BaseInitEntity<UserServiceNS.CreateUser> {
    * 简介
    */
   @Column({
-    length: USER_CONSTANTS.DESC_MAX_LENGTH,
+    length: USER_ACCOUNT_CONSTANTS.DESC_MAX_LENGTH,
     default: '',
     comment: '简介',
     select: false,

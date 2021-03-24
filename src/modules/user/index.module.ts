@@ -4,11 +4,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Badge } from './entity/badge.entity';
 import { UserEntity, UserConfigEntity } from 'src/modules/user/entity/user.entity';
 
-import { UserModule } from './module/user.moudle';
-import { UserAuthModule } from './auth/auth.module';
-import { UserAccountModule } from './account/account.module';
+import { UserAuthModule } from './modules/auth/auth.module';
+import { UserAccountModule } from './modules/account/account.module';
 
-import { UserConfigModule } from './config/config.module';
+import { UserModule } from './user.moudle';
+import { UserConfigModule } from './modules/config/config.module';
+import { UserController } from './user.controller';
 
 
 
@@ -21,7 +22,14 @@ import { UserConfigModule } from './config/config.module';
     UserModule,
     UserAuthModule,
     UserConfigModule,
-    TypeOrmModule.forFeature([Badge, UserEntity, UserConfigEntity]),
+    TypeOrmModule.forFeature([
+      Badge,
+      UserEntity,
+      UserConfigEntity,
+    ]),
+  ],
+  controllers: [
+    UserController,
   ],
   providers: [
   ],

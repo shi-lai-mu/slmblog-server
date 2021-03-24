@@ -3,10 +3,11 @@ import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { FindConditions, FindOneOptions, Repository } from "typeorm";
 
-import { UserEntity } from "../entity/user.entity";
+import { UserEntity } from "./entity/user.entity";
 
 import { ResponseEnum } from "src/constants/response";
 import { ResBaseException } from "src/core/exception/res.exception";
+import { UserAccountResponse } from "./modules/account/constants/account.response";
 
 @Injectable()
 export class UserService {
@@ -34,7 +35,7 @@ export class UserService {
   async find(findData: FindConditions<UserEntity>, select?: FindOneOptions<UserEntity>['select'], errReturn: boolean = true): Promise<UserEntity> {
     const findUser = await this.userRepository.findOne({ select, where: findData });
     if (!findUser && errReturn) {
-      throw new ResBaseException(ResponseEnum.USER.FIND_USER_NULL);
+      throw new ResBaseException(UserAccountResponse.FIND_USER_NULL);
     }
     return findUser;
   }
