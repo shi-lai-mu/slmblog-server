@@ -5,10 +5,10 @@ import { Badge } from './entity/badge.entity';
 import { UserEntity, UserConfigEntity } from 'src/modules/user/entity/user.entity';
 
 import { UserModule } from './module/user.moudle';
-import { UserAuthModule } from './module/auth.module';
-import { UserAccountModule } from './module/account.module';
+import { UserAuthModule } from './auth/auth.module';
+import { UserAccountModule } from './account/account.module';
 
-import { UserConfigModule } from './module/config.module';
+import { UserConfigModule } from './config/config.module';
 
 
 

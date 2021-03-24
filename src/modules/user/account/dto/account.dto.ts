@@ -3,6 +3,7 @@ import { IsEmail, IsNotEmpty, Length } from 'class-validator';
 
 import { USER_ACCOUNT_CONSTANTS } from '../constants';
 import { ResponseEnum, ValidateThrow } from 'src/constants/response';
+import { UserAccountResponse } from '../constants/account.response';
 
 
 
@@ -13,11 +14,11 @@ export class UserAccountDto {
   /**
    * 账号
    */
-  @IsNotEmpty(ValidateThrow(ResponseEnum.USER.ACCOUNT_EMPTY))
+  @IsNotEmpty(ValidateThrow(UserAccountResponse.ACCOUNT_EMPTY))
   @Length(
     USER_ACCOUNT_CONSTANTS.ACCOUNT_MIN_LENGTH,
     USER_ACCOUNT_CONSTANTS.ACCOUNT_MAX_LENGTH,
-    ValidateThrow(ResponseEnum.USER.ACCOUNT_FORMAT)
+    ValidateThrow(UserAccountResponse.ACCOUNT_FORMAT)
   )
   @ApiProperty({
     description: `账号 (长度限制：${USER_ACCOUNT_CONSTANTS.ACCOUNT_MIN_LENGTH}~${USER_ACCOUNT_CONSTANTS.ACCOUNT_MAX_LENGTH})`,
@@ -34,11 +35,11 @@ export class UserLoginDto extends UserAccountDto {
   /**
    * 密码
    */
-  @IsNotEmpty(ValidateThrow(ResponseEnum.USER.PASSWORD_EMPTY))
+  @IsNotEmpty(ValidateThrow(UserAccountResponse.PASSWORD_EMPTY))
   @Length(
     USER_ACCOUNT_CONSTANTS.PASSWORD_MIN_LENGTH,
     USER_ACCOUNT_CONSTANTS.PASSWORD_MAX_LENGTH,
-    ValidateThrow(ResponseEnum.USER.PASSWORD_FORMAT),
+    ValidateThrow(UserAccountResponse.PASSWORD_FORMAT),
   )
   @ApiProperty({
     description: `密码 (长度限制：${USER_ACCOUNT_CONSTANTS.PASSWORD_MIN_LENGTH}~${USER_ACCOUNT_CONSTANTS.PASSWORD_MAX_LENGTH})`,
@@ -71,11 +72,11 @@ export class UserRegisterDto extends ValidateEmailDto {
   /**
    * 验证码
    */
-  @IsNotEmpty(ValidateThrow(ResponseEnum.USER.CODE_EMPTY))
+  @IsNotEmpty(ValidateThrow(UserAccountResponse.CODE_EMPTY))
   @Length(
     USER_ACCOUNT_CONSTANTS.CODE_LENGTH,
     USER_ACCOUNT_CONSTANTS.CODE_LENGTH,
-    ResponseEnum.USER.CODE_LENGTH,
+    UserAccountResponse.CODE_LENGTH,
   )
   @ApiProperty({
     description: `验证码 (长度限制：${USER_ACCOUNT_CONSTANTS.CODE_LENGTH})`,

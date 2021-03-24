@@ -6,7 +6,7 @@ import { UserEntity, UserConfigEntity } from "../entity/user.entity";
 
 import { UserService } from "../service/user.service";
 import { UserAuthService } from "../auth/service/auth.service";
-import { UserConfigService } from "../service/config.service";
+import { UserConfigService } from "../config/service/config.service";
 import { UserAccountService } from "./service/account.service";
 import { UserAccountController } from "./controller/account.controller";
 import { RedisService } from "src/modules/coreModules/redis/redis.service";

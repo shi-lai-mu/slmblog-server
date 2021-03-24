@@ -4,8 +4,9 @@ import { InjectRepository } from "@nestjs/typeorm";
 
 import { UserConfigEntity } from "src/modules/user/entity/user.entity";
 
+import { ResponseBody } from "src/constants/response";
 import { SaveUserConfigDto } from "../dto/config.dto";
-import { ResponseBody, ResponseEnum } from "src/constants/response";
+import { UserConfigResponse } from "../constants/response";
 
 
 
@@ -46,13 +47,13 @@ export class UserConfigService {
       }, {
         json: userConfig.json,
       });
-      if (!raw.affectedRows) ResponseBody.throw(ResponseEnum.CONFIG.SAVE_UPDATE_ERROR);
+      if (!raw.affectedRows) ResponseBody.throw(UserConfigResponse.SAVE_UPDATE_ERROR);
     } else {
       const { raw } = await this.UserConfigRepository.insert({
         user: userId,
         json: userConfig.json,
       });
-      if (!raw.insertId) ResponseBody.throw(ResponseEnum.CONFIG.SAVE_INSERT_ERROR);
+      if (!raw.insertId) ResponseBody.throw(UserConfigResponse.SAVE_INSERT_ERROR);
     }
     return JSON.parse(userConfig.json);
   }

@@ -1,7 +1,8 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsNotEmpty, ValidateIf } from "class-validator";
 
-import { ResponseEnum, ValidateIsJsonString, ValidateThrow } from "src/constants/response";
+import { UserConfigResponse } from "../constants/response";
+import { ValidateIsJsonString, ValidateThrow } from "src/constants/response";
 
 
 
@@ -13,7 +14,7 @@ export class SaveUserConfigDto {
     description: '配置文件信息',
     default: '{}'
   })
-  @IsNotEmpty(ValidateThrow(ResponseEnum.CONFIG.SAVE_JSON_EMPTY))
+  @IsNotEmpty(ValidateThrow(UserConfigResponse.SAVE_JSON_EMPTY))
   @ValidateIf((val: SaveUserConfigDto) => ValidateIsJsonString(val.json))
   json: string;
 }
