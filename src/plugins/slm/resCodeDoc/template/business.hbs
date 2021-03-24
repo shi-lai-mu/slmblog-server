@@ -19,7 +19,8 @@
     每个文档标题后方会携带业务的码响应范围。
   </p>
   <blockquote>
-    <p>当前文档录入响应总数：{{responseMap.total}}个。
+    <p>
+      {{business}}响应总数：{{responseMap.total}}个。
       其中（
         {{#each responseMap.map}}
           {{#if resMap.length}}
@@ -27,6 +28,7 @@
           {{/if}}
         {{/each}}
       ）。</p>
+      {{business}}载入模块：<strong>{{responseMap.modules}}</strong>
     <p>
       在阅读下方文档前需知，本站响应码设计采用（错误产生来源+四位数字编号）为字符串类型，共5位(列: P0001)。
       前置的错误来源用于快速定位错误类型及为后续监控大盘做铺垫。

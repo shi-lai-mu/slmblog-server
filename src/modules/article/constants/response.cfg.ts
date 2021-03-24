@@ -1,12 +1,17 @@
 import { Status } from "src/constants/response";
 import { ARTICLE_CONSTANTS } from "src/constants/constants";
 import { ARTICLE_COMMENT } from "./controller.cfg";
+import { RegisterResponse } from "src/plugins/slm/resCodeDoc/decorators";
 
 
 
 /**
  * 文章业务 响应
  */
+// @RegisterResponse({
+//   name: '文章业务',
+//   startCode: 1200,
+// })
 export class ArticleResponse {
   // 文章标题为空
   static readonly SUB_TITLE_EMPTY:             Status = { code: 1200, message: '文章标题不能为空!' };

@@ -7,13 +7,11 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from "src/modules/user/entity/user.entity";
 
 import { UserService } from 'src/modules/user/user.service';
-import { UserAccountService } from '../../account/service/account.service';
 import ConfigsService from 'src/modules/coreModules/config/configs.service';
 
 import { UserAuthResponse } from '../constants/response';
 import { JwtToken } from 'src/interface/gloabl.interface';
 import { UserRole, UserStatus } from "../../../constants/entity.cfg";
-import { ResBaseException } from "src/core/exception/res.exception";
 import { NotifyResponse } from 'src/modules/notify/constants/response.cfg';
 import { ResponseBody, ResponseEnum, Status } from "src/constants/response";
 import { UserAccountResponse } from '../../account/constants/account.response';
@@ -29,7 +27,6 @@ export class UserAuthService {
   constructor(
     @InjectRepository(UserEntity) private readonly userRepository: Repository<UserEntity>,
     private readonly jwtService: JwtService,
-    private readonly UserAccountService: UserAccountService,
     private readonly ConfigsService: ConfigsService,
     private readonly UserService: UserService,
   ) {}
@@ -48,7 +45,7 @@ export class UserAuthService {
      
     // 此处为所有用户可获得身份信息的总入口
     if (user.status !== UserStatus.Actived) {
-      throw new ResBaseException(UserAccountResponse.ACOOUNT_ABNORMAL);
+      ResponseBody.throw(UserAccountResponse.ACOOUNT_ABNORMAL);
     }
 
     return this.jwtService.sign({

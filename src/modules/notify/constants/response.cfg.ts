@@ -1,4 +1,5 @@
 import {      Status } from "src/constants/response";
+import { RegisterResponse } from "src/plugins/slm/resCodeDoc/decorators";
 import { formatJetlag } from "src/utils/collection";
 import { NOTIFY_EMAIL } from "./controller.cfg";
 
@@ -8,6 +9,10 @@ const { SEND_COOLING_S, SEND_COOLING_COUNT, SEND_COOLING_TIME } = NOTIFY_EMAIL;
 /**
  * 通知业务 响应
  */
+// @RegisterResponse({
+//   name: '通知业务',
+//   startCode: 1400,
+// })
 export class NotifyResponse {
   // 邮箱发送是出错
   static readonly EMAIL_SEND_ERROR:           Status = { code: 1400, message: '邮箱业务繁忙!' };
@@ -35,4 +40,6 @@ export class NotifyResponse {
   static readonly ACCOUNT_EMAIL_UPDATE_ERROR: Status = { code: 1411, message: '账号邮箱修改失败!' };
   // 邮箱更新失败: 邮箱相同
   static readonly ACCOUNT_EMAIL_SAME:         Status = { code: 1412, message: '不能绑定相同邮箱或邮箱已被修改!' };
+  // 邮件发送失败L: 发送目标未注册
+  static readonly EMAIL_SEND_CUURENT_NOT_REG: Status = { code: 1413, message: '发送目标未注册!' };
 }

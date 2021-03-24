@@ -5,10 +5,14 @@ import { FindConditions, FindOneOptions, Repository } from "typeorm";
 
 import { UserEntity } from "./entity/user.entity";
 
-import { ResponseEnum } from "src/constants/response";
-import { ResBaseException } from "src/core/exception/res.exception";
+import { ResponseBody } from "src/constants/response";
 import { UserAccountResponse } from "./modules/account/constants/account.response";
 
+
+
+/**
+ * 用户业务 逻辑层
+ */
 @Injectable()
 export class UserService {
 
@@ -35,7 +39,7 @@ export class UserService {
   async find(findData: FindConditions<UserEntity>, select?: FindOneOptions<UserEntity>['select'], errReturn: boolean = true): Promise<UserEntity> {
     const findUser = await this.userRepository.findOne({ select, where: findData });
     if (!findUser && errReturn) {
-      throw new ResBaseException(UserAccountResponse.FIND_USER_NULL);
+      ResponseBody.throw(UserAccountResponse.FIND_USER_NULL);
     }
     return findUser;
   }

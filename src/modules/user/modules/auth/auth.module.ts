@@ -12,7 +12,7 @@ import { UserAuthController } from "./controller/auth.controller";
 import { UserConfigService } from "../config/service/config.service";
 import { UserAccountService } from "../account/service/account.service";
 import { RedisService } from "src/modules/coreModules/redis/redis.service";
-import { NotifyEmailService } from "src/modules/notify/service/email.service";
+import { NotifyEmailService } from "src/modules/notify/modules/email/service/email.service";
 
 import { JwtStrategy } from "src/core/strategy/jwt.strategy";
 import { LocalStrategy } from "src/core/strategy/local.strategy";

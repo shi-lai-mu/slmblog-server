@@ -1,9 +1,9 @@
 import { Module } from "@nestjs/common";
 
-import { ArticleModule } from "./module/article.module";
-import { ArticleCommentModule } from "./module/comment.module";
-import { ArticleBehaviorModule } from "./module/behavior.module";
-import { ArticleCategoryModule } from "./module/category.module";
+import { ArticleModule } from "./article.module";
+import { ArticleCommentModule } from "./modules/comment/comment.module";
+import { ArticleBehaviorModule } from "./modules/behavior/behavior.module";
+import { ArticleCategoryModule } from "./modules/category/category.module";
 
 
 

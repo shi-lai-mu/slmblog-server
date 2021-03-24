@@ -4,7 +4,7 @@ import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from "@nes
 
 import { UserEntity } from "src/modules/user/entity/user.entity";
 
-import { UserAuthService } from "src/modules/user/service/auth.service";
+import { UserAuthService } from "src/modules/user/modules/auth/service/auth.service";
 import { RedisService } from "src/modules/coreModules/redis/redis.service";
 import ConfigsService from "src/modules/coreModules/config/configs.service";
 
@@ -53,15 +53,14 @@ export class TimeoutInterceptor implements NestInterceptor {
       //   && userSystemPlatform.replace(/\d/g, '') !== systemPlatform.replace(/\d/g, '')
       // ) {
       //   if (await this.redisService.getItem('user', `user-agent${user.id}`) === systemPlatform) {
-      //     throw new ResBaseException({
+      //     ResponseBody.throw({
       //       ...ResponseEnum.USER.UNLOG_BUSY_LINE,
       //       result: '已在其他设备上登录',
       //     });
       //   }
       //   // 异常操作
-      //   throw new ResBaseException(ResponseEnum.USER.UNLOG_BUSY_LINE);
+      //   ResponseBody.throw(ResponseEnum.USER.UNLOG_BUSY_LINE);
       // }
-
       delete user.validateType;
     }
 
@@ -82,7 +81,7 @@ export class TimeoutInterceptor implements NestInterceptor {
         timeout(10000),
         catchError(err => {
           if (err instanceof TimeoutError) {
-            throw new ResBaseException(ResponseEnum.TIME_OUT_LONG);
+            ResponseBody.throw(ResponseEnum.TIME_OUT_LONG);
           }
           return throwError(err);
         })
@@ -100,8 +99,9 @@ export class TimeoutInterceptor implements NestInterceptor {
           }
           if (!err?.code) {
             // TODO: write log file code...
-            throw new ResBaseException(ResponseEnum.SERVER_ERROR);
+            ResponseBody.throw(ResponseEnum.SERVER_ERROR);
           }
+          console.log('[位置错误]: ', err);
           return throwError(new ResBaseException(err));
         })
       )

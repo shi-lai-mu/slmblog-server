@@ -51,7 +51,7 @@ export const FrequentlyGuards = (options: FrequentlyOptions): FrequentlyGuardsAc
         if (findHistory.c + 1 >= options.count && findHistory.t > Date.now()) {
           let status = ResponseBody.status('FREQUENTLY');
           if (options.message) typeof options.message === 'string' ? status.message = options.message : status = options.message;
-          throw new ResBaseException(status);
+          ResponseBody.throw(status);
         }
       }
       

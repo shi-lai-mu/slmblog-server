@@ -10,7 +10,7 @@ import { AppModule } from './app.module';
 
 import pluginsCfg from 'src/configs/plugins.cfg';
 import createApiDocument from './plugins/swagger';
-import { UserAuthService } from './modules/user/service/auth.service';
+import { UserAuthService } from './modules/user/modules/auth/service/auth.service';
 import { createResponseDocument } from 'src/plugins/slm/resCodeDoc';
 
 

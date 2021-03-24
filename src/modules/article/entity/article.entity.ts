@@ -1,9 +1,8 @@
 import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 
-import { ArticleStat } from './stat.entity';
 import { UserEntity } from '../../user/entity/user.entity';
+import { ArticleStat } from '../modules/comment/entity/stat.entity';
 
-import { ApiProperty } from '@nestjs/swagger';
 import { ARTICLE_CONSTANTS } from 'src/constants/constants';
 import { BaseInitEntity } from '../../../entity/baseInitEntity';
 import { ArticleStateEnum, ArticleTableName } from 'src/modules/article/constants/entity.cfg';

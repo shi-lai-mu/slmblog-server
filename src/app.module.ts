@@ -6,7 +6,7 @@ import { AppController } from './app.controller';
 import { RedisService } from './modules/coreModules/redis/redis.service';
 import ConfigService from './modules/coreModules/config/configs.service';
 
-import { NotifyModule } from './modules/notify/notify.module';
+import { NotifyModule } from './modules/notify/index.module';
 import { UserBusinessModule } from './modules/user/index.module';
 import { RedisModule } from './modules/coreModules/redis/redis.module';
 import { ArticleBusinessModule } from './modules/article/index.module';

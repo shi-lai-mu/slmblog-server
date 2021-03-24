@@ -8,7 +8,7 @@ import { UserEntity } from "src/modules/user/entity/user.entity";
 
 import ConfigsService from "src/modules/coreModules/config/configs.service";
 
-import { ResponseEnum } from "src/constants/response";
+import { ResponseBody, ResponseEnum } from "src/constants/response";
 import { UserRole } from "src/modules/user/constants/entity.cfg";
 import { ResBaseException } from "src/core/exception/res.exception";
 
@@ -66,7 +66,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       if (info && info.toString().indexOf('expired') !== -1) {
         errMsg = ResponseEnum.UNAUTHORIZED_EXPIRED;
       }
-      throw err || new ResBaseException(errMsg);
+      throw err || ResponseBody.throw(errMsg);
     }
     return user;
   }
@@ -121,7 +121,7 @@ export class JwtPermissionStrategy extends AuthGuard('jwt') {
       if (info && info.toString().indexOf('expired') !== -1) {
         errMsg = ResponseEnum.UNAUTHORIZED_EXPIRED;
       }
-      throw err || new ResBaseException(errMsg);
+      throw err || ResponseBody.throw(errMsg);
     }
 
     // 权限判断
@@ -135,7 +135,7 @@ export class JwtPermissionStrategy extends AuthGuard('jwt') {
           if (item === user.role) userRoleName = roleName;
         }
         const Error = ResponseEnum.NOT_PERMISSION;
-        throw new ResBaseException({
+        ResponseBody.throw({
           ...Error,
           message: Error.message.replace('%s', currentRoleName),
           result: `当前权限组 [${userRoleName}]`

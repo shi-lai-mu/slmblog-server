@@ -3,12 +3,12 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { ScheduleModule } from "@nestjs/schedule";
 
 import { Article } from "src/modules/article/entity/article.entity";
-import { ArticleComment } from "src/modules/article/entity/comment.entity";
-import { ArticleLove } from "src/modules/article/entity/comment.love.entity";
+import { ArticleComment } from "src/modules/article/modules/comment/entity/comment.entity";
+import { ArticleLove } from "src/modules/article/modules/comment/entity/comment.love.entity";
 
 import { RedisService } from "../redis/redis.service";
 import { ScheduleSaveTaskService } from "./saveTask.service";
-import { ArticleBehaviorService } from "src/modules/article/service/behavior.service";
+import { ArticleBehaviorService } from "src/modules/article/modules/behavior/service/behavior.service";
 
 
 

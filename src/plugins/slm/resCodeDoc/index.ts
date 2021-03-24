@@ -173,11 +173,18 @@ export class ResponseCodeDocument {
       ResponseCodeDocument.responseBusiness.SUM.resMap.push(item);
     });
 
+    let total = 0;
+    const modules = new Set();
+    Object.values(codeTypeObj).map(codeType => {
+      total += codeType.resMap.length;
+      codeType.resMap.forEach(res => modules.add(res.extends));
+    });
       
     ResponseCodeDocument.responseMap[options.name] = {
+      total,
       options,
       map: codeTypeObj,
-      total: Object.keys(resClass).length,
+      modules: [...modules].join('、'),
     };
   }
 }

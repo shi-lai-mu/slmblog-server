@@ -48,6 +48,10 @@ body {
   color: rgb(51, 51, 51);
   line-height: 1.6;
 }
+p {
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+}
 
 #write {
   max-width: 860px;

@@ -1,8 +1,8 @@
+import { ArticleStat } from "../modules/comment/entity/stat.entity";
+import { ArticleComment } from "../modules/comment/entity/comment.entity";
 import { Article } from "src/modules/article/entity/article.entity"
-import { ArticleStat } from "src/modules/article/entity/stat.entity";
 
 import { ArticleLoveTarget } from "../constants/entity.cfg";
-import { ArticleComment } from "../entity/comment.entity";
 
 
 

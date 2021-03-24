@@ -4,7 +4,7 @@ import { ResBaseException } from 'src/core/exception/res.exception';
 import { RegisterResponse } from 'src/plugins/slm/resCodeDoc/decorators';
 import { NotifyResponse } from 'src/modules/notify/constants/response.cfg';
 import { ArticleResponse } from 'src/modules/article/constants/response.cfg';
-import { UserConfigResponse, UserResponse } from '../modules/user/constants/response.cfg';
+// import { UserConfigResponse, UserResponse } from '../modules/user/constants/response.cfg';
 
 
 
@@ -14,21 +14,21 @@ export type ErrorStatus = ConstantsResponse.ErrorStatus<string>;
 /**
  * 响应枚举类
  */
-@RegisterResponse({
-  name: '系统公共',
-  startCode: 0,
-})
+// @RegisterResponse({
+//   name: '系统公共',
+//   startCode: 0,
+// })
 export class ResponseEnum {
   // 成功
-  static readonly SUCCESS:              Status = { code: 0,    message: 'success', codeKeep: true, codeType: 'B', note: '执行、获取、提交、修改、删除 成功' };
+  static readonly SUCCESS:              Status = { codeType: 'B', codeKeep: true, code: 0,    message: 'success', note: '执行、获取、提交、修改、删除 成功' };
   // 错误/无法识别的错误
-  static readonly ERROR:                Status = { code: 1,    message: 'fail', codeKeep: true, codeType: 'B', note: '操作被中断或出现位置错误' };
+  static readonly ERROR:                Status = { codeType: 'B', codeKeep: true, code: 1,    message: 'fail', note: '操作被中断或出现位置错误' };
   // 404资源不存在
-  static readonly NOT_FOUND:            Status = { code: 404,  message: '未找到有效的资源', codeKeep: true, codeType: 'I' };
+  static readonly NOT_FOUND:            Status = { codeType: 'I', codeKeep: true, code: 404,  message: '未找到有效的资源' };
   // 身份过期/无效
-  static readonly UNAUTHORIZED:         Status = { code: 401,  message: '身份授权失效', codeKeep: true, codeType: 'B' };
+  static readonly UNAUTHORIZED:         Status = { codeType: 'B', codeKeep: true, code: 401,  message: '身份授权失效' };
   // 服务器内部 出错/报错
-  static readonly SERVER_ERROR:         Status = { code: 500,  message: '服务器出错', codeKeep: true, result: '非常抱歉错误信息已记录，我们将尽快解决这类问题！' };
+  static readonly SERVER_ERROR:         Status = { codeType: 'O', codeKeep: true, code: 500,  message: '服务器出错', result: '非常抱歉错误信息已记录，我们将尽快解决这类问题！' };
   // 入参错误
   static readonly PARAMS:               Status = { codeType: 'P', message: '参数错误',  };
   // 全局入参错误检测
@@ -55,17 +55,12 @@ export class ResponseEnum {
   static readonly PARAMS_NOT_JSON_STR:  Status = { codeType: 'P', message: '传入参数非标准的JSON字符串!',  };
 
   /**
-   * 逻辑层请求响应
+   * 其他业务请求响应
    */
-  static readonly USER    = UserResponse;       // 用户业务 1100
+  // static readonly USER    = UserResponse;       // 用户业务 1100
   static readonly ARTICLE = ArticleResponse;    // 文章业务 1200
-  static readonly CONFIG  = UserConfigResponse; // 配置业务 1300
+  // static readonly CONFIG  = UserConfigResponse; // 配置业务 1300
   static readonly NOTIFY  = NotifyResponse;     // 通知业务 1400
-
-
-  static THROW(Error: Status) {
-    throw new ResBaseException(Error);
-  }
 }
 
 
@@ -75,7 +70,7 @@ export class ResponseEnum {
  */
 export const ValidateThrow = Error => ({
   message: () => {
-    throw new ResBaseException(Error);
+    throw ResponseBody.throw(Error);
   },
 });
 
@@ -85,7 +80,7 @@ export const ValidateThrow = Error => ({
  * @param jsonString json字符串
  */
 export const ValidateIsJsonString = (jsonString: string) => {
-  if (jsonString && !isJsonString(jsonString)) ResponseEnum.THROW(ResponseEnum.PARAMS_NOT_JSON_STR);
+  if (jsonString && !isJsonString(jsonString)) ResponseBody.throw(ResponseEnum.PARAMS_NOT_JSON_STR);
   return true;
 }
 

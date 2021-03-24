@@ -4,12 +4,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Badge } from './entity/badge.entity';
 import { UserEntity, UserConfigEntity } from 'src/modules/user/entity/user.entity';
 
-import { UserAuthModule } from './modules/auth/auth.module';
-import { UserAccountModule } from './modules/account/account.module';
-
 import { UserModule } from './user.moudle';
-import { UserConfigModule } from './modules/config/config.module';
 import { UserController } from './user.controller';
+import { UserAuthModule } from './modules/auth/auth.module';
+import { UserConfigModule } from './modules/config/config.module';
+import { UserAccountModule } from './modules/account/account.module';
 
 
 
@@ -18,10 +17,10 @@ import { UserController } from './user.controller';
  */
 @Module({
   imports: [
-    UserAccountModule,
     UserModule,
     UserAuthModule,
     UserConfigModule,
+    UserAccountModule,
     TypeOrmModule.forFeature([
       Badge,
       UserEntity,

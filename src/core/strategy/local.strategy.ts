@@ -6,10 +6,10 @@ import { Strategy, IStrategyOptions } from "passport-local";
 
 import { UserEntity } from "src/modules/user/entity/user.entity";
 
-import { UserServiceBase } from "src/modules/user/service/base.service";
+import { UserServiceBase } from "src/modules/user/user.utils";
 
 import { ResponseBody } from "src/constants/response";
-import { ResBaseException } from "src/core/exception/res.exception";
+import { UserAccountResponse } from "src/modules/user/modules/account/constants/account.response";
 
 
 
@@ -33,7 +33,7 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
 
     // 账号密码校验
     if (!findUser || encryptionPwd !== findUser.password) { 
-      throw new ResBaseException(ResponseBody.USER.LOG_AC_PW_ERROR);
+      ResponseBody.throw(UserAccountResponse.LOG_AC_PW_ERROR);
     }
 
     findUser.validateType = 'local';

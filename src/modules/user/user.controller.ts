@@ -6,12 +6,11 @@ import { UserEntity } from './entity/user.entity';
 import { UserService } from './user.service';
 import { UserConfigService } from './modules/config/service/config.service';
 
-import { ResponseEnum } from 'src/constants/response';
+import { ResponseBody } from 'src/constants/response';
 import { UserSpace } from 'src/interface/user.interface';
 import { MainCPrefix } from './constants/controller.cfg';
 import { JwtAuthGuard } from 'src/core/strategy/jwt.strategy';
 import { CurUser } from 'src/core/decorators/global.decorators';
-import { ResBaseException } from 'src/core/exception/res.exception';
 import { UserAccountResponse } from './modules/account/constants/account.response';
 
 
@@ -46,7 +45,7 @@ export class UserController {
   async outherUser(@Param('id') id: UserEntity['id']) {
     const user = await this.UserService.outherUser(id);
     if (!user) {
-      throw new ResBaseException(UserAccountResponse.FIND_USER_NULL);
+      ResponseBody.throw(UserAccountResponse.FIND_USER_NULL);
     }
     return user;
   }

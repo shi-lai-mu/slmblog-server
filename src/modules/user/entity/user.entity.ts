@@ -4,7 +4,6 @@ import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, Up
 import { Badge } from './badge.entity';
 
 import { ApiProperty } from '@nestjs/swagger';
-import { USER_CONSTANTS } from 'src/constants/constants';
 import { UserServiceNS } from 'src/modules/user/type/user';
 import { USER_ACCOUNT_CONSTANTS } from '../modules/account/constants';
 import { BaseInitEntity } from '../../../entity/baseInitEntity';

@@ -1,7 +1,7 @@
 import { Cron } from '@nestjs/schedule';
 import { Injectable, Logger } from "@nestjs/common";
 
-import { ArticleBehaviorService } from "src/modules/article/service/behavior.service";
+import { ArticleBehaviorService } from "src/modules/article/modules/behavior/service/behavior.service";
 
 
 

@@ -6,7 +6,7 @@ import { Controller, Post, Query, Put, Body } from "@nestjs/common";
 import { UserAuthService } from "../service/auth.service";
 import { UserAccountService } from '../../account/service/account.service';
 import ConfigsService from "src/modules/coreModules/config/configs.service";
-import { NotifyEmailService } from "src/modules/notify/service/email.service";
+import { NotifyEmailService } from "src/modules/notify/modules/email/service/email.service";
 
 import { shieldContent } from "src/utils/crypto";
 import { ValidateEmailDto } from '../../account/dto/account.dto';
