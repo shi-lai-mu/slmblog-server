@@ -6,7 +6,7 @@ import { Strategy, IStrategyOptions } from "passport-local";
 
 import { UserEntity } from "src/modules/user/entity/user.entity";
 
-import { UserServiceBase } from "src/modules/user/user.utils";
+import { UserServiceBase } from "src/modules/user/user.base";
 
 import { ResponseBody } from "src/constants/response";
 import { UserAccountResponse } from "src/modules/user/modules/account/constants/account.response";
@@ -28,8 +28,11 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
    * 本地策略校验密码
    */
   async validate(account: string, password: string) {
-    const findUser = await this.userRepository.findOne({ account }, { select: ['id', 'iv', 'password', 'status'] });
-    const encryptionPwd = UserServiceBase.encryptionPwd(password, findUser ? findUser.iv : '', account);
+    const findUser = await this.userRepository.findOne({
+      [/@/.test(account) ? 'email' : 'account']: account },
+      { select: [ 'id', 'iv', 'password', 'status', 'account' ] },
+    );
+    const encryptionPwd = UserServiceBase.encryptionPwd(password, findUser ? findUser.iv : '', findUser.account);
 
     // 账号密码校验
     if (!findUser || encryptionPwd !== findUser.password) { 

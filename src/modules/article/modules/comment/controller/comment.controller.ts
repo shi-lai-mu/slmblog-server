@@ -6,13 +6,13 @@ import { UserEntity } from "src/modules/user/entity/user.entity";
 import { ArticleCommentService } from "../service/comment.service";
 
 import { ResponseBody } from "src/constants/response";
-import { MainCPrefix } from "../../../constants/controller.cfg";
 import { SendArticleCommentDto } from "../dto/comment.dto";
+import { MainCPrefix } from "../../../constants/controller.cfg";
 import { ArticleResponse } from "../../../constants/response.cfg";
 import { CurUser } from "src/core/decorators/global.decorators";
 import { UserRole } from "src/modules/user/constants/entity.cfg";
 import { JwtPermissionStrategy } from "src/core/strategy/jwt.strategy";
-import { NotifyResponse } from "src/modules/notify/constants/response.cfg";
+import { NotifyEmailResponse } from "src/modules/notify/modules/email/constants/email.response";
 
 
 
@@ -52,7 +52,7 @@ export class ArticleCommentController {
         ResponseBody.throw(ArticleResponse.SEND_COMMENT_NICKNAME_EMPTY);
       }
       if (!sendArticleComment.email) {
-        ResponseBody.throw(NotifyResponse.EMAIL_PARAMS_EMPTY);
+        ResponseBody.throw(NotifyEmailResponse.EMAIL_PARAMS_EMPTY);
       }
     } else {
       sendArticleComment.nickname = '';

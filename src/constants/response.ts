@@ -52,7 +52,9 @@ export class ResponseEnum {
   // 入参非指定参数列表内的值
   static readonly PARAMS_VALUES:        Status = { codeType: 'P', message: '传入参数%s为无效值%s!' };
   // 传入的json在解析时出错
-  static readonly PARAMS_NOT_JSON_STR:  Status = { codeType: 'P', message: '传入参数非标准的JSON字符串!',  };
+  static readonly PARAMS_NOT_JSON_STR:  Status = { codeType: 'P', message: '传入参数非标准的JSON字符串!' };
+  // 入参非布尔
+  static readonly PARAMS_NOT_BOOLEAN:  Status = { codeType: 'P', message: '传入参数必须为布尔!' };
 
   /**
    * 其他业务请求响应
