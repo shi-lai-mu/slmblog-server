@@ -6,7 +6,7 @@ import { Body, Controller, Post, Request, UseGuards, Get, Req, Query } from '@ne
 import { UserEntity } from 'src/modules/user/entity/user.entity';
 
 import { UserService } from '../../../user.service';
-import { UserServiceBase } from '../../../user.utils';
+import { UserServiceBase } from '../../../user.base';
 import { UserAccountService } from '../service/account.service';
 
 import { getClientIP } from 'src/utils/collection';
@@ -16,7 +16,7 @@ import { CurUser } from 'src/core/decorators/global.decorators';
 import { UserAccountResponse } from '../constants/account.response';
 import { FrequentlyGuards } from 'src/core/guards/frequently.guards';
 import { MainCPrefix } from 'src/modules/user/constants/controller.cfg';
-import { UserLoginDto, UserAccountDto } from '../dto/account.dto';
+import { UserLoginDto, UserAccountDto, UserRegisterDto } from '../dto/account.dto';
 
 
 
@@ -42,11 +42,11 @@ export class UserAccountController {
   @UseGuards(FrequentlyGuards({ interval: 0.5 }))
   @ApiOperation({
     summary: '注册',
-    description: '用户注册账号入口',
+    description: `用户注册账号入口, 此接口的邮箱为必传<br>
+    注意：在注册成功后默认会向\`目标邮箱内发送验证账号的邮件\`! 如果是测试不想自动发送可传入\`notSend\`值为\`false\``,
   })
-  async register(@Body() body: UserLoginDto, @Request() req?: GlobalRequest) {
+  async register(@Body() body: UserRegisterDto, @Request() req?: GlobalRequest) {
     const { account } = body;
-
     const nameFormat = /^[a-z0-9_\-@\.]+$/i.test(account);
     const nameFormatReg = [
       /^(\.+|\-+|_+|&+)$/,
@@ -78,6 +78,7 @@ export class UserAccountController {
   @UseGuards(AuthGuard('local'))
   @ApiOperation({
     summary: '登录',
+    description: '账号可以是邮箱'
   })
   async login(@CurUser() user: UserEntity, @Body() _body: UserLoginDto, @Req() req?: GlobalRequest) {
     this.UserAccountService.login(user, {
@@ -100,6 +101,6 @@ export class UserAccountController {
     description: '检测账号或者邮箱是否可注册，如果邮箱处于未认证状态也同样会被检测为占用!<br>code为0是可注册，否则为不可注册!'
   })
   async checkAccountRegister(@Query() query: UserAccountDto) {
-    return !(await this.UserAccountService.isRegister(query.account)) || UserAccountResponse.REG_AC_EXISTS;
+    return !(await this.UserService.isRegister(query.account)) || UserAccountResponse.REG_AC_EXISTS;
   }
 }

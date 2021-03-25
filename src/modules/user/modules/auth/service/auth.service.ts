@@ -1,8 +1,8 @@
 import * as JWT from 'jsonwebtoken';
-import { FindConditions, Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from '@nestjs/typeorm';
+import { FindConditions, Repository } from 'typeorm';
 
 import { UserEntity } from "src/modules/user/entity/user.entity";
 
@@ -12,9 +12,9 @@ import ConfigsService from 'src/modules/coreModules/config/configs.service';
 import { UserAuthResponse } from '../constants/response';
 import { JwtToken } from 'src/interface/gloabl.interface';
 import { UserRole, UserStatus } from "../../../constants/entity.cfg";
-import { NotifyResponse } from 'src/modules/notify/constants/response.cfg';
 import { ResponseBody, ResponseEnum, Status } from "src/constants/response";
 import { UserAccountResponse } from '../../account/constants/account.response';
+import { NotifyEmailResponse } from 'src/modules/notify/modules/email/constants/email.response';
 
 
 
@@ -27,8 +27,8 @@ export class UserAuthService {
   constructor(
     @InjectRepository(UserEntity) private readonly userRepository: Repository<UserEntity>,
     private readonly jwtService: JwtService,
-    private readonly ConfigsService: ConfigsService,
     private readonly UserService: UserService,
+    private readonly ConfigsService: ConfigsService,
   ) {}
 
   
@@ -98,7 +98,7 @@ export class UserAuthService {
 
     if (user) {
       if (user.email === email) {
-        ResponseBody.throw(NotifyResponse.ACCOUNT_EMAIL_SAME);
+        ResponseBody.throw(NotifyEmailResponse.ACCOUNT_EMAIL_SAME);
       }
 
       await this.mustReachAccountStatus(user, UserStatus.InActive);

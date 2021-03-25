@@ -110,11 +110,11 @@ export class UserEntity extends BaseInitEntity<UserServiceNS.CreateUser> {
    */
   @Column({
     comment: '邮箱',
+    select: false,
   })
   @ApiProperty({
     description: '邮箱',
   })
-  @Exclude()
   email: string;
 
   /**

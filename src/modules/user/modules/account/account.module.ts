@@ -11,6 +11,8 @@ import { UserAccountController } from "./controller/account.controller";
 import { RedisService } from "src/modules/coreModules/redis/redis.service";
 import ConfigsService from "src/modules/coreModules/config/configs.service";
 import { UserService } from "../../user.service";
+import { UserAuthValidateService } from "../auth/service/validate.service";
+import { NotifyEmailService } from "src/modules/notify/modules/email/service/email.service";
 
 
 
@@ -19,6 +21,7 @@ import { UserService } from "../../user.service";
  */
 @Module({
   imports: [
+    // UserAuthModule,
     JwtModule.registerAsync({
       useFactory: (configsService: ConfigsService) => configsService.jwt,
       inject: [ ConfigsService ],
@@ -35,11 +38,14 @@ import { UserService } from "../../user.service";
     UserService,
     RedisService,
     UserAuthService,
+    NotifyEmailService,
+    UserAuthValidateService,
     UserConfigService,
     UserAccountService,
   ],
   exports: [
-    RedisService,
+    UserAccountService,
+    UserAuthService,
   ]
 })
 export class UserAccountModule {};

@@ -1,13 +1,20 @@
 import { UserEntity } from "./entity/user.entity";
 
 import { generateHash } from "src/utils/crypto";
+import { UserService } from "./user.service";
+import { Injectable } from "_@nestjs_common@7.6.13@@nestjs/common";
 
 
 
 /**
  * 用户类 逻辑层基础类
  */
+@Injectable()
  export class UserServiceBase {
+
+  constructor(
+    private readonly UserService: UserService,
+  ) {}
 
   /**
    * 生成用户盐

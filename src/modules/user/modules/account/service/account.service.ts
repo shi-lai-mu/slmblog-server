@@ -6,13 +6,16 @@ import { Repository } from 'typeorm';
 import { UserEntity } from '../../../entity/user.entity';
 
 import { UserService } from 'src/modules/user/user.service';
-import { UserServiceBase } from 'src/modules/user/user.utils';
-import { RedisService } from '../../../../coreModules/redis/redis.service';
+import { UserServiceBase } from 'src/modules/user/user.base';
+import { RedisService } from 'src/modules/coreModules/redis/redis.service';
 
 import { UserServiceNS } from '../../../type/user';
-import { UserLoginDto } from '../dto/account.dto';
 import { ResponseBody } from 'src/constants/response';
+import { UserRegisterDto } from '../dto/account.dto';
 import { UserAccountResponse } from '../constants/account.response';
+import { UserAuthValidateController } from '../../auth/controller/validate.controller';
+import { UserAuthValidateService } from '../../auth/service/validate.service';
+import { UserAuthService } from '../../auth/service/auth.service';
 
 
 
@@ -25,6 +28,7 @@ export class UserAccountService {
   constructor(
     @InjectRepository(UserEntity) private readonly userRepository: Repository<UserEntity>,
     private readonly RedisService: RedisService,
+    private readonly UserAuthValidateService: UserAuthValidateService,
     private readonly UserService: UserService,
   ) {}
 
@@ -32,24 +36,39 @@ export class UserAccountService {
    * 创建账号
    * @param user 账号数据
    */
-  async create(data: UserLoginDto, options: UserServiceNS.CreateOptions) {
-    const { account, password } = data;
+  async create(data: UserRegisterDto, options: UserServiceNS.CreateOptions) {
+    const { account, password, email, notSend } = data;
     const iv = UserServiceBase.generateIV();
-    const accountExists = await this.isRegister(account);
     
-    if (accountExists) { 
+    if (await this.UserService.isRegister(account)) { 
       ResponseBody.throw(UserAccountResponse.REG_AC_EXISTS);
     }
     
-    const user = new UserEntity({
+    if (await this.UserService.isRegister(email)) {
+      ResponseBody.throw(UserAccountResponse.REG_EMAIL_EXISTS);
+    }
+    
+    const user = await new UserEntity({
       ...options,
       nickname: String(account).substr(-4),
       account,
+      email,
       password: UserServiceBase.encryptionPwd(password, iv, account),
       iv,
-    });
+    })
+    .save();
 
-    return plainToClass(UserEntity, await user.save());
+    // 注册成功
+    if (user.id) {
+      if (!notSend) {
+        this.UserAuthValidateService.sendValidateAccountEmail({
+          email,
+          account,
+        });
+      }
+    }
+
+    return plainToClass(UserEntity, user);
   }
 
 
@@ -69,16 +88,5 @@ export class UserAccountService {
     });
 
     return plainToClass(UserEntity, user);
-  }
-
-
-  /**
-   * 检测账号是否注册
-   * @param account 账号/邮箱
-   * @returns 注册的账号信息 or 空
-   */
-  async isRegister(account: UserEntity['account']): Promise<UserEntity | null> {
-    const key = /@/.test(account) ? 'email' : 'account';
-    return await this.UserService.find({ [key]: account }, ['id'], false);
   }
 }

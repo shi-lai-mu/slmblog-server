@@ -1,4 +1,4 @@
-import { JwtModule } from "@nestjs/jwt";
+import { JwtModule, JwtService } from "@nestjs/jwt";
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { PassportModule } from "@nestjs/passport";
@@ -16,6 +16,8 @@ import { NotifyEmailService } from "src/modules/notify/modules/email/service/ema
 
 import { JwtStrategy } from "src/core/strategy/jwt.strategy";
 import { LocalStrategy } from "src/core/strategy/local.strategy";
+import { UserAuthValidateModule } from "./validate.module";
+import { UserAuthValidateService } from "./service/validate.service";
 
 
 
@@ -30,6 +32,7 @@ import { LocalStrategy } from "src/core/strategy/local.strategy";
       inject: [ ConfigsService ],
     }),
     TypeOrmModule.forFeature([ UserEntity, UserConfigEntity]),
+    UserAuthValidateModule,
   ],
   controllers: [
     UserAuthController,
@@ -42,7 +45,14 @@ import { LocalStrategy } from "src/core/strategy/local.strategy";
     UserAuthService,
     UserConfigService,
     UserAccountService,
+    UserAuthValidateService,
     NotifyEmailService,
+  ],
+  exports: [
+    UserAccountService,
+    NotifyEmailService,
+    UserAuthValidateService,
+    JwtStrategy,
   ],
 })
 export class UserAuthModule {};

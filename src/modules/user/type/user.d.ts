@@ -33,6 +33,10 @@ export namespace UserServiceNS {
      */
     nickname: UserEntity['nickname'];
     /**
+     * 邮箱
+     */
+    email: UserEntity['email'];
+    /**
      * 密码
      */
     password: UserEntity['password'];

@@ -57,4 +57,15 @@ export class UserService {
       where: { id },
     }) || null;
   }
+
+
+  /**
+   * 检测账号或邮箱是否注册
+   * @param account 账号/邮箱
+   * @returns 注册的账号信息 or 空
+   */
+  async isRegister(account: UserEntity['account']): Promise<UserEntity | null> {
+    const key = /@/.test(account) ? 'email' : 'account';
+    return await this.find({ [key]: account }, ['id'], false);
+  }
 }

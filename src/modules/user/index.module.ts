@@ -9,6 +9,18 @@ import { UserController } from './user.controller';
 import { UserAuthModule } from './modules/auth/auth.module';
 import { UserConfigModule } from './modules/config/config.module';
 import { UserAccountModule } from './modules/account/account.module';
+import { RedisModule } from '../coreModules/redis/redis.module';
+import { UserService } from './user.service';
+import { UserConfigService } from './modules/config/service/config.service';
+import { UserAuthValidateModule } from './modules/auth/validate.module';
+import { UserAuthValidateService } from './modules/auth/service/validate.service';
+import { UserAuthValidateController } from './modules/auth/controller/validate.controller';
+import { UserAccountService } from './modules/account/service/account.service';
+import { RedisService } from '../coreModules/redis/redis.service';
+import { UserAuthService } from './modules/auth/service/auth.service';
+import { JwtModule, JwtService } from '_@nestjs_jwt@7.2.0@@nestjs/jwt';
+import ConfigsService from '../coreModules/config/configs.service';
+import { UserAuthController } from './modules/auth/controller/auth.controller';
 
 
 
@@ -18,19 +30,10 @@ import { UserAccountModule } from './modules/account/account.module';
 @Module({
   imports: [
     UserModule,
+    RedisModule,
     UserAuthModule,
     UserConfigModule,
     UserAccountModule,
-    TypeOrmModule.forFeature([
-      Badge,
-      UserEntity,
-      UserConfigEntity,
-    ]),
-  ],
-  controllers: [
-    UserController,
-  ],
-  providers: [
   ],
 })
 export class UserBusinessModule {};
