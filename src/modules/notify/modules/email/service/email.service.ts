@@ -5,8 +5,8 @@ import { ISendMailOptions, MailerService } from '@nestjs-modules/mailer';
 import ConfigsService from "src/modules/coreModules/config/configs.service";
 
 import { formatJetlag } from "src/utils/collection";
-import { NotifyResponse } from "../../../constants/response.cfg";
 import { ResponseBody, Status } from "src/constants/response";
+import { NotifyEmailResponse } from "../constants/email.response";
 import { RedisService } from "src/modules/coreModules/redis/redis.service";
 
 
@@ -19,7 +19,6 @@ export class NotifyEmailService {
 
   constructor(
     private readonly MailerService: MailerService,
-    private readonly configService: ConfigsService,
     private readonly RedisService: RedisService,
   ) {}
 
@@ -35,7 +34,7 @@ export class NotifyEmailService {
         send.status = send.response === '250 Ok: queued as ';
         res(send);
       } catch(err) {
-        rej(NotifyResponse.EMAIL_SEND_ERROR);
+        rej(NotifyEmailResponse.EMAIL_SEND_ERROR);
         // TODO: 记录错误 code...
       }
     });
@@ -59,7 +58,7 @@ export class NotifyEmailService {
         if (popLog && popLog.context.time >= Date.now()) {
           const cooling = popLog.context.time - Date.now();
           ResponseBody.throw({
-            ...NotifyResponse.EMAIL_SEND_OFTEN_MAX,
+            ...NotifyEmailResponse.EMAIL_SEND_OFTEN_MAX,
             result: {
               cooling,
               text: `请${formatJetlag(Math.ceil(cooling / 1000), '秒')}后再试!`

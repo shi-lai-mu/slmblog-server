@@ -20,7 +20,7 @@ import ConfigsService from "src/modules/coreModules/config/configs.service";
       useFactory: (configsService: ConfigsService) => ({
         ...configsService.email,
         template: {
-          dir: path.join(__dirname, '../template').replace('dist', 'src'),
+          dir: path.join(__dirname, './template').replace('dist', 'src'),
           adapter: new HandlebarsAdapter(),
           options: {
             strict: true,
