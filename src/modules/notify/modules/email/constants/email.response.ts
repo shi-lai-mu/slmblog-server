@@ -27,7 +27,7 @@ export class NotifyEmailResponse {
   // 邮箱为空
   static readonly EMAIL_PARAMS_EMPTY:         Status = { codeType: 'P', message: '邮箱不能为空!' };
   // 邮箱格式不正确
-  static readonly EMAIL_PARAMS_FORMAT:        Status = { codeType: 'P', message: '请输入正确的邮箱!' };
+  static readonly EMAIL_PARAMS_FORMAT:        Status = { codeType: 'P', message: '请填写正确的邮箱!' };
   // 校验邮箱ID为空
   static readonly EMAIL_VALIDATE_ID_EMPTY:    Status = { codeType: 'P', message: '校验邮箱ID不能为空!' };
   // 校验邮箱ID格式错误
@@ -42,6 +42,10 @@ export class NotifyEmailResponse {
   static readonly ACCOUNT_EMAIL_UPDATE_ERROR: Status = { codeType: 'D', message: '账号邮箱修改失败!' };
   // 邮箱更新失败: 邮箱相同
   static readonly ACCOUNT_EMAIL_SAME:         Status = { codeType: 'B', message: '不能绑定相同邮箱或邮箱已被修改!' };
-  // 邮件发送失败L: 发送目标未注册
+  // 邮件发送失败: 发送目标未注册
   static readonly EMAIL_SEND_CUURENT_NOT_REG: Status = { codeType: 'B', message: '发送目标未注册!' };
+  // 邮件发送失败: 账号未绑定邮箱
+  static readonly EMAIL_SEND_ACCOUNT_NOT_INP: Status = { codeType: 'P', message: '当前账号之前未填写邮箱，必须填写邮箱才能发送!' };
+  // 邮件发送失败: 发送目标为空
+  static readonly EMAIL_SEND_TO_IS_EMPTY:     Status = { codeType: 'B', message: '邮件发送失败，发送目标为空!' };
 }

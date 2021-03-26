@@ -1,5 +1,5 @@
 import * as path from 'path';
-import { Module } from "@nestjs/common";
+import { Logger, Module } from "@nestjs/common";
 import { MailerModule } from "@nestjs-modules/mailer";
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter'
 
@@ -36,8 +36,10 @@ import ConfigsService from "src/modules/coreModules/config/configs.service";
   providers: [
     NotifyEmailService,
     RedisService,
+    Logger,
   ],
   exports: [
+    Logger,
   ]
 })
 export class NotifyEmailModule {};

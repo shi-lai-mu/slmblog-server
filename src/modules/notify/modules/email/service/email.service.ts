@@ -1,8 +1,6 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, Logger } from "@nestjs/common";
 import { SentMessageInfo } from 'nodemailer';
 import { ISendMailOptions, MailerService } from '@nestjs-modules/mailer';
-
-import ConfigsService from "src/modules/coreModules/config/configs.service";
 
 import { formatJetlag } from "src/utils/collection";
 import { ResponseBody, Status } from "src/constants/response";
@@ -20,6 +18,7 @@ export class NotifyEmailService {
   constructor(
     private readonly MailerService: MailerService,
     private readonly RedisService: RedisService,
+    private readonly Logger: Logger,
   ) {}
 
 
@@ -28,6 +27,9 @@ export class NotifyEmailService {
    * @param options 发送配置信息
    */
   async send(options: ISendMailOptions): Promise<SentMessageInfo | Status> {
+    if (!options.to) {
+      ResponseBody.throw(NotifyEmailResponse.EMAIL_SEND_TO_IS_EMPTY);
+    }
     return new Promise(async (res: SentMessageInfo, rej: (value: Status) => void) => {
       try {
         const send: SentMessageInfo = await this.MailerService.sendMail(options);
@@ -36,6 +38,7 @@ export class NotifyEmailService {
       } catch(err) {
         rej(NotifyEmailResponse.EMAIL_SEND_ERROR);
         // TODO: 记录错误 code...
+        this.Logger.debug(err, JSON.stringify(options));
       }
     });
   }

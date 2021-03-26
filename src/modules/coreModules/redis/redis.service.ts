@@ -91,7 +91,7 @@ export class RedisService {
    * @param keys keys
    */
   async keys(keys: string, business?: keyof typeof CacheKeys) {
-    if (isDev) console.warn('[debug] redis keys:', RedisCache.config.keyPrefix + (business || '') + keys);
+    // if (isDev) console.warn('[debug] redis keys:', RedisCache.config.keyPrefix + (business || '') + keys);
     return this.client.keys(RedisCache.config.keyPrefix + (business || '') + keys);
   }
 
