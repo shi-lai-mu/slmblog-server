@@ -169,7 +169,7 @@ export class UserEntity extends BaseInitEntity<UserServiceNS.CreateUser> {
   @Column({
     type: 'enum',
     enum: UserStatus,
-    default: UserStatus.Actived,
+    default: UserStatus.InActive,
     comment: '账号状态',
     select: false,
   })

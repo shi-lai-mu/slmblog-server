@@ -66,6 +66,6 @@ export class UserService {
    */
   async isRegister(account: UserEntity['account']): Promise<UserEntity | null> {
     const key = /@/.test(account) ? 'email' : 'account';
-    return await this.find({ [key]: account }, ['id'], false);
+    return await this.find({ [key]: account }, ['id', 'account', 'email'], false);
   }
 }

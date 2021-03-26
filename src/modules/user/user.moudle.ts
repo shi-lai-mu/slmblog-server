@@ -4,7 +4,6 @@ import { UserConfigEntity, UserEntity } from "./entity/user.entity";
 
 import { UserService } from "./user.service";
 import { UserController } from "./user.controller";
-import { UserAccountService } from "./modules/account/service/account.service";
 import { UserConfigService } from "./modules/config/service/config.service";
 import { UserAccountModule } from "./modules/account/account.module";
 import { RedisService } from "../coreModules/redis/redis.service";
@@ -23,6 +22,9 @@ import { RedisModule } from "../coreModules/redis/redis.module";
       UserEntity,
       UserConfigEntity,
     ]),
+  ],
+  controllers: [
+    UserController,
   ],
   providers: [
     RedisService,

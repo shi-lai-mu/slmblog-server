@@ -1,18 +1,15 @@
-import { SentMessageInfo } from 'nodemailer';
 import { ApiOperation, ApiTags } from "@nestjs/swagger";
 import { ISendMailOptions } from '@nestjs-modules/mailer';
 import { Controller, Post, Query, Put, Body } from "@nestjs/common";
 
 import { UserAuthService } from "../service/auth.service";
-import { UserAccountService } from '../../account/service/account.service';
 import ConfigsService from "src/modules/coreModules/config/configs.service";
 import { NotifyEmailService } from "src/modules/notify/modules/email/service/email.service";
 
-import { shieldContent } from "src/utils/crypto";
 import { ValidateAccountEmailDto } from '../dto/auth.dto';
-import { ResponseBody, Status } from "src/constants/response";
-import { ValidateEmailDto } from '../../account/dto/account.dto';
-import { formatJetlag, generateUUID } from 'src/utils/collection';
+import { ResponseBody } from "src/constants/response";
+import { ValidateEmailDto } from '../dto/auth.dto';
+import { formatJetlag } from 'src/utils/collection';
 import { MainCPrefix } from "src/modules/user/constants/controller.cfg";
 import { NOTIFY_EMAIL } from 'src/modules/notify/modules/email/constants';
 import { NotifyEmailResponse } from 'src/modules/notify/modules/email/constants/email.response';
@@ -40,7 +37,7 @@ export class UserAuthValidateController {
   /**
    * 发送 账号邮箱验证 邮件通知
    */
-  @Post('/validate/email')
+  @Post('/email')
   @ApiOperation({
     summary: '发送 账号邮箱验证 邮件通知',
     description: `会向指定邮箱发送 验证账号邮箱邮件，有效时间为\`${formatJetlag(NOTIFY_EMAIL.SEND_COOLING_S * 1000, '小时')}\`<br>
@@ -56,7 +53,7 @@ export class UserAuthValidateController {
    /**
     * 发送 找回密码 邮件通知
     */
-   @Post('/validate/email')
+   @Post('/email')
    @ApiOperation({
      summary: '发送 账号邮箱验证 邮件通知',
      description: `会向指定邮箱发送 验证账号邮箱邮件，有效时间为\`${formatJetlag(NOTIFY_EMAIL.SEND_COOLING_S * 1000, '小时')}\`<br>
@@ -109,7 +106,7 @@ export class UserAuthValidateController {
    /**
     * 验证 账号邮箱
     */
-   @Put('/validate/email')
+   @Put('/email')
    @ApiOperation({
      summary: '验证 账号邮箱',
      description: '验证 [`发送 账号邮箱验证 邮件通知`] 接口的绑定状态，绑定成功后账号将被`激活`',

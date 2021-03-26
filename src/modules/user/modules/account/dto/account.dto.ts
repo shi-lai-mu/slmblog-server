@@ -1,8 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsBoolean, IsEmail, IsNotEmpty, Length } from 'class-validator';
+import { IsEmail, IsNotEmpty, Length } from 'class-validator';
 
 import { USER_ACCOUNT_CONSTANTS } from '../constants';
-import { ResponseEnum, ValidateThrow } from 'src/constants/response';
+import { ValidateThrow } from 'src/constants/response';
 import { UserAccountResponse } from '../constants/account.response';
 import { NotifyEmailResponse } from 'src/modules/notify/modules/email/constants/email.response';
 
@@ -47,23 +47,6 @@ export class UserLoginDto extends UserAccountDto {
     default: 'shilaimu',
   })
   password: string;
-}
-
-
-/**
- * 注册账号 邮箱验证码通知 输入校验
- */
-export class ValidateEmailDto extends UserAccountDto {
-  /**
-   * 邮箱
-   */
-   @IsNotEmpty(ValidateThrow(NotifyEmailResponse.EMAIL_PARAMS_EMPTY))
-   @IsEmail({}, ValidateThrow(NotifyEmailResponse.EMAIL_PARAMS_FORMAT))
-   @ApiProperty({
-     description: '邮箱 (必须为邮箱格式)',
-     default: 'xxxxxxxxx@qq.com',
-   })
-   email: string;
 }
 
 

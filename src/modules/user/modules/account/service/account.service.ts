@@ -13,9 +13,7 @@ import { UserServiceNS } from '../../../type/user';
 import { ResponseBody } from 'src/constants/response';
 import { UserRegisterDto } from '../dto/account.dto';
 import { UserAccountResponse } from '../constants/account.response';
-import { UserAuthValidateController } from '../../auth/controller/validate.controller';
 import { UserAuthValidateService } from '../../auth/service/validate.service';
-import { UserAuthService } from '../../auth/service/auth.service';
 
 
 

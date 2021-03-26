@@ -1,4 +1,4 @@
-import { Module } from "@nestjs/common";
+import { Logger, Module } from "@nestjs/common";
 import { JwtModule } from "@nestjs/jwt";
 import { TypeOrmModule } from "@nestjs/typeorm";
 
@@ -36,10 +36,12 @@ import { UserAuthValidateService } from "./service/validate.service";
     UserAuthService,
     NotifyEmailService,
     UserAuthValidateService,
+    Logger,
   ],
   exports: [
     UserAuthValidateService,
     NotifyEmailService,
+    Logger,
   ]
 })
 export class UserAuthValidateModule {}

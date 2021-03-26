@@ -44,7 +44,7 @@ export class UserAuthService {
     }
      
     // 此处为所有用户可获得身份信息的总入口
-    if (user.status !== UserStatus.Actived) {
+    if (user.status < UserStatus.InActive) {
       ResponseBody.throw(UserAccountResponse.ACOOUNT_ABNORMAL);
     }
 
@@ -97,8 +97,9 @@ export class UserAuthService {
     const user = await this.UserService.find({ account }, [ 'id', 'status', 'email' ]);
 
     if (user) {
-      if (user.email === email) {
-        ResponseBody.throw(NotifyEmailResponse.ACCOUNT_EMAIL_SAME);
+      if (user.email === email && user.status === UserStatus.Actived) {
+        // ResponseBody.throw(NotifyEmailResponse.ACCOUNT_EMAIL_SAME);
+        return true;
       }
 
       await this.mustReachAccountStatus(user, UserStatus.InActive);
