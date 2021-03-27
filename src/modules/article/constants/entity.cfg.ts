@@ -33,7 +33,11 @@ export enum ArticleStateEnum {
 /**
  * 文章异常状态定义
  */
-export const AbnormalState = [ ArticleStateEnum.isDelete, ArticleStateEnum.failed, ArticleStateEnum.examine ].map(v => String(v));
+export const AbnormalState = [
+  ArticleStateEnum.isDelete, // 已删除
+  ArticleStateEnum.failed,   // 审核未通过
+  ArticleStateEnum.examine,  // 审核中
+].map(v => String(v));
 
 /**
  * 点赞状态

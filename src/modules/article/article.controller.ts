@@ -1,5 +1,5 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from "@nestjs/common";
-import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from "@nestjs/swagger";
+import { Body, Controller, Get, Param, Post, Query, UseGuards } from "@nestjs/common";
+import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiParam, ApiQuery, ApiTags } from "@nestjs/swagger";
 
 import { UserEntity } from "src/modules/user/entity/user.entity";
 import { Article } from "./entity/article.entity";
@@ -85,5 +85,19 @@ export class ArticleController {
   }
 
 
-  // @get('')
+  /**
+   * 获取文章简洁信息
+   */
+  @Get('profile/list')
+  @ApiOperation({
+    summary: '获取文章简洁信息',
+    description: '获取文章简洁的信息，等同于文章列表',
+  })
+  @ApiQuery({
+    name: 'ids',
+    description: '筛选的文章ids（入参如：[1,2,3] 或 1 ）',
+  })
+  async profile(@Query('ids') ids: number | string) {
+    return this.ArticleService.profile(ids);
+  }
 }

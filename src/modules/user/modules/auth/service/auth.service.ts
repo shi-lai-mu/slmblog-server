@@ -14,7 +14,6 @@ import { JwtToken } from 'src/interface/gloabl.interface';
 import { UserRole, UserStatus } from "../../../constants/entity.cfg";
 import { ResponseBody, ResponseEnum, Status } from "src/constants/response";
 import { UserAccountResponse } from '../../account/constants/account.response';
-import { NotifyEmailResponse } from 'src/modules/notify/modules/email/constants/email.response';
 
 
 
@@ -65,7 +64,7 @@ export class UserAuthService {
     if (!token || !jwt) return ResponseEnum.UNAUTHORIZED;
 
     if (jwt) {
-      const jwtVerify = await new Promise<JwtToken | Error | string>(resolve => {
+      const jwtVerify = await new Promise<JwtToken | Error | string>(resolve => { 
         JWT.verify(jwt, this.ConfigsService.jwt.secret, {
           ignoreExpiration: true,
         }, (err, data) => {

@@ -15,8 +15,9 @@ import { ArticleSubmitDto } from "./dto/article.dto";
 import { sensitiveWord } from "src/configs/sensitive.word";
 import { ResponseBody, ResponseEnum } from "src/constants/response";
 import { UserTableName } from "src/modules/user/constants/entity.cfg";
-import { responseList, skipPage, ValidateParams } from "src/utils/collection";
+import { isJsonString, responseList, skipPage, ValidateParams } from "src/utils/collection";
 import { AbnormalState, ArticleStateEnum, ArticleTableName } from "src/modules/article/constants/entity.cfg";
+import { ArticleResponse } from './constants/response.cfg';
 
 
 
@@ -180,6 +181,33 @@ export class ArticleService {
     });
 
     return responseList(page, count, list, total);
+  }
+
+
+  /**
+   * 获取文章简洁信息
+   * @param filterId 筛选的文章ids
+   */
+  async profile(filterId: number | string) {
+    const ids: number[] = typeof filterId === 'number' ? [ filterId ] : isJsonString(filterId);
+
+    if (!ids) {
+      ResponseBody.throw(ArticleResponse.FILTER_IDS_TYPE);
+    }
+    
+    const BaseSelect = await this.ArticleRepository
+      .createQueryBuilder('article')
+      .leftJoinAndSelect('article.author', UserTableName.USER)
+      .leftJoinAndSelect('article.stat', ArticleTableName.STAT)
+      .where({
+        id: In(ids),
+        state: Not(In(AbnormalState)),
+      })
+      .getMany()
+    ;
+    const tmporaryMap: { [k: number]: Article } = {};
+    BaseSelect.forEach(article => tmporaryMap[article.id] = article);
+    return ids.map(id => tmporaryMap[id] || null);
   }
 
 

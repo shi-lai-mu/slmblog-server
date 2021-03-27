@@ -89,8 +89,7 @@ export const responseList = <T>(page: number, count: number, list: T, total: num
  */
 export const isJsonString = (jsonString: string) => {
   try {
-    jsonString = JSON.parse(jsonString);
-    return true;
+    return JSON.parse(jsonString);;
   } catch (_err) {
     return false;
   }

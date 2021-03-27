@@ -8,10 +8,10 @@ import { RegisterResponse } from "src/plugins/slm/resCodeDoc/decorators";
 /**
  * 文章业务 响应
  */
-// @RegisterResponse({
-//   name: '文章业务',
-//   startCode: 1200,
-// })
+@RegisterResponse({
+  name: '文章业务',
+  startCode: 1200,
+})
 export class ArticleResponse {
   // 文章标题为空
   static readonly SUB_TITLE_EMPTY:             Status = { code: 1200, message: '文章标题不能为空!' };
@@ -59,6 +59,8 @@ export class ArticleResponse {
   static readonly SEND_COMMENT_NICKNAME_EMPTY: Status = { code: 1224, message: '昵称不能为空!' };
   // 在父级下留子评论
   static readonly SEND_SUB_COMMENT_PARENT_NOT: Status = { code: 1225, message: '父级评论不存在!' };
+  // 文章筛选类id型错误
+  static readonly FILTER_IDS_TYPE:             Status = { codeType: 'P', message: '文章筛选ID只能为数组字符串或者数值!' };
 }
 
 /**
