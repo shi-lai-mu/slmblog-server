@@ -1,5 +1,5 @@
 import { Status } from "src/constants/response";
-import { ARTICLE_CONSTANTS } from "src/constants/constants";
+import { ARTICLE_CONSTANTS } from "src/constants";
 import { ARTICLE_COMMENT } from "./controller.cfg";
 import { RegisterResponse } from "src/plugins/slm/resCodeDoc/decorators";
 

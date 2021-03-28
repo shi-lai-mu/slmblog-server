@@ -7,7 +7,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { UserServiceNS } from 'src/modules/user/type/user';
 import { USER_ACCOUNT_CONSTANTS } from '../modules/account/constants';
 import { BaseInitEntity } from '../../../entity/baseInitEntity';
-import { UserGender, UserRole, UserStatus, UserTableName, ValidateType } from '../constants/entity.cfg';
+import { UserGender, Permission, UserStatus, UserTableName, ValidateType } from '../constants/entity.cfg';
 
 
 
@@ -99,11 +99,11 @@ export class UserEntity extends BaseInitEntity<UserServiceNS.CreateUser> {
    */
   @Column({
     type: 'enum',
-    enum: UserRole,
-    default: UserRole.Normal,
+    enum: Permission,
+    default: Permission.Normal,
     comment: '权限',
   })
-  role: UserRole;
+  role: Permission;
 
   /**
    * 邮箱

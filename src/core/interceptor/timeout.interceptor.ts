@@ -1,3 +1,4 @@
+import { Response } from 'express';
 import { throwError, TimeoutError } from "rxjs";
 import { catchError, map, timeout } from 'rxjs/operators';
 import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from "@nestjs/common";
@@ -30,7 +31,7 @@ export class TimeoutInterceptor implements NestInterceptor {
 
   async intercept(context: ExecutionContext, next: CallHandler) {
     const req = context.switchToHttp().getRequest();
-    const res = context.switchToHttp().getResponse();
+    const res: Response = context.switchToHttp().getResponse();
     const user: UserEntity | undefined = req.user;
 
     // 已登录用户带上新token
@@ -72,7 +73,10 @@ export class TimeoutInterceptor implements NestInterceptor {
             res.header('token', data.token);
             delete data.token;
           }
-          data = ResponseBody.send(data);
+          const contentType = res.getHeaders()['content-type'];
+          if (!contentType || /application\/json/.test(contentType as string)) {
+            data = ResponseBody.send(data);
+          }
         }
         return data;
       }))

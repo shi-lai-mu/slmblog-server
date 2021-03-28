@@ -3,7 +3,6 @@ import { Controller, Get } from "@nestjs/common";
 
 import { NoticService } from "../service/notic.service";
 
-import { APIPrefix } from "src/constants/constants";
 
 
 
@@ -11,7 +10,7 @@ import { APIPrefix } from "src/constants/constants";
  * 常规公告 控制层
  */
 @Controller({
-  path: APIPrefix + 'notic'
+  path: 'notic'
 })
 @ApiTags('通知')
 export class NoticController {

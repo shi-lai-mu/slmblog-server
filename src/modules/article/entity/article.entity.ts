@@ -3,7 +3,7 @@ import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, Up
 import { UserEntity } from '../../user/entity/user.entity';
 import { ArticleStat } from '../modules/comment/entity/stat.entity';
 
-import { ARTICLE_CONSTANTS } from 'src/constants/constants';
+import { ARTICLE_CONSTANTS } from 'src/constants';
 import { BaseInitEntity } from '../../../entity/baseInitEntity';
 import { ArticleStateEnum, ArticleTableName } from 'src/modules/article/constants/entity.cfg';
 

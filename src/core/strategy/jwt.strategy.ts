@@ -9,7 +9,7 @@ import { UserEntity } from "src/modules/user/entity/user.entity";
 import ConfigsService from "src/modules/coreModules/config/configs.service";
 
 import { ResponseBody, ResponseEnum } from "src/constants/response";
-import { UserRole } from "src/modules/user/constants/entity.cfg";
+import { Permission } from "src/modules/user/constants/entity.cfg";
 import { ResBaseException } from "src/core/exception/res.exception";
 
 
@@ -89,13 +89,13 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
 @Injectable()
 export class JwtPermissionStrategy extends AuthGuard('jwt') {
   // 权限等级
-  private PermissionRole: UserRole = UserRole.Normal;
+  private PermissionRole: Permission = Permission.Normal;
 
   /**
    * 权限守卫 只允许指定权限以上用户访问接口
    * @params role 权限组
    */
-  constructor(role: UserRole = UserRole.Normal) {
+  constructor(role: Permission = Permission.Normal) {
     super(role);
     this.PermissionRole = role;
   }
@@ -112,8 +112,8 @@ export class JwtPermissionStrategy extends AuthGuard('jwt') {
     const { PermissionRole } = this;
 
     // 游客设定 越权访问
-    if (!user && PermissionRole === UserRole.Tourist) {
-      return { iv: UserRole.Tourist };
+    if (!user && PermissionRole === Permission.Tourist) {
+      return { iv: Permission.Tourist };
     }
 
     if (err || !user) {
@@ -125,20 +125,20 @@ export class JwtPermissionStrategy extends AuthGuard('jwt') {
     }
 
     // 权限判断
-    if (PermissionRole !== UserRole.Normal) {
+    if (PermissionRole !== Permission.Normal) {
       if (user.role < PermissionRole) {
         let currentRoleName = '';
-        let userRoleName = '';
-        for (const roleName in UserRole) {
-          const item = UserRole[roleName] as unknown as UserRole;
+        let PermissionName = '';
+        for (const roleName in Permission) {
+          const item = Permission[roleName] as unknown as Permission;
           if (item === PermissionRole) currentRoleName = roleName;
-          if (item === user.role) userRoleName = roleName;
+          if (item === user.role) PermissionName = roleName;
         }
         const Error = ResponseEnum.NOT_PERMISSION;
         ResponseBody.throw({
           ...Error,
           message: Error.message.replace('%s', currentRoleName),
-          result: `当前权限组 [${userRoleName}]`
+          result: `当前权限组 [${PermissionName}]`
         });
       }
     }

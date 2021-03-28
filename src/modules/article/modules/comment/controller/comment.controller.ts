@@ -10,7 +10,7 @@ import { SendArticleCommentDto } from "../dto/comment.dto";
 import { MainCPrefix } from "../../../constants/controller.cfg";
 import { ArticleResponse } from "../../../constants/response.cfg";
 import { CurUser } from "src/core/decorators/global.decorators";
-import { UserRole } from "src/modules/user/constants/entity.cfg";
+import { Permission } from "src/modules/user/constants/entity.cfg";
 import { JwtPermissionStrategy } from "src/core/strategy/jwt.strategy";
 import { NotifyEmailResponse } from "src/modules/notify/modules/email/constants/email.response";
 
@@ -40,7 +40,7 @@ export class ArticleCommentController {
     name: 'articleId',
     description: '文章ID',
   })
-  @UseGuards(new JwtPermissionStrategy(UserRole.Tourist))
+  @UseGuards(new JwtPermissionStrategy(Permission.Tourist))
   @ApiBearerAuth()
   async send(
     @Body() sendArticleComment: SendArticleCommentDto,

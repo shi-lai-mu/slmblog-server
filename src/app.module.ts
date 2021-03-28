@@ -8,6 +8,7 @@ import ConfigService from './modules/coreModules/config/configs.service';
 
 import { NotifyModule } from './modules/notify/index.module';
 import { UserBusinessModule } from './modules/user/index.module';
+import { ResourcesModule } from './modules/resources/index.module';
 import { RedisModule } from './modules/coreModules/redis/redis.module';
 import { ArticleBusinessModule } from './modules/article/index.module';
 import { ConfigsModule } from './modules/coreModules/config/configs.module';
@@ -35,6 +36,7 @@ import { GlobalMiddleware } from './core/middleware/global.middleware';
     UserBusinessModule,
     ArticleBusinessModule,
     ScheduleBusinessModule,
+    ResourcesModule,
   ],
   controllers: [
     AppController

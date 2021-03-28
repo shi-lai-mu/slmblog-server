@@ -7,14 +7,14 @@
 //  @Injectable()
 //  export class JwtPermissionStrategy extends PassportStrategy(Strategy) {
 //    // 权限等级
-//    private PermissionRole: UserRole = UserRole.Normal;
+//    private PermissionRole: Permission = Permission.Normal;
  
 //    /**
 //     * 权限守卫 只允许指定权限以上用户访问接口
 //     * @params role 权限组
 //     */
 //    constructor(
-//      role: UserRole = UserRole.Normal,
+//      role: Permission = Permission.Normal,
 //      @InjectRepository(User) private readonly userRepository?: Repository<User>,
 //    ) {
 //      super(role);
@@ -64,20 +64,20 @@
 //      }
  
 //      // 权限判断
-//      if (PermissionRole !== UserRole.Normal) {
+//      if (PermissionRole !== Permission.Normal) {
 //        if (user.role < PermissionRole) {
 //          let currentRoleName = '';
-//          let userRoleName = '';
-//          for (const roleName in UserRole) {
-//            const item = UserRole[roleName] as unknown as UserRole;
+//          let PermissionName = '';
+//          for (const roleName in Permission) {
+//            const item = Permission[roleName] as unknown as Permission;
 //            if (item === PermissionRole) currentRoleName = roleName;
-//            if (item === user.role) userRoleName = roleName;
+//            if (item === user.role) PermissionName = roleName;
 //          }
 //          const Error = ResponseEnum.NOT_PERMISSION;
 //          throw new ResBaseException({
 //            ...Error,
 //            message: Error.message.replace('%s', currentRoleName),
-//            result: `当前权限组 [${userRoleName}]`
+//            result: `当前权限组 [${PermissionName}]`
 //          });
 //        }
 //      }

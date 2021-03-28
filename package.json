@@ -21,6 +21,10 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
+    "@dicebear/avatars": "^4.5.4",
+    "@dicebear/avatars-female-sprites": "^4.5.4",
+    "@dicebear/avatars-human-sprites": "^4.5.4",
+    "@dicebear/avatars-male-sprites": "^4.5.4",
     "@nestjs-modules/mailer": "^1.5.1",
     "@nestjs/common": "^7.6.13",
     "@nestjs/core": "^7.6.13",

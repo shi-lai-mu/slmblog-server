@@ -8,7 +8,7 @@ import { ArticleCategoryService } from "../service/category.service";
 import { MainCPrefix } from "../../../constants/controller.cfg";
 import { CreateArticleCategoryDto } from "../dto/category.dto";
 import { CurUser } from "src/core/decorators/global.decorators";
-import { UserRole } from "src/modules/user/constants/entity.cfg";
+import { Permission } from "src/modules/user/constants/entity.cfg";
 import { JwtPermissionStrategy } from "src/core/strategy/jwt.strategy";
 
 
@@ -29,7 +29,7 @@ export class ArticleCategoryContorller {
    * 创建类目
    */
   @Post('append')
-  @UseGuards(new JwtPermissionStrategy(UserRole.SuperAdmin))
+  @UseGuards(new JwtPermissionStrategy(Permission.SuperAdmin))
   @ApiBearerAuth()
   @ApiOperation({
     summary: '新增类目',

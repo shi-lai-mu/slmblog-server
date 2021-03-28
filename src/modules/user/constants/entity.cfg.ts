@@ -15,7 +15,7 @@ export const UserTableName = {
 /**
  * 用户权限
  */
-export enum UserRole {
+export enum Permission {
   Tourist    = '0', // 游客
   Normal     = 1,   // 普通用户
   BlogUser   = 2,   // 博主用户

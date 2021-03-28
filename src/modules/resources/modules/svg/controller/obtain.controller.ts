@@ -1,8 +1,8 @@
+import Avatars from '@dicebear/avatars';
 import { ApiOperation, ApiTags } from "@nestjs/swagger";
 import maleSprites from '@dicebear/avatars-male-sprites';
 import humanSprites from '@dicebear/avatars-human-sprites';
 import femaleSprites from '@dicebear/avatars-female-sprites';
-import Avatars, { Options as AvatarsOptions } from '@dicebear/avatars';
 import { Controller, Get, Header, HttpService, Param, Query } from "@nestjs/common";
 
 import { MainCPrefix } from "src/modules/resources/constants";
@@ -41,7 +41,6 @@ export class ResourcesSVGObtainController {
       male   : maleSprites,   // 男
       human  : humanSprites,  // 人类
     };
-    console.log(options);
     const avatar = new Avatars<any>(sprites[avatarsDTO.gender] || sprites.human, {
       mood: [ options.mood ],
     });

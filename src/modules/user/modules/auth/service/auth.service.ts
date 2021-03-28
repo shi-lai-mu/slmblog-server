@@ -11,7 +11,7 @@ import ConfigsService from 'src/modules/coreModules/config/configs.service';
 
 import { UserAuthResponse } from '../constants/response';
 import { JwtToken } from 'src/interface/gloabl.interface';
-import { UserRole, UserStatus } from "../../../constants/entity.cfg";
+import { Permission, UserStatus } from "../../../constants/entity.cfg";
 import { ResponseBody, ResponseEnum, Status } from "src/constants/response";
 import { UserAccountResponse } from '../../account/constants/account.response';
 
@@ -35,11 +35,11 @@ export class UserAuthService {
    * 签证Token
    * @param user 用户信息
    */
-  async signToken(user: UserEntity) {
+  async signToken(user: UserEntity): Promise<string> {
     // 游客权限
-    if (user.iv === UserRole.Tourist) {
+    if (user.iv === Permission.Tourist) {
       delete user.iv;
-      return {};
+      return '';
     }
      
     // 此处为所有用户可获得身份信息的总入口
@@ -47,7 +47,7 @@ export class UserAuthService {
       ResponseBody.throw(UserAccountResponse.ACOOUNT_ABNORMAL);
     }
 
-    return this.jwtService.sign({
+    return await this.jwtService.sign({
       iv: user.iv, // 校验用户盐
       id: user.id, // 用户ID
     });

@@ -3,7 +3,7 @@ import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { UserEntity } from "./user.entity";
 
 import { UserTableName } from "../constants/entity.cfg";
-import { USER_CONSTANTS } from "src/constants/constants";
+import { USER_CONSTANTS } from "src/constants";
 import { BaseInitEntity } from "src/entity/baseInitEntity";
 
 

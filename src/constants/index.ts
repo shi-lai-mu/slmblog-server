@@ -1,7 +1,7 @@
 /**
  * 默认API版本
  */
-export const APIPrefix: string = '/api/v1/';
+export const APIPrefix: string = '/api/v1';
 
 /**
  * 用户 逻辑常量
