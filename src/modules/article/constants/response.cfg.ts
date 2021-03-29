@@ -61,6 +61,8 @@ export class ArticleResponse {
   static readonly SEND_SUB_COMMENT_PARENT_NOT: Status = { code: 1225, message: '父级评论不存在!' };
   // 文章筛选类id型错误
   static readonly FILTER_IDS_TYPE:             Status = { codeType: 'P', message: '文章筛选ID只能为数组字符串或者数值!' };
+  // 评论失败
+  static readonly SEND_COMMENT_ERROR:          Status = { codeType: 'B', message: '评论失败，未知原因!' };
 }
 
 /**

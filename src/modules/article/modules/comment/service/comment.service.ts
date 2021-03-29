@@ -8,13 +8,14 @@ import { UserEntity } from "src/modules/user/entity/user.entity";
 import { ArticleComment } from "../entity/comment.entity";
 
 import { ArticleService } from 'src/modules/article/article.service';
-import { RedisService } from "src/modules/coreModules/redis/redis.service";
 
 import { skipPage } from "src/utils/collection";
 import { ArticleCommentNS } from "../type/comment";
+import { responseList } from 'src/utils/collection';
 import { ResponseBody } from "src/constants/response";
 import { SendArticleCommentDto } from "../dto/comment.dto";
 import { ArticleResponse } from "../../../constants/response.cfg";
+import { UserTableName } from "src/modules/user/constants/entity.cfg";
 
 
 
@@ -25,7 +26,6 @@ import { ArticleResponse } from "../../../constants/response.cfg";
 export class ArticleCommentService {
 
   constructor(
-    private readonly RedisService: RedisService,
     @InjectRepository(Article) private readonly Article: Repository<Article>,
     @InjectRepository(ArticleComment) private readonly ArticleComment: Repository<ArticleComment>,
   ) {}
@@ -39,15 +39,23 @@ export class ArticleCommentService {
    * @param parentId  父级评论ID
    */
   async getArticleComment(articleId: Article['id'], page: number, count: number, parentId?: ArticleComment['id']) {
-    const commentList = await this.ArticleComment.findAndCount({
-      skip: skipPage(page, count),
-      take: count,
-      where: {
+    const user = UserTableName.USER;
+
+    const commentList = await this.ArticleComment
+      .createQueryBuilder('comment')
+      .leftJoin('comment.user', user)
+      .select([ 'comment' ])
+      .addSelect([ `${user}.id`, `${user}.avatarUrl`, `${user}.nickname` ])
+      .where({
         article: articleId,
         parent: parentId ?? IsNull(),
-      },
-      cache: 60 * 1000,
-    });
+      })
+      .orderBy('comment.id')
+      .skip(skipPage(page, count))
+      .take(count)
+      .cache(600 * 1000)
+      .getManyAndCount()
+    ;
 
     if (commentList[0]) {
       for (const comment of commentList[0] as ArticleCommentNS.CommentListItem[]) {
@@ -56,9 +64,9 @@ export class ArticleCommentService {
         }
       }
     }
-    
+
     const [ list, total ] = commentList;
-    return { list, total };
+    return responseList(page, count, list, total);
   }
 
 
@@ -69,19 +77,20 @@ export class ArticleCommentService {
    * @param user               评论用户
    */
   async send( articleId: string, sendArticleComment: SendArticleCommentDto, user?: UserEntity) {
-    const { content, nickname, email, link, parentId } = sendArticleComment;
+    let { content } = sendArticleComment;
+    const { nickname, email, link, parentId } = sendArticleComment;
     const article = await this.Article.findOne(articleId);
     let parent: ArticleComment | null = null;
 
     if (!article) {
-      throw ResponseBody.throw(ArticleResponse.STATE_NOT_EXISTS);
+      ResponseBody.throw(ArticleResponse.STATE_NOT_EXISTS);
     }
 
     // 查询父级
     if (parentId !== undefined) {
       parent = await this.ArticleComment.findOne(parentId);
       if (!parent) {
-        throw ResponseBody.throw(ArticleResponse.SEND_SUB_COMMENT_PARENT_NOT);
+        ResponseBody.throw(ArticleResponse.SEND_SUB_COMMENT_PARENT_NOT);
       }
     }
     
@@ -90,8 +99,15 @@ export class ArticleCommentService {
     if (isMintContent.words.length) {
       const errMsg = ArticleResponse.SUB_IS_SENSITIVE;
       errMsg.message = errMsg.message.replace('%s', isMintContent.words.join(', '));
-      throw ResponseBody.throw(errMsg);
+      ResponseBody.throw(errMsg);
     }
+
+    // 非img标签替换
+    content = content
+      .replace(/<img /g, '<-img ')
+      .replace(/<(\/)?[a-zA-Z]+[1-9]?[^><]*>/g, '')
+      .replace(/<-img /g, '<img ')
+    ;
 
     // 存储
     const commentQuery = await new ArticleComment({
@@ -106,6 +122,10 @@ export class ArticleCommentService {
       .save()
     ;
 
+    if (!commentQuery.id) {
+      ResponseBody.throw(ArticleResponse.SEND_COMMENT_ERROR);
+    }
+
     // 更新子评论数量
     if (commentQuery.parent && parent) {
       this.ArticleComment
@@ -114,6 +134,15 @@ export class ArticleCommentService {
       }, {
         subCommentCount: ++parent.subCommentCount,
       });
+    }
+
+    // 插入自己评价的用户信息
+    if (user) {
+      commentQuery.user = {
+        id: user.id,
+        nickname: user.nickname,
+        avatarUrl: user.avatarUrl,
+      } as any;
     }
 
     // 更新评论数量

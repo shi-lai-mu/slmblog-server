@@ -94,6 +94,7 @@ export class ArticleComment extends BaseInitEntity<ArticleCommentNS.CreateArticl
   */
   @Column({
     comment: '网站/博客',
+    default: '',
   })
   link?: string;
 
@@ -102,6 +103,7 @@ export class ArticleComment extends BaseInitEntity<ArticleCommentNS.CreateArticl
   */
   @Column({
     comment: '邮箱',
+    default: '',
   })
   email?: string;
   

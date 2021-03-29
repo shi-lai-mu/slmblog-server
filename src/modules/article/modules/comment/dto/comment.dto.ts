@@ -61,5 +61,5 @@ export class SendArticleCommentDto {
     default: 1,
   })
   parentId?: ArticleComment['id'];
-  
+
 }

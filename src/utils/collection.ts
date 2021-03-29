@@ -77,7 +77,7 @@ export const responseList = <T>(page: number, count: number, list: T, total: num
   return {
     list,
     page: Number(page),
-    count: Number(count),
+    pageSize: Number(count),
     total: Number(total),
   };
 };
