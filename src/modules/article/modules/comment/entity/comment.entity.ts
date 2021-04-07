@@ -5,6 +5,7 @@ import { Article } from "../../../entity/article.entity";
 import { UserEntity } from "src/modules/user/entity/user.entity";
 
 import { ArticleCommentNS } from "../type/comment";
+import { ARTICLE_COMMENT } from '../constants';
 import { BaseInitEntity } from "src/entity/baseInitEntity";
 import { ArticleCommentIsDelete, ArticleTableName, ArticleCommentIsTop } from "../../../constants/entity.cfg";
 
@@ -33,7 +34,7 @@ export class ArticleComment extends BaseInitEntity<ArticleCommentNS.CreateArticl
    * 评论内容
    */
   @Column({
-    length: 150,
+    type: 'text',
     nullable: false,
     comment: '评论内容'
   })

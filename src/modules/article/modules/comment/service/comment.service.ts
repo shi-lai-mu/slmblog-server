@@ -110,7 +110,7 @@ export class ArticleCommentService {
     ;
 
     // 存储
-    const commentQuery = await new ArticleComment({
+    const commentQuery = (await new ArticleComment({
         article: Number(articleId),
         content,
         user: user.id,
@@ -120,7 +120,7 @@ export class ArticleCommentService {
         parent: parentId,
       })
       .save()
-    ;
+    ) as ArticleCommentNS.CommentListItem;
 
     if (!commentQuery.id) {
       ResponseBody.throw(ArticleResponse.SEND_COMMENT_ERROR);
@@ -151,6 +151,15 @@ export class ArticleCommentService {
     }, {
       commentCount: article.commentCount + 1,
     });
+
+    if (!commentQuery.parent) {
+      commentQuery.subComment = commentQuery.subComment || {
+        list: [],
+        total: 0,
+        page: 0,
+        pageSize: 0,
+      };
+    }
     
     return commentQuery;
   }

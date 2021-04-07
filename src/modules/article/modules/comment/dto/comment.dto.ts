@@ -1,11 +1,11 @@
-import { Length } from "class-validator";
+import { MinLength } from "class-validator";
 import { ValidateThrow } from "src/constants/response";
 import { ApiProperty } from "_@nestjs_swagger@4.7.15@@nestjs/swagger";
 
 import { ArticleComment } from "../entity/comment.entity";
 
+import { ARTICLE_COMMENT } from "../constants";
 import { ArticleResponse } from "../../../constants/response.cfg";
-import { ARTICLE_COMMENT } from "../../../constants/controller.cfg";
 
 /**
  * 发表文章评论入参
@@ -14,9 +14,9 @@ export class SendArticleCommentDto {
   /**
    * 评论内容
    */
-  @Length(
+  @MinLength(
     ARTICLE_COMMENT.SEND_COMMENT_CONTENT_MIN,
-    ARTICLE_COMMENT.SEND_COMMENT_CONTENT_MAX,
+    // ARTICLE_COMMENT.SEND_COMMENT_CONTENT_MAX,
     ValidateThrow(ArticleResponse.SEND_COMMENT_CONTENT_LENGTH),
   )
   @ApiProperty({
