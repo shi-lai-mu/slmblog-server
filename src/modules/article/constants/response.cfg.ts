@@ -1,8 +1,7 @@
 import { Status } from "src/constants/response";
 import { ARTICLE_CONSTANTS } from "src/constants";
-import { ARTICLE_COMMENT } from "./controller.cfg";
+import { ARTICLE_COMMENT } from "../modules/comment/constants";
 import { RegisterResponse } from "src/plugins/slm/resCodeDoc/decorators";
-
 
 
 /**
@@ -52,7 +51,7 @@ export class ArticleResponse {
   // 行为记录重复
   static readonly REPEAT_LOVE_ACTION:          Status = { code: 1221, message: '无法重复记录此操作!' };
   // 评论内容长度不对
-  static readonly SEND_COMMENT_CONTENT_LENGTH: Status = { code: 1222, message: `评论内容长度错误，字数应在${ARTICLE_COMMENT.SEND_COMMENT_CONTENT_MIN}~${ARTICLE_COMMENT.SEND_COMMENT_CONTENT_MAX}之间!` };
+  static readonly SEND_COMMENT_CONTENT_LENGTH: Status = { code: 1222, message: `评论内容长度错误，字数应在${ARTICLE_COMMENT.SEND_COMMENT_CONTENT_MIN}字以上!` };
   // 评论 邮箱为空
   // static readonly SEND_COMMENT_EMAIL_EMPTY:    Status = { code: 1223, message: '邮箱不能为空!' }; TODO: 注意补上CODE
   // 评论 昵称为空

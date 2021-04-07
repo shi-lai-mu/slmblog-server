@@ -86,6 +86,14 @@ export interface ListPage<T> {
    * 页数
    */
   total: number;
+  /**
+   * 单页数量
+   */
+  pageSize: number;
+  /**
+   * 当前页数
+   */
+  page: number;
 }
 
 /**
