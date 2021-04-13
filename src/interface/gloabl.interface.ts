@@ -49,6 +49,13 @@ export interface GlobalRequest extends Request {
   result?: T;
   /**
    * 响应类型
+   *  + P	参数错误
+   *  + B	业务错误
+   *  + N	网络错误
+   *  + D	数据库错误
+   *  + F	文件IO错误
+   *  + I	socket.io错误
+   *  + O	其他错误
    */
   @ApiProperty({
     description: '响应类型',
@@ -87,7 +94,7 @@ export interface ListPage<T> {
    */
   total: number;
   /**
-   * 单页数量
+   * 每页数量
    */
   pageSize: number;
   /**

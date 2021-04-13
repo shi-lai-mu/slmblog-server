@@ -26,6 +26,8 @@ export class UserAccountResponse {
   static readonly ACCOUNT_FORMAT:    Status = { codeType: 'P', message: `账号 格式不正确，只能在${ACCOUNT_MIN_LENGTH}-${ACCOUNT_MAX_LENGTH}之间，只能包含中英文和下划线。` };
   // 密码格式问题
   static readonly PASSWORD_FORMAT:   Status = { codeType: 'P', message: `密码 格式不正确，只能在${PASSWORD_MIN_LENGTH}-${PASSWORD_MAX_LENGTH}之间。` };
+  // 昵称格式不正确
+  static readonly NICKNAME_FORMAT:   Status = { codeType: 'P', message: '昵称格式不正确，不能包含非中英文、数字、下划线!' };
 
   // 账号已注册
   static readonly REG_AC_EXISTS:     Status = { codeType: 'B', message: '账号已被注册!' };

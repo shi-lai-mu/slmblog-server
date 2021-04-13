@@ -1,4 +1,4 @@
-import { MinLength } from "class-validator";
+import { IsEmail, IsNotEmpty, MinLength } from "class-validator";
 import { ValidateThrow } from "src/constants/response";
 import { ApiProperty } from "_@nestjs_swagger@4.7.15@@nestjs/swagger";
 
@@ -6,9 +6,10 @@ import { ArticleComment } from "../entity/comment.entity";
 
 import { ARTICLE_COMMENT } from "../constants";
 import { ArticleResponse } from "../../../constants/response.cfg";
+import { NotifyEmailResponse } from "src/modules/notify/modules/email/constants/email.response";
 
 /**
- * 发表文章评论入参
+ * 发表文章评论 入参
  */
 export class SendArticleCommentDto {
   /**
@@ -32,6 +33,7 @@ export class SendArticleCommentDto {
     description: '昵称',
     required: false,
   })
+  @IsNotEmpty(ValidateThrow(ArticleResponse.SEND_COMMENT_NICKNAME_EMPTY))
   nickname?: string;
 
   /**
@@ -41,6 +43,7 @@ export class SendArticleCommentDto {
     description: '邮箱',
     required: false,
   })
+  @IsEmail({}, ValidateThrow(NotifyEmailResponse.EMAIL_PARAMS_FORMAT))
   email?: string;
 
   /**
@@ -61,5 +64,34 @@ export class SendArticleCommentDto {
     default: 1,
   })
   parentId?: ArticleComment['id'];
+}
 
+
+/**
+ * 分页 获取文章评论 入参
+ */
+export class FetchArticleCommentPageDto {
+  /**
+   * 文章ID
+   */
+  @ApiProperty({
+    description: '文章ID',
+  })
+  articleId: number;
+
+  /**
+   * 文章ID
+   */
+  @ApiProperty({
+    description: '页数',
+  })
+  page: number;
+
+  /**
+   * 文章ID
+   */
+  @ApiProperty({
+    description: '每页个数',
+  })
+  pageSize: number;
 }

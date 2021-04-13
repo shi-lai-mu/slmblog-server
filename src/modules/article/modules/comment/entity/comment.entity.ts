@@ -1,11 +1,10 @@
 
-import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 import { Article } from "../../../entity/article.entity";
 import { UserEntity } from "src/modules/user/entity/user.entity";
 
 import { ArticleCommentNS } from "../type/comment";
-import { ARTICLE_COMMENT } from '../constants';
 import { BaseInitEntity } from "src/entity/baseInitEntity";
 import { ArticleCommentIsDelete, ArticleTableName, ArticleCommentIsTop } from "../../../constants/entity.cfg";
 
@@ -27,6 +26,9 @@ export class ArticleComment extends BaseInitEntity<ArticleCommentNS.CreateArticl
   /**
    * 文章ID
    */
+  @JoinColumn({
+    name: 'article_id',
+  })
   @ManyToOne(article => Article, article => article.id)
   article: number;
 
@@ -64,12 +66,14 @@ export class ArticleComment extends BaseInitEntity<ArticleCommentNS.CreateArticl
    * 父级评论ID
    */
   @ManyToOne(type => ArticleComment, commit => commit.id)
+  @JoinColumn({ name: 'parent_id' })
   parent?: ArticleComment['id'];
 
   /**
    * 评论用户ID
    */
   @ManyToOne(user => UserEntity, user => user.id)
+  @JoinColumn({ name: 'user_id' })
   user?: UserEntity['id'];
 
   /**

@@ -109,6 +109,13 @@ export namespace ResponseDocument {
 
   /**
    * 错误类型
+   *  + P	参数错误
+   *  + B	业务错误
+   *  + N	网络错误
+   *  + D	数据库错误
+   *  + F	文件IO错误
+   *  + I	socket.io错误
+   *  + O	其他错误
    */
   export type CodeType = 'P' | 'B' | 'N' | 'D' | 'F' | 'I' | 'O';
 

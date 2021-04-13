@@ -21,8 +21,7 @@ import { UserTableName } from "src/modules/user/constants/entity.cfg";
 
 /**
  * 文章业务 评论 逻辑层 
- */
-@Injectable()
+ */ 
 export class ArticleCommentService {
 
   constructor(
@@ -55,12 +54,12 @@ export class ArticleCommentService {
       .take(count)
       .cache(600 * 1000)
       .getManyAndCount()
-    ;
+    ; 
 
     if (commentList[0]) {
       for (const comment of commentList[0] as ArticleCommentNS.CommentListItem[]) {
         if (comment.subCommentCount) {
-          comment.subComment = await this.getArticleComment(articleId, 1, 10, comment.id);
+          comment.subComment = await this.getArticleComment(articleId, 1, 5, comment.id);
         }
       }
     }
@@ -76,7 +75,7 @@ export class ArticleCommentService {
    * @param sendArticleComment 评论入参
    * @param user               评论用户
    */
-  async send( articleId: string, sendArticleComment: SendArticleCommentDto, user?: UserEntity) {
+  async send(articleId: string, sendArticleComment: SendArticleCommentDto, user?: UserEntity) {
     let { content } = sendArticleComment;
     const { nickname, email, link, parentId } = sendArticleComment;
     const article = await this.Article.findOne(articleId);
@@ -88,9 +87,15 @@ export class ArticleCommentService {
 
     // 查询父级
     if (parentId !== undefined) {
-      parent = await this.ArticleComment.findOne(parentId);
+      parent = await this.ArticleComment.findOne(parentId, {
+        loadRelationIds: true,
+      });
+
       if (!parent) {
         ResponseBody.throw(ArticleResponse.SEND_SUB_COMMENT_PARENT_NOT);
+      }
+      if (parent.parent) {
+        ResponseBody.throw(ArticleResponse.SEND_SUB_NOT_COMMENT_PARENT);
       }
     }
     
@@ -104,7 +109,7 @@ export class ArticleCommentService {
 
     // 非img标签替换
     content = content
-      .replace(/<img /g, '<-img ')
+      .replace(/<img /g, '<-img ')  
       .replace(/<(\/)?[a-zA-Z]+[1-9]?[^><]*>/g, '')
       .replace(/<-img /g, '<img ')
     ;
@@ -150,7 +155,7 @@ export class ArticleCommentService {
       id: Number(articleId),
     }, {
       commentCount: article.commentCount + 1,
-    });
+    }); 
 
     if (!commentQuery.parent) {
       commentQuery.subComment = commentQuery.subComment || {
@@ -160,7 +165,7 @@ export class ArticleCommentService {
         pageSize: 0,
       };
     }
-    
+
     return commentQuery;
   }
 }
