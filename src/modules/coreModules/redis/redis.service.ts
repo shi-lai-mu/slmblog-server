@@ -48,6 +48,10 @@ export class RedisService {
     RedisCache.object = this.client;
   }
 
+  getKey(business: keyof typeof CacheKeys, key: string) {
+    return CacheKeys[business].replace('%d', key);
+  } 
+
   /**
    * 设置业务缓存
    * @param business   业务类型 
@@ -63,7 +67,7 @@ export class RedisService {
     expiryMode: 'EX' | string | any[] = 'EX',
     time: string | number = 60 * 60,
   ) {
-    const cacheKey = CacheKeys[business].replace('%d', key);
+    const cacheKey = this.getKey(business, key);
     return this.client.set(
       cacheKey,
       typeof data === 'object' ? JSON.stringify(data) : data,
@@ -79,10 +83,56 @@ export class RedisService {
    * @param key      缓存键
    */
   async getItem<T>(business: keyof typeof CacheKeys, key: string): Promise<T> {
-    const cacheKey = CacheKeys[business].replace('%d', key);
+    const cacheKey = this.getKey(business, key);
     let FindCache: unknown = await this.client.get(cacheKey);
     if (FindCache && FindCache[0] === '{') FindCache = JSON.parse(<string>FindCache); 
     return FindCache as T | null;
+  }
+
+
+  /**
+   * 设置业务缓存
+   * @param business   业务类型 
+   * @param key        缓存键
+   * @param data       数据
+   */
+  async hmSetItem(
+    business: keyof typeof CacheKeys,
+    key: string,
+    ...data: string[]
+  ) {
+    const cacheKey = this.getKey(business, key);
+    return this.client.hmset(
+      cacheKey,
+      ...data,
+    );
+  }
+
+
+  /**
+   * 获取业务缓存[HASH]
+   * @param business 业务类型 
+   * @param key      缓存键
+   * @param field    获取的字段
+   */
+  async hmGetItem<T>(business: keyof typeof CacheKeys, key: string, ...field: string[]): Promise<T> {
+    const cacheKey = this.getKey(business, key);
+    const { client } = this;
+    let FindCache: unknown = field.length
+      ? await client.hmget(cacheKey, ...field)
+      : await client.hgetall(cacheKey)
+    ;
+    if (FindCache instanceof Array) {
+      FindCache = FindCache.map(v => JSON.parse(v));
+    }
+    if (FindCache && FindCache[0] === '{') FindCache = JSON.parse(<string>FindCache); 
+    return FindCache as T | null;
+  }
+
+
+  async del(business: keyof typeof CacheKeys, key: string) {
+    const cacheKey = this.getKey(business, key);
+    return this.client.del(cacheKey);
   }
 
 

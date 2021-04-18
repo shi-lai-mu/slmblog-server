@@ -18,7 +18,7 @@ export class ScheduleSaveTaskService {
 
   @Cron('1 * * * * *')
   handleCron() {
-    // this.Logger.debug('该方法将在45秒标记处每分钟运行一次');
+    // this.Logger.debug('该方法将在1秒标记处每分钟运行一次');
     this.ArticleBehaviorService.saveRedisData();
   }
 }
