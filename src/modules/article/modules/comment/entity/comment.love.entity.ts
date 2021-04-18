@@ -53,12 +53,21 @@ export class ArticleLove extends BaseInitEntity<ArticleNS.CreateArticleLove> {
   /**
    * 评论目标
    */
+  // @Column({
+  //   type: 'enum',
+  //   enum: ArticleLoveTarget,
+  //   default: ArticleLoveTarget.Comment,
+  //   comment: '行为类型 (1: 文章， 2: 评论)',
+  // })
+  // target: ArticleLoveTarget;
+
+  /**
+   * 评论目标
+   */
   @Column({
-    type: 'enum',
-    enum: ArticleLoveTarget,
-    default: ArticleLoveTarget.Comment,
-    comment: '评论目标 (1: 文章， 2: 评论)',
+    default: 0,
+    comment: '行为目标 文章ID/评论ID',
   })
-  target: ArticleLoveTarget;
+  targetId: number;
 }
 

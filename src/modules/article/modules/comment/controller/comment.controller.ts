@@ -73,8 +73,13 @@ export class ArticleCommentController {
     summary: '分页 获取文章评论',
     description: '分页 获取文章的评论',
   })
-  async getCommentList(@Param() params: FetchArticleCommentPageDto) {
+  @UseGuards(new JwtPermissionStrategy(Permission.Tourist))
+  @ApiBearerAuth()
+  async getCommentList(
+    @Param() params: FetchArticleCommentPageDto,
+    @CurUser() user?: UserEntity,
+  ) {
     const { articleId, page, pageSize } = params;
-    return this.ArticleCommentService.getArticleComment(articleId, page, pageSize);
+    return this.ArticleCommentService.getArticleComment(articleId, page, pageSize, { user });
   }
 }

@@ -1,16 +1,18 @@
 
-import { Injectable } from "@nestjs/common";
-import { IsNull, Repository } from "typeorm";
+import { In, IsNull, Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
 
 import { Article } from "../../../entity/article.entity";
-import { UserEntity } from "src/modules/user/entity/user.entity";
 import { ArticleComment } from "../entity/comment.entity";
+import { ArticleLove } from "../entity/comment.love.entity";
+import { UserEntity } from "src/modules/user/entity/user.entity";
 
 import { ArticleService } from 'src/modules/article/article.service';
+import { RedisService } from "src/modules/coreModules/redis/redis.service";
 
 import { skipPage } from "src/utils/collection";
 import { ArticleCommentNS } from "../type/comment";
+import { ArticleNS } from "../../../type/article";
 import { responseList } from 'src/utils/collection';
 import { ResponseBody } from "src/constants/response";
 import { SendArticleCommentDto } from "../dto/comment.dto";
@@ -25,9 +27,67 @@ import { UserTableName } from "src/modules/user/constants/entity.cfg";
 export class ArticleCommentService {
 
   constructor(
+    private readonly RedisService: RedisService,
     @InjectRepository(Article) private readonly Article: Repository<Article>,
+    @InjectRepository(ArticleLove) private readonly ArticleLove: Repository<ArticleLove>,
     @InjectRepository(ArticleComment) private readonly ArticleComment: Repository<ArticleComment>,
   ) {}
+
+
+  /**
+   * 获取 文章/评论 点赞数据
+   * @param articleId 文章ID
+   * @param commentId 评论ID
+   */
+  async getLoveBehaviorCheck(articleId: number, commentId?: string[]) {
+    if (!commentId) commentId = [ '0' ];
+    let check: null | ArticleNS.LoveIdList[] = await this.RedisService.hmGetItem(
+      'articleComment',
+      String(articleId),
+      ...commentId,
+    );
+    const ids = [];
+    const comment: { [k: string]: ArticleNS.LoveIdList } = {};
+    check.forEach((love, i) => {
+      if (!love) {
+        ids.push(commentId[i]);
+      }
+      comment[love ? love[1] : commentId[i]] = love;
+    });
+
+    // 不存在缓存需写入缓存
+    if (ids.length) {
+      const dbData = await this.ArticleLove.find({
+        where: {
+          article: articleId,
+          targetId: In(ids),
+        },
+        take: ids.length,
+      });
+
+      const checkArray: string[] = [];
+      dbData.forEach(data => {
+        const json = JSON.parse(data.json);
+        const checkData: ArticleNS.LoveIdList = [
+          data.id,
+          data.targetId,
+          json[2],
+          json[3],
+        ];
+        checkArray.push(String(data.targetId), JSON.stringify(checkData));
+        comment[data.targetId] = checkData;
+      });
+      if (checkArray.length) {
+        this.RedisService.hmSetItem(
+          'articleComment',
+          String(articleId),
+          ...checkArray,
+        );
+      }
+    }
+
+    return comment;
+  }
 
 
   /**
@@ -35,36 +95,69 @@ export class ArticleCommentService {
    * @param articleId 文章ID
    * @param page      页数
    * @param count     个数
-   * @param parentId  父级评论ID
+   * @param options   额外配置  parentId: 父级评论ID   user: 用户信息(用于判定是否点赞)
    */
-  async getArticleComment(articleId: Article['id'], page: number, count: number, parentId?: ArticleComment['id']) {
+  async getArticleComment(
+    articleId: Article['id'],
+    page: number,
+    count: number,
+    options?: {
+      parentId?: ArticleComment['id'],
+      user?: UserEntity,
+    },
+  ) {
     const user = UserTableName.USER;
-
-    const commentList = await this.ArticleComment
+    const [ list, total ] = await this.ArticleComment
       .createQueryBuilder('comment')
       .leftJoin('comment.user', user)
       .select([ 'comment' ])
-      .addSelect([ `${user}.id`, `${user}.avatarUrl`, `${user}.nickname` ])
+      .addSelect([
+        `${user}.id`,
+        `${user}.avatarUrl`,
+        `${user}.nickname`
+      ])
       .where({
         article: articleId,
-        parent: parentId ?? IsNull(),
+        parent: options.parentId ?? IsNull(),
       })
       .orderBy('comment.id')
       .skip(skipPage(page, count))
       .take(count)
       .cache(600 * 1000)
       .getManyAndCount()
-    ; 
+    ;
 
-    if (commentList[0]) {
-      for (const comment of commentList[0] as ArticleCommentNS.CommentListItem[]) {
+    if (list) {
+      const ids: string[] = [];
+      for (const comment of list as ArticleCommentNS.CommentListItem[]) {
         if (comment.subCommentCount) {
-          comment.subComment = await this.getArticleComment(articleId, 1, 5, comment.id);
+          comment.subComment = await this.getArticleComment(articleId, 1, 5, { ...options, parentId: comment.id });
         }
+        ids.push(String(comment.id));
       }
+
+      // 读取/写入 赞/踩 数据
+      const loveData = await this.getLoveBehaviorCheck(articleId, ids);
+      list.forEach((comment, i) => {
+        if (loveData[comment.id]) {
+          const item = loveData[comment.id];
+          const [ , , love, criticism ] = item;
+          comment.criticismNum = criticism.length;
+          comment.loveNum = love.length;
+
+          const userInfo = options.user;
+          if (userInfo?.id) {
+            comment.likeStatus = love.includes(userInfo.id)
+              ? 1
+              : criticism.includes(userInfo.id)
+                ? 2
+                : 0
+            ;
+          }
+        }
+      });
     }
 
-    const [ list, total ] = commentList;
     return responseList(page, count, list, total);
   }
 

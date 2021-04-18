@@ -96,9 +96,10 @@ export class ArticleService {
 
   /**
    * 获取文章内容
-   * @param id 文章ID
+   * @param id   文章ID
+   * @param user 用户数据[暂时用于鉴别是否点赞]
    */
-  async information(id: Article['id']) {
+  async information(id: Article['id'], user?: UserEntity): Promise<Article> {
     const { STATE_FAILED, STATE_ISDELETE, STATE_EXAMINE, STATE_ABNORMAL, STATE_NOT_EXISTS } = ResponseEnum.ARTICLE;
     const article = await this.ArticleRepository
       .createQueryBuilder('article')
@@ -128,14 +129,15 @@ export class ArticleService {
     if (article.state < ArticleStateEnum.routine) {
       ResponseBody.throw(abnormalState[article.state] || STATE_ABNORMAL);
     }
+    const articleLove = await this.ArticleCommentService.getLoveBehaviorCheck(article.id);
+    if (articleLove) {
+      article.stat.is_good = articleLove[0][2].length;
+      if (user?.id) {
+        article.likeStatus = articleLove[0][2].includes(user.id) ? 1 : 0;
+      }
+    }
 
-    // 数据整合
-    const information: ArticleNS.Information = {
-      article: this.articleDataFilter(article),
-      comment: await this.ArticleCommentService.getArticleComment(article.id, 1, 10),
-    };
-
-    return information;
+    return this.articleDataFilter(article);
   }
 
 

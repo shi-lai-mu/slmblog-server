@@ -8,9 +8,9 @@ import { ArticleService } from "./article.service";
 
 import { ArticleSubmitDto } from "./dto/article.dto";
 import { MainCPrefix } from "./constants/controller.cfg";
-import { JwtAuthGuard } from "src/core/strategy/jwt.strategy";
+import { JwtAuthGuard, JwtPermissionStrategy } from "src/core/strategy/jwt.strategy";
 import { CurUser } from "src/core/decorators/global.decorators";
-import { UserStatus } from "src/modules/user/constants/entity.cfg";
+import { Permission, UserStatus } from "src/modules/user/constants/entity.cfg";
 import { ResponseBody, ResponseEnum } from "src/constants/response";
 import { ArticleStateEnum } from "src/modules/article/constants/entity.cfg";
 
@@ -55,8 +55,13 @@ export class ArticleController {
     description: '获取文章的详细信息，包含评论',
   })
   @ApiOkResponse({ type: Article })
-  async information(@Param('id') id: number) {
-    return this.ArticleService.information(id);
+  @UseGuards(new JwtPermissionStrategy(Permission.Tourist))
+  @ApiBearerAuth()
+  async information(
+    @Param('id') id: number,
+    @CurUser() user?: UserEntity,
+  ) {
+    return this.ArticleService.information(id, user);
   }
 
 

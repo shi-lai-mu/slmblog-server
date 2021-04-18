@@ -156,4 +156,12 @@ export class ArticleComment extends BaseInitEntity<ArticleCommentNS.CreateArticl
     select: false,
   })
   createTime: Date;
+
+  /**
+   * 当前用户点赞状态
+   * 1： 赞
+   * 2： 踩
+   * 0： 未进行操作
+   */
+  likeStatus?: number;
 }

@@ -54,24 +54,31 @@ export namespace ArticleNS {
   /**
    * 踩赞状态ID表
    */
-   export interface LoveIdList {
-    /**
-     * 赞ID列表
-     */
-    praise: number[];
-    /**
-     * 踩ID列表
-     */
-    criticism: number[];
-    /**
-     * 是否已更新
-     */
-    update: boolean;
+  export type LoveIdList = [
     /**
      * 数据库记录ID
      */
-    dbId: number;
-  }
+    number,
+    /**
+     * 状态ID
+     */
+    number,
+    /**
+     * 赞ID列表
+     */
+    number[],
+    /**
+     * 踩ID列表
+     */
+    number[],
+    /**
+     * 是否已更新
+     */
+    // update: boolean;
+    /**
+     * 数据库记录ID
+     */
+  ]
 
 
   /**
@@ -98,9 +105,13 @@ export namespace ArticleNS {
      */
     article: Article['id'];
     /**
-     * 行为目标
+     * 行为类型 (1: 文章， 2: 评论)
      */
-    target: ArticleLoveTarget;
+    // target: ArticleLoveTarget;
+    /**
+     * 行为目标 文章ID/评论ID
+     */
+    targetId: ArticleLoveTarget;
     /**
      * 踩赞ids
      */

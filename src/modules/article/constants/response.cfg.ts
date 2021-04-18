@@ -64,6 +64,8 @@ export class ArticleResponse {
   static readonly FILTER_IDS_TYPE:             Status = { codeType: 'P', message: '文章筛选ID只能为数组字符串或者数值!' };
   // 评论失败
   static readonly SEND_COMMENT_ERROR:          Status = { codeType: 'B', message: '评论失败，未知原因!' };
+  // 点赞失败，评论不存在
+  static readonly LIKE_COMMENT_INVALID:        Status = { codeType: 'B', message: '行为评论不存在!' };
 }
 
 /**
@@ -72,17 +74,4 @@ export class ArticleResponse {
 export class ArticleCategoryResponse {
   // 类目创建失败 类目名已存在
   static readonly CREATE_EXISTS: Status = { codeType: 'O', message: '创建的类目名已存在!' };
-}
-
-
-/**
- * 文章业务 行为 响应
- */
-export class ArticleBehaviorResponse {
-  // 文章ID非数值 类型错误
-  static readonly ID_IS_NOT_NUMBER:    Status = { codeType: 'O', message: '文章ID必须为数值!' };
-  // 行为状态非数值 类型错误
-  static readonly COMMENT_LOVE_TYPE:   Status = { codeType: 'O', message: '行为状态必须为数值!' };
-  // 行为目标非数值 类型错误
-  static readonly COMMENT_LOVE_TARGET: Status = { codeType: 'O', message: '行为目标必须为数值!' };
 }
