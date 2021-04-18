@@ -2,7 +2,7 @@ import { ApiProperty } from "@nestjs/swagger";
 import { IsNumber } from "class-validator";
 
 import { ValidateThrow } from "src/constants/response";
-import { ArticleBehaviorResponse } from "../../../constants/response.cfg";
+import { ArticleBehaviorResponse } from "../controller/response.cfg";
 
 
 
@@ -34,8 +34,18 @@ export class LoveLogDto {
    */
   @IsNumber({}, ValidateThrow(ArticleBehaviorResponse.COMMENT_LOVE_TARGET))
   @ApiProperty({
-    description: '评论目标 (1: 文章， 2: 评论)',
-    enum: [1, 2],
+    description: '目标类型 (1: 文章， 2: 评论)',
+    default: 2,
   })
   target: number;
+
+  /**
+   * 评论目标
+   */
+  @IsNumber({}, ValidateThrow(ArticleBehaviorResponse.COMMENT_LOVE_TARGET_ID))
+  @ApiProperty({
+    description: '目标Id (如 文章ID/评论ID)',
+    default: 0,
+  })
+  targetId: number;
 }
