@@ -52,7 +52,14 @@ export class UserService {
   async outherUser(id: UserEntity['id']): Promise<UserEntity | null> {
     return this.userRepository.findOne({
       select: [
-        'id', 'nickname', 'avatarUrl', 'badge', 'createTime', 'gender', 'introduction'
+        'id',
+        'nickname',
+        'avatarUrl',
+        'badge',
+        'createTime',
+        'gender',
+        'introduction',
+        'email',
       ],
       where: { id },
     }) || null;

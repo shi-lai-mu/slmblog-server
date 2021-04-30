@@ -47,8 +47,8 @@ export class ArticleCommentService {
       ...commentId,
     );
     const ids = [];
-    const comment: { [k: string]: ArticleNS.LoveIdList } = {};
-    check.forEach((love, i) => {
+    const comment: { [k: number]: ArticleNS.LoveIdList } = {};
+    Object.values(check).forEach((love, i) => {
       if (!love) {
         ids.push(commentId[i]);
       }

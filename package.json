@@ -1,10 +1,10 @@
 {
   "name": "slmblog-server",
   "version": "0.0.1",
-  "description": "",
-  "author": "",
-  "private": true,
-  "license": "UNLICENSED",
+  "description": "slmblog server",
+  "author": "ShiLaiMu <qq: 47889187/wechat: shi_lai_mu>",
+  "private": false,
+  "license": "ISC",
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",

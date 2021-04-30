@@ -114,6 +114,7 @@ export class ArticleService {
       })
       .getOne()
     ;
+console.log(article);
 
     if (!article) ResponseBody.throw({
       ...STATE_NOT_EXISTS,
@@ -126,11 +127,13 @@ export class ArticleService {
       '-1': STATE_ISDELETE,
       0: STATE_EXAMINE,
     };
+    console.log(article);
+    
     if (article.state < ArticleStateEnum.routine) {
       ResponseBody.throw(abnormalState[article.state] || STATE_ABNORMAL);
     }
     const articleLove = await this.ArticleCommentService.getLoveBehaviorCheck(article.id);
-    if (articleLove) {
+    if (articleLove && articleLove[0]) {
       article.stat.is_good = articleLove[0][2].length;
       if (user?.id) {
         article.likeStatus = articleLove[0][2].includes(user.id) ? 1 : 0;

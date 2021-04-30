@@ -79,7 +79,7 @@ export class Article extends BaseInitEntity<{}> {
   @Column({
     type: 'enum',
     enum: ArticleStateEnum,
-    default: ArticleStateEnum.routine,
+    default: ArticleStateEnum.examine,
     comment: '文章状态',
   })
   state: ArticleStateEnum;
