@@ -1,6 +1,6 @@
 import { IsEmail, IsNotEmpty, MinLength } from "class-validator";
 import { ValidateThrow } from "src/constants/response";
-import { ApiProperty } from "_@nestjs_swagger@4.7.15@@nestjs/swagger";
+import { ApiProperty } from "@nestjs/swagger";
 
 import { ArticleComment } from "../entity/comment.entity";
 
