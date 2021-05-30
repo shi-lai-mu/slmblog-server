@@ -16,6 +16,7 @@ export class ScheduleSaveTaskService {
     private readonly ArticleBehaviorService: ArticleBehaviorService,
   ) {}
 
+  // TODO: 开发状态下临时标记1s存储处理
   @Cron('1 * * * * *')
   handleCron() {
     // this.Logger.debug('该方法将在1秒标记处每分钟运行一次');

@@ -6,11 +6,11 @@ import { AppController } from './app.controller';
 import { RedisService } from './modules/coreModules/redis/redis.service';
 import ConfigService from './modules/coreModules/config/configs.service';
 
-import { NotifyModule } from './modules/notify/index.module';
+import { NotifyBusinessModule } from './modules/notify/index.module';
 import { UserBusinessModule } from './modules/user/index.module';
-import { ResourcesModule } from './modules/resources/index.module';
 import { RedisModule } from './modules/coreModules/redis/redis.module';
 import { ArticleBusinessModule } from './modules/article/index.module';
+import { ResourcesBusinessModule } from './modules/resources/index.module';
 import { ConfigsModule } from './modules/coreModules/config/configs.module';
 import { ScheduleBusinessModule } from './modules/coreModules/schedule/schedule.module';
 
@@ -31,12 +31,12 @@ import { GlobalMiddleware } from './core/middleware/global.middleware';
       useFactory: async (configService: ConfigService) => configService,
       inject: [ ConfigService ],
     }),
-    NotifyModule,
     ConfigsModule,
     UserBusinessModule,
+    NotifyBusinessModule,
     ArticleBusinessModule,
     ScheduleBusinessModule,
-    ResourcesModule,
+    ResourcesBusinessModule,
   ],
   controllers: [
     AppController

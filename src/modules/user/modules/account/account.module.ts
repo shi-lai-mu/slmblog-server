@@ -1,6 +1,6 @@
 import { Logger, Module } from "@nestjs/common";
 import { JwtModule, JwtService } from "@nestjs/jwt";
-import { TypeOrmModule } from "_@nestjs_typeorm@7.1.5@@nestjs/typeorm";
+import { TypeOrmModule } from "@nestjs/typeorm";
 
 import { UserEntity, UserConfigEntity } from "../../entity/user.entity";
 

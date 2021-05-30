@@ -4,7 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ArticleCategory } from "./entity/categorys.entity";
 
 import { ArticleCategoryService } from "./service/category.service";
-import { ArticleCategoryContorller } from "./constants/category.controller";
+import { ArticleCategoryContorller } from "./controller/category.controller";
 
 
 

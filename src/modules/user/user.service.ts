@@ -49,7 +49,7 @@ export class UserService {
    * 获取其他用户数据
    * @param id 用户ID
    */
-  async outherUser(id: UserEntity['id']): Promise<UserEntity | null> {
+  async outerUser(id: UserEntity['id']): Promise<UserEntity | null> {
     return this.userRepository.findOne({
       select: [
         'id',

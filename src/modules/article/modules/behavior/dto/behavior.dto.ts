@@ -2,7 +2,7 @@ import { ApiProperty } from "@nestjs/swagger";
 import { IsNumber } from "class-validator";
 
 import { ValidateThrow } from "src/constants/response";
-import { ArticleBehaviorResponse } from "../controller/response.cfg";
+import { ArticleBehaviorResponse } from "../constants/response.cfg";
 
 
 

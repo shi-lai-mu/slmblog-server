@@ -2,6 +2,7 @@ import { Module } from "@nestjs/common";
 
 import { NoticModule } from './modules/notic/notic.module';
 import { NotifyEmailModule } from "./modules/email/email.module";
+import { FriendModules } from "./modules/friend/friend.module";
 
 
 
@@ -12,6 +13,7 @@ import { NotifyEmailModule } from "./modules/email/email.module";
   imports: [
     NoticModule,
     NotifyEmailModule,
+    FriendModules,
   ],
 })
-export class NotifyModule {};
+export class NotifyBusinessModule {};

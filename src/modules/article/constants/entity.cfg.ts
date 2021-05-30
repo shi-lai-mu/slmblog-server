@@ -13,6 +13,7 @@ export const ArticleTableName = {
   CATEGORY:     tablePerfix + 'article_category',
   COMMENT:      tablePerfix + 'article_comment',
   COMMENT_LOVE: tablePerfix + 'article_comment_love',
+  FRIEND_LOG:   tablePerfix + 'friend_log',
 };
 
 /**

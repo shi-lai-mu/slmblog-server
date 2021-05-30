@@ -42,11 +42,12 @@ export class UserController {
     name: 'id',
     description: '用户ID',
   })
-  async outherUser(@Param('id') id: UserEntity['id']) {
-    const user = await this.UserService.outherUser(id);
+  async outerUser(@Param('id') id: UserEntity['id']) {
+    const user = await this.UserService.outerUser(id);
     if (!user) {
       ResponseBody.throw(UserAccountResponse.FIND_USER_NULL);
     }
+    user.email = user.email ? `mailto:${user.email}` : ''
     return user;
   }
 

@@ -11,4 +11,4 @@ import { ResourcesSVGModule } from "./modules/svg/svg.module";
     ResourcesSVGModule,
   ],
 })
-export class ResourcesModule {};
+export class ResourcesBusinessModule {};

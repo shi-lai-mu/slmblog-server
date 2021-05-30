@@ -114,7 +114,6 @@ export class ArticleService {
       })
       .getOne()
     ;
-console.log(article);
 
     if (!article) ResponseBody.throw({
       ...STATE_NOT_EXISTS,
@@ -127,7 +126,6 @@ console.log(article);
       '-1': STATE_ISDELETE,
       0: STATE_EXAMINE,
     };
-    console.log(article);
     
     if (article.state < ArticleStateEnum.routine) {
       ResponseBody.throw(abnormalState[article.state] || STATE_ABNORMAL);
