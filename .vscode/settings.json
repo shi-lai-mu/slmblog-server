@@ -1,5 +1,6 @@
 {
   "cSpell.words": [
+    "Jetlag",
     "Perfix",
     "chmod",
     "cnpm",
@@ -15,18 +16,28 @@
   ],
   "typescript.tsdk": "node_modules/typescript/lib",
   "editor.codeActionsOnSave": {
-      "source.fixAll.eslint": true
+    "source.fixAll.eslint": true
   },
   "eslint.validate": [
     "javascript",
     {
-      "language": "vue",
+      "language": "typescript",
       "autoFix": true
     }
   ],
-
-  "prettier.semi": false,
+  // 保存时eslint自动修复错误
+  "eslint.autoFixOnSave": true,
+  // 保存自动格式化
+  "editor.formatOnSave": true,
+  // 开启 eslint 支持
+  "prettier.eslintIntegration": true,
+  // prettier配置 --- 使用单引号【与.prettierrc下的配置对应】
   "prettier.singleQuote": true,
+  //prettier配置 --- 结尾不加分号 【与.prettierrc下的配置对应】
+  "prettier.semi": false,
+  //prettier配置 --- 每行最多显示的字符数 【与.prettierrc下的配置对应】
+  "prettier.printWidth": 120,
+  "files.autoSave": "onFocusChange",
   "editor.detectIndentation": false,
   "editor.tabSize": 2
 }
