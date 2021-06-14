@@ -1,10 +1,8 @@
-import * as path from 'path';
+import * as path from 'path'
 
-import { isProd } from 'src/constants/system';
-import { getIPAdress } from 'src/utils/network';
-import { StandardConfig } from './interface/cfg.interface';
-
-
+import { isProd } from 'src/constants/system'
+import { getIPAdress } from 'src/utils/network'
+import { StandardConfig } from './interface/cfg.interface'
 
 export default ((): StandardConfig => ({
   web: {
@@ -27,7 +25,7 @@ export default ((): StandardConfig => ({
     database: `blog${isProd ? '_prod' : '_test'}`,
     timezone: 'UTC',
     synchronize: !isProd,
-    entities: [ path.join(__dirname, '../**/*.entity{.ts,.js}') ] ,
+    entities: [path.join(__dirname, '../**/*.entity{.ts,.js}')],
     logging: false,
     logger: 'simple-console',
     maxQueryExecutionTime: 500,
@@ -57,4 +55,4 @@ export default ((): StandardConfig => ({
       },
     },
   },
-}))();
+}))()

@@ -1,15 +1,12 @@
-import * as path from 'path';
-import { Logger, Module } from "@nestjs/common";
-import { MailerModule } from "@nestjs-modules/mailer";
+import * as path from 'path'
+import { Logger, Module } from '@nestjs/common'
+import { MailerModule } from '@nestjs-modules/mailer'
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter'
 
-
-import { NotifyEmailService } from "./service/email.service";
-import { NotifyEmailController } from "./controller/email.controller";
-import { RedisService } from 'src/modules/coreModules/redis/redis.service';
-import ConfigsService from "src/modules/coreModules/config/configs.service";
-
-
+import { NotifyEmailService } from './service/email.service'
+import { NotifyEmailController } from './controller/email.controller'
+import { RedisService } from 'src/modules/coreModules/redis/redis.service'
+import ConfigsService from 'src/modules/coreModules/config/configs.service'
 
 /**
  * 通知业务 邮箱 模块
@@ -24,22 +21,14 @@ import ConfigsService from "src/modules/coreModules/config/configs.service";
           adapter: new HandlebarsAdapter(),
           options: {
             strict: true,
-          }
-        }
+          },
+        },
       }),
-      inject: [ ConfigsService ]
+      inject: [ConfigsService],
     }),
   ],
-  controllers: [
-    NotifyEmailController,
-  ],
-  providers: [
-    NotifyEmailService,
-    RedisService,
-    Logger,
-  ],
-  exports: [
-    Logger,
-  ]
+  controllers: [NotifyEmailController],
+  providers: [NotifyEmailService, RedisService, Logger],
+  exports: [Logger, RedisService],
 })
-export class NotifyEmailModule {};
+export class NotifyEmailModule {}
