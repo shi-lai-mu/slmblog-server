@@ -1,7 +1,7 @@
-import { ApiProperty } from "@nestjs/swagger";
-import { isURL } from "class-validator";
-import { ValidateThrow } from "src/constants/response";
-import { SubFriendReviewStatus } from "../constants";
+import { ApiProperty } from '@nestjs/swagger'
+import { isURL } from 'class-validator'
+import { ValidateThrow } from 'src/constants/response'
+import { SubFriendReviewStatus } from '../constants'
 
 /**
  * 获取友情链接参数
@@ -14,7 +14,7 @@ export class GetFriendListDto {
     description: '当前页数',
     default: 1,
   })
-  page: number;
+  page: number
 
   /**
    * 个数
@@ -23,9 +23,8 @@ export class GetFriendListDto {
     description: '每页个数',
     default: 10,
   })
-  pageSize: number;
+  pageSize: number
 }
-
 
 /**
  * 提交友情链接入参
@@ -37,7 +36,7 @@ export class SubmitFriendDto {
   @ApiProperty({
     description: '站点名字',
   })
-  name: string;
+  name: string
 
   /**
    * 链接
@@ -45,7 +44,7 @@ export class SubmitFriendDto {
   @ApiProperty({
     description: '链接',
   })
-  link: string;
+  link: string
 
   /**
    * 申请内容
@@ -53,15 +52,15 @@ export class SubmitFriendDto {
   @ApiProperty({
     description: '申请内容',
   })
-  desc: string;
+  desc: string
 
   /**
    * 站点图标
    */
   @ApiProperty({
-    description: '站点图标'
+    description: '站点图标',
   })
-  icon: string;
+  icon: string
 
   /**
    * 邮箱
@@ -69,7 +68,7 @@ export class SubmitFriendDto {
   @ApiProperty({
     description: '邮箱(用于得到通知)',
   })
-  email: string;
+  email: string
 
   // @ApiProperty({
   //   description: '审核状态',

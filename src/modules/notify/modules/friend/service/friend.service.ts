@@ -17,12 +17,15 @@ export class FriendService {
   constructor(
     /** 核心 配置业务 逻辑层 */
     private readonly ConfigService: ConfigsService,
+
     /** 储存库 友链 */
     @InjectRepository(FriendEntity)
     private readonly Friend: Repository<FriendEntity>,
+
     /** 储存库 友链审核 */
     @InjectRepository(FriendReviewEntity)
     private readonly FriendReview: Repository<FriendReviewEntity>,
+
     /** 通知业务 邮箱 逻辑层 */
     private readonly NotifyEmailService: NotifyEmailService
   ) {}
@@ -34,7 +37,7 @@ export class FriendService {
   async getFriendList(friendDto: GetFriendListDto) {
     const { page, pageSize } = friendDto
     const [list, total] = await this.Friend.findAndCount({
-      select: ['name', 'link'],
+      select: ['name', 'link', 'icon'],
       where: {
         is_show: FriendShow.SHOW,
       },

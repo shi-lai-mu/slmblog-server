@@ -1,14 +1,24 @@
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  JoinColumn,
+  JoinTable,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm'
 
-import { Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Article } from '../../../entity/article.entity'
+import { UserEntity } from 'src/modules/user/entity/user.entity'
 
-import { Article } from "../../../entity/article.entity";
-import { UserEntity } from "src/modules/user/entity/user.entity";
-
-import { ArticleCommentNS } from "../type/comment";
-import { BaseInitEntity } from "src/entity/baseInitEntity";
-import { ArticleCommentIsDelete, ArticleTableName, ArticleCommentIsTop } from "../../../constants/entity.cfg";
-
-
+import { ArticleCommentNS } from '../type/comment'
+import { BaseInitEntity } from 'src/entity/baseInitEntity'
+import {
+  ArticleCommentIsDelete,
+  ArticleTableName,
+  ArticleCommentIsTop,
+} from '../../../constants/entity.cfg'
 
 /**
  * 文章业务 评论 实体
@@ -21,8 +31,8 @@ export class ArticleComment extends BaseInitEntity<ArticleCommentNS.CreateArticl
   @PrimaryGeneratedColumn({
     comment: '评论ID',
   })
-  id: number;
-  
+  id: number
+
   /**
    * 文章ID
    */
@@ -30,7 +40,7 @@ export class ArticleComment extends BaseInitEntity<ArticleCommentNS.CreateArticl
     name: 'article_id',
   })
   @ManyToOne(article => Article, article => article.id)
-  article: number;
+  article: number
 
   /**
    * 评论内容
@@ -38,9 +48,9 @@ export class ArticleComment extends BaseInitEntity<ArticleCommentNS.CreateArticl
   @Column({
     type: 'text',
     nullable: false,
-    comment: '评论内容'
+    comment: '评论内容',
   })
-  content: string;
+  content: string
 
   /**
    * 点赞次数
@@ -50,7 +60,7 @@ export class ArticleComment extends BaseInitEntity<ArticleCommentNS.CreateArticl
     default: 0,
     comment: '点赞次数',
   })
-  loveNum: number;
+  loveNum: number
 
   /**
    * 点踩次数
@@ -60,21 +70,21 @@ export class ArticleComment extends BaseInitEntity<ArticleCommentNS.CreateArticl
     default: 0,
     comment: '点踩次数',
   })
-  criticismNum: number;
+  criticismNum: number
 
   /**
    * 父级评论ID
    */
   @ManyToOne(type => ArticleComment, commit => commit.id)
   @JoinColumn({ name: 'parent_id' })
-  parent?: ArticleComment['id'];
+  parent?: ArticleComment['id']
 
   /**
    * 评论用户ID
    */
   @ManyToOne(user => UserEntity, user => user.id)
   @JoinColumn({ name: 'user_id' })
-  user?: UserEntity['id'];
+  user?: UserEntity['id']
 
   /**
    * 子评论数量
@@ -84,7 +94,7 @@ export class ArticleComment extends BaseInitEntity<ArticleCommentNS.CreateArticl
     default: 0,
     comment: '子评论数量',
   })
-  subCommentCount: number;
+  subCommentCount: number
 
   /**
    * 昵称
@@ -92,26 +102,26 @@ export class ArticleComment extends BaseInitEntity<ArticleCommentNS.CreateArticl
   @Column({
     comment: '昵称',
   })
-  nickname?: string;
+  nickname?: string
 
   /**
-  * 网站/博客
-  */
+   * 网站/博客
+   */
   @Column({
     comment: '网站/博客',
     default: '',
   })
-  link?: string;
+  link?: string
 
   /**
-  * 邮箱
-  */
+   * 邮箱
+   */
   @Column({
     comment: '邮箱',
     default: '',
   })
-  email?: string;
-  
+  email?: string
+
   /**
    * 是否被置顶
    */
@@ -123,7 +133,7 @@ export class ArticleComment extends BaseInitEntity<ArticleCommentNS.CreateArticl
     comment: '是否被置顶',
     select: false,
   })
-  isTop: ArticleCommentIsTop;
+  isTop: ArticleCommentIsTop
 
   /**
    * 是否被删除
@@ -136,7 +146,7 @@ export class ArticleComment extends BaseInitEntity<ArticleCommentNS.CreateArticl
     name: 'is_delete',
     select: false,
   })
-  isDelete: ArticleCommentIsDelete;
+  isDelete: ArticleCommentIsDelete
 
   /**
    * 修改时间
@@ -145,7 +155,7 @@ export class ArticleComment extends BaseInitEntity<ArticleCommentNS.CreateArticl
     name: 'update_time',
     comment: '更新时间',
   })
-  updateTime: Date;
+  updateTime: Date
 
   /**
    * 更新时间
@@ -155,7 +165,7 @@ export class ArticleComment extends BaseInitEntity<ArticleCommentNS.CreateArticl
     comment: '更新时间',
     select: false,
   })
-  createTime: Date;
+  createTime: Date
 
   /**
    * 当前用户点赞状态
@@ -163,5 +173,5 @@ export class ArticleComment extends BaseInitEntity<ArticleCommentNS.CreateArticl
    * 2： 踩
    * 0： 未进行操作
    */
-  likeStatus?: number;
+  likeStatus?: number
 }

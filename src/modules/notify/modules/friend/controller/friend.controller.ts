@@ -8,7 +8,7 @@ import { GetFriendListDto, SubmitFriendDto } from '../dto/friend.dto'
 /**
  * 通知模块 友情链接 控制层
  */
-@Controller(MainCPrefix + '/friend')
+@Controller(MainCPrefix)
 @ApiTags('通知')
 export class FriendController {
   constructor(private readonly friendService: FriendService) {}
@@ -17,7 +17,7 @@ export class FriendController {
    * 获取 友情链接 列表
    * @param getParams 获取链接参数
    */
-  @Get()
+  @Get('link')
   @ApiOperation({
     summary: '获取 友情链接 列表',
     description: '获取 可显示的前几位友情链接',
@@ -30,7 +30,7 @@ export class FriendController {
    * 提交 友情链接 申请
    * @param submitFriendDto 友情链接数据
    */
-  @Post()
+  @Post('link')
   @ApiOperation({
     summary: '提交 友情链接 申请',
     description: '重复提交时覆盖之前的信息，以邮箱为准',

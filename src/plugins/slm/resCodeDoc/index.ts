@@ -1,50 +1,53 @@
-import * as fs from 'fs';
-import * as path from 'path';
-import Handlebars from 'handlebars';
-import { ResponseDocument } from './type';
-import { INestApplication } from '@nestjs/common';
-import { Status } from 'src/constants/response';
+import * as fs from 'fs'
+import * as path from 'path'
+import Handlebars from 'handlebars'
+import { ResponseDocument } from './type'
+import { INestApplication } from '@nestjs/common'
+import { Status } from 'src/constants/response'
 
-const _dir = (name: string) => path.join(__dirname, name);
-const fileStyle = fs.readFileSync(_dir('template/style.css')).toString();
-const fileContent = fs.readFileSync(_dir('template/index.hbs')).toString();
-const fileBusinessContent = fs.readFileSync(_dir('template/business.hbs')).toString();
+const _dir = (name: string) => path.join(__dirname, name)
+const fileStyle = fs.readFileSync(_dir('template/style.css')).toString()
+const fileContent = fs.readFileSync(_dir('template/index.hbs')).toString()
+const fileBusinessContent = fs.readFileSync(_dir('template/business.hbs')).toString()
 
 /**
  * Response Document 文档 validation 全局注入
  */
 export function createResponseDocument(app: INestApplication, options: ResponseDocument.Options) {
-  const httpAdapter = app.getHttpAdapter();
-  const { responseMap, codeType, responseBusiness } = ResponseCodeDocument;
-  const baseUrl = options.url ?? '/api/code';
+  const httpAdapter = app.getHttpAdapter()
+  const { responseMap, codeType, responseBusiness } = ResponseCodeDocument
+  const baseUrl = options.url ?? '/api/code'
 
   httpAdapter.get(baseUrl, (req: any, res: any) => {
     const template = Handlebars.compile(fileContent)
-    res.send(template({
-      url: options.url,
-      title: options.title,
-      styles: fileStyle,
-      responseMap,
-      codeType,
-      AllResponseBusiness: responseBusiness,
-    }));
-  });
+    res.send(
+      template({
+        url: options.url,
+        title: options.title,
+        styles: fileStyle,
+        responseMap,
+        codeType,
+        AllResponseBusiness: responseBusiness,
+      })
+    )
+  })
 
   httpAdapter.get(`${baseUrl}/:business`, (req: any, res: any) => {
-    const { business } = req.params;
+    const { business } = req.params
     const template = Handlebars.compile(fileBusinessContent)
-    
-    res.send(template({
-      business,
-      url: options.url,
-      title: options.title,
-      styles: fileStyle,
-      responseMap: responseMap[business],
-      codeType,
-    }));
-  });
-}
 
+    res.send(
+      template({
+        business,
+        url: options.url,
+        title: options.title,
+        styles: fileStyle,
+        responseMap: responseMap[business],
+        codeType,
+      })
+    )
+  })
+}
 
 /**
  * 响应文档类
@@ -56,13 +59,13 @@ export class ResponseCodeDocument {
   static responseBusiness = {
     SUM: {
       resMap: [],
-    }
-  };
+    },
+  }
 
   /**
    * 响应集合
    */
-  static responseMap = {};
+  static responseMap = {}
 
   /**
    * code类型
@@ -96,8 +99,7 @@ export class ResponseCodeDocument {
       name: 'O',
       type: '其他错误',
     },
-  ];
-
+  ]
 
   /**
    * 注册响应业务
@@ -105,40 +107,44 @@ export class ResponseCodeDocument {
    * @param options  入参
    */
   static addResponseBusiness(resClass: Object, options: ResponseDocument.InsterOptions) {
-    const codeTypeObj: ResponseDocument.CodeTypeObject = ResponseCodeDocument.responseMap[options.name]?.map || {};
-    
+    const codeTypeObj: ResponseDocument.CodeTypeObject =
+      ResponseCodeDocument.responseMap[options.name]?.map || {}
+
     // 初始化或者继承code
-    ResponseCodeDocument.codeType.forEach(item => !codeTypeObj[item.name] && (codeTypeObj[item.name] = {
-      type: item.type,
-      resMap: [],
-      code: {
-        start: options.startCode || 0,
-        end: options.startCode || 0,
-        transferLogCount: 0,
-      },
-    }));
+    ResponseCodeDocument.codeType.forEach(
+      item =>
+        !codeTypeObj[item.name] &&
+        (codeTypeObj[item.name] = {
+          type: item.type,
+          resMap: [],
+          code: {
+            start: options.startCode || 0,
+            end: options.startCode || 0,
+            transferLogCount: 0,
+          },
+        })
+    )
 
     // 注入
     Object.keys(resClass).map(key => {
-      const item: Status = resClass[key];
+      const item: Status = resClass[key]
       if (typeof item === 'function') {
-        return false;
+        return false
       }
 
-      let firstStr = item.codeType || String(item.code).substr(0, 1);
-      if (!/[a-z]/i.test(firstStr)) firstStr = 'O';
-      const curCodeType = codeTypeObj[firstStr];
-      const currentMap = codeTypeObj[firstStr].resMap || codeTypeObj.O.resMap;
-
+      let firstStr = item.codeType || String(item.code).substr(0, 1)
+      if (!/[a-z]/i.test(firstStr)) firstStr = 'O'
+      const curCodeType = codeTypeObj[firstStr]
+      const currentMap = codeTypeObj[firstStr].resMap || codeTypeObj.O.resMap
 
       if (typeof item.code === 'number' && item.codeKeep) {
-        curCodeType.code.start = item.code;
+        curCodeType.code.start = item.code
       } else {
-        curCodeType.code.start++;
+        curCodeType.code.start++
       }
-      
+
       if (!item.codeKeep) {
-        item.code = `${firstStr}${('0000' + (curCodeType.code.start)).substr(-4)}`;
+        item.code = `${firstStr}${('0000' + curCodeType.code.start).substr(-4)}`
       }
 
       item.transferLog = (res: Request) => {
@@ -152,7 +158,7 @@ export class ResponseCodeDocument {
         extends: options.extends || '-',
         extendsTips: options.tips,
         ...item,
-      });
+      })
 
       // 定位code结尾范围
       // if (curCodeType.code.end < curCodeType.code.start) {
@@ -160,31 +166,31 @@ export class ResponseCodeDocument {
       // }
 
       // 总数统计
-      const currentResponseBusiness = ResponseCodeDocument.responseBusiness[firstStr] || (
-        ResponseCodeDocument.responseBusiness[firstStr] = {
+      const currentResponseBusiness =
+        ResponseCodeDocument.responseBusiness[firstStr] ||
+        (ResponseCodeDocument.responseBusiness[firstStr] = {
           type: codeTypeObj[firstStr]?.type || '其他错误',
           resMap: [],
-        }
-      );
-      currentResponseBusiness.resMap.push(item);
+        })
+      currentResponseBusiness.resMap.push(item)
 
-      delete item.codeType;
+      delete item.codeType
 
-      ResponseCodeDocument.responseBusiness.SUM.resMap.push(item);
-    });
+      ResponseCodeDocument.responseBusiness.SUM.resMap.push(item)
+    })
 
-    let total = 0;
-    const modules = new Set();
+    let total = 0
+    const modules = new Set()
     Object.values(codeTypeObj).map(codeType => {
-      total += codeType.resMap.length;
-      codeType.resMap.forEach(res => modules.add(res.extends));
-    });
-      
+      total += codeType.resMap.length
+      codeType.resMap.forEach(res => modules.add(res.extends))
+    })
+
     ResponseCodeDocument.responseMap[options.name] = {
       total,
       options,
       map: codeTypeObj,
       modules: [...modules].join('、'),
-    };
+    }
   }
 }
