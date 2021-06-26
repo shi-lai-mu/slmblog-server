@@ -28,13 +28,15 @@ import { ArticleResponse } from './constants/response.cfg'
  */
 @Injectable()
 export class ArticleService {
-  /**
-   * 敏感词 检测/过滤 器
-   */
+  /** 敏感词 检测/过滤 器 */
   static readonly SensitiveWord = new Mint(sensitiveWord)
 
   constructor(
-    @InjectRepository(Article) private readonly ArticleRepository: Repository<Article>,
+    /** 储存库 文章 */
+    @InjectRepository(Article)
+    private readonly ArticleRepository: Repository<Article>,
+
+    /** 逻辑层 文章评论 */
     private readonly ArticleCommentService: ArticleCommentService
   ) {}
 
@@ -203,9 +205,9 @@ export class ArticleService {
         state: Not(In(AbnormalState)),
       })
       .getMany()
-    const tmporaryMap: { [k: number]: Article } = {}
-    BaseSelect.forEach(article => (tmporaryMap[article.id] = article))
-    return ids.map(id => tmporaryMap[id] || null)
+    const temporaryMap: Record<number, Article> = {}
+    BaseSelect.forEach(article => (temporaryMap[article.id] = article))
+    return ids.map(id => temporaryMap[id] || null)
   }
 
   /**

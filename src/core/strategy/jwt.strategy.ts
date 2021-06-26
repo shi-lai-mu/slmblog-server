@@ -69,7 +69,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 @Injectable()
 export class JwtAuthGuard extends AuthGuard('jwt') {
   canActivate(context: ExecutionContext) {
-    const req = context.switchToHttp().getRequest()
+    // const req = context.switchToHttp().getRequest()
     return super.canActivate(context)
   }
 }
@@ -92,7 +92,7 @@ export class JwtPermissionStrategy extends AuthGuard('jwt') {
   }
 
   canActivate(context: ExecutionContext) {
-    const req = context.switchToHttp().getRequest()
+    // const req = context.switchToHttp().getRequest()
     return super.canActivate(context)
   }
 

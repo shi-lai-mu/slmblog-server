@@ -1,34 +1,29 @@
-import { Controller, Get, Param, UseGuards } from '@nestjs/common';
-import { ApiBearerAuth, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
+import { Controller, Get, Param, UseGuards } from '@nestjs/common'
+import { ApiBearerAuth, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger'
 
-import { UserEntity } from './entity/user.entity';
+import { UserEntity } from './entity/user.entity'
 
-import { UserService } from './user.service';
-import { UserConfigService } from './modules/config/service/config.service';
+import { UserService } from './user.service'
+import { UserConfigService } from './modules/config/service/config.service'
 
-import { ResponseBody } from 'src/constants/response';
-import { UserSpace } from 'src/interface/user.interface';
-import { MainCPrefix } from './constants/controller.cfg';
-import { JwtAuthGuard } from 'src/core/strategy/jwt.strategy';
-import { CurUser } from 'src/core/decorators/global.decorators';
-import { UserAccountResponse } from './modules/account/constants/account.response';
+import { ResponseBody } from 'src/constants/response'
+import { UserSpace } from 'src/interface/user.interface'
+import { MainCPrefix } from './constants/controller.cfg'
+import { JwtAuthGuard } from 'src/core/strategy/jwt.strategy'
+import { CurUser } from 'src/core/decorators/global.decorators'
+import { UserAccountResponse } from './modules/account/constants/account.response'
 
-
-
-export const controllerPerfix = MainCPrefix;
+export const controllerPerfix = MainCPrefix
 /**
  * 用户业务 控制层
  */
 @Controller(controllerPerfix)
 @ApiTags('用户')
 export class UserController {
-
   constructor(
     private readonly UserService: UserService,
-    private readonly UserConfigService: UserConfigService,
+    private readonly UserConfigService: UserConfigService
   ) {}
-
-
 
   /**
    * 获取其他用户数据
@@ -43,14 +38,13 @@ export class UserController {
     description: '用户ID',
   })
   async outerUser(@Param('id') id: UserEntity['id']) {
-    const user = await this.UserService.outerUser(id);
+    const user = await this.UserService.outerUser(id)
     if (!user) {
-      ResponseBody.throw(UserAccountResponse.FIND_USER_NULL);
+      ResponseBody.throw(UserAccountResponse.FIND_USER_NULL)
     }
     user.email = user.email ? `mailto:${user.email}` : ''
-    return user;
+    return user
   }
-
 
   /**
    * 获取个人信息
@@ -62,9 +56,9 @@ export class UserController {
   })
   @ApiBearerAuth()
   async info(@CurUser() user: UserSpace.UserInfo) {
-    delete user.password;
-    delete user.iv;
-    user.config = await this.UserConfigService.getConfig(user.id);
-    return user;
+    delete user.password
+    delete user.iv
+    user.config = await this.UserConfigService.getConfig(user.id)
+    return user
   }
 }

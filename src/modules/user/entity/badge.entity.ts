@@ -1,47 +1,33 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
 
-import { UserEntity } from "./user.entity";
+import { UserEntity } from './user.entity'
 
-import { UserTableName } from "../constants/entity.cfg";
-import { USER_CONSTANTS } from "src/constants";
-import { BaseInitEntity } from "src/entity/baseInitEntity";
+import { UserTableName } from '../constants/entity.cfg'
+import { USER_CONSTANTS } from 'src/constants'
+import { BaseInitEntity } from 'src/entity/baseInitEntity'
 
-
-
-/**
- * 用户 徽章实体
- */
+/** 用户 徽章实体 */
 @Entity({
-  name: UserTableName.BADGE
+  name: UserTableName.BADGE,
 })
-export class Badge extends BaseInitEntity<{}> {
-  /**
-   * ID
-   */
+export class Badge extends BaseInitEntity<Record<string, string>> {
+  /** ID */
   @PrimaryGeneratedColumn()
-  id: number;
+  id: number
 
-  /**
-   * 名称
-   */
+  /** 名称 */
   @Column({ length: USER_CONSTANTS.BADGE_NAME_MAX_LENGTH, comment: '名称' })
-  name: string;
+  name: string
 
-  /**
-   * 图标
-   */
+  /** 图标 */
   @Column({ length: USER_CONSTANTS.BADGE_ICON_MAX_LENGTH, comment: '图标' })
-  icon: string;
+  icon: string
 
-  /**
-   * 简介
-   */
+  /** 简介 */
   @Column({ length: USER_CONSTANTS.BADEG_DESC_MAX_LENGTH, comment: '简介' })
-  description: string;
+  description: string
 
-  /**
-   * 拥有者
-   */
-  @OneToMany(type => UserEntity, user => user.id)
-  owner: UserEntity[];
+  /** 拥有者 */
+  @OneToMany(() => UserEntity, user => user.id)
+  owner: UserEntity[]
 }

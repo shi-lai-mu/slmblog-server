@@ -1,23 +1,21 @@
-import { RedisOptions } from 'ioredis';
-import { MysqlConnectionOptions } from "typeorm/driver/mysql/MysqlConnectionOptions";
-
-
+import { RedisOptions } from 'ioredis'
+import { MysqlConnectionOptions } from 'typeorm/driver/mysql/MysqlConnectionOptions'
 
 /**
  * 数据库 配置
  */
 export interface DBConfig extends MysqlConnectionOptions {
-  tablePerfix: string;
+  tablePerfix: string
 }
 
 /**
  * Redis 配置
  */
-export interface RedisConfig extends RedisOptions {}
+export type RedisConfig = RedisOptions
 
 /**
  * 局部数据库 配置
  */
 export interface LocalDBconfig {
-  db: DBConfig;
+  db: DBConfig
 }

@@ -3,6 +3,6 @@
  */
 export class BaseConfig {
   constructor(cfg) {
-    Object.keys(cfg).forEach(k => this[k] = cfg[k]);
+    Object.keys(cfg).forEach(k => (this[k] = cfg[k]))
   }
 }

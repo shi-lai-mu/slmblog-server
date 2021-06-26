@@ -1,17 +1,23 @@
 /**
  * 随机头像性别
  */
- export enum RandomAvatarsGender {
-  female = 'female', // 女
-  male   = 'male',   // 男
-  human  = 'human',  // 人类
+export enum RandomAvatarsGender {
+  /** 女 */
+  female = 'female',
+  /** 男 */
+  male = 'male',
+  /** 人类 */
+  human = 'human',
 }
 
 /**
  * 随机头像情绪
  */
 export enum RandomAvatarsMood {
-  surprised = 'surprised', // 惊讶的
-  happy     = 'happy',     // 开心的
-  sad       = 'sad',       // 悲伤的
+  /** 惊讶的 */
+  surprised = 'surprised',
+  /** 开心的 */
+  happy = 'happy',
+  /** 悲伤的 */
+  sad = 'sad',
 }

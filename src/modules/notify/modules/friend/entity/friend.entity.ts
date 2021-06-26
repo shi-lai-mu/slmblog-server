@@ -30,6 +30,12 @@ export abstract class FriendBase<T> extends BaseInitEntity<T> {
     comment: '站点图标',
   })
   icon: string
+
+  /** 站点简介 */
+  @Column({
+    comment: '站点简介',
+  })
+  desc: string
 }
 
 /** 友情链接 实体 */

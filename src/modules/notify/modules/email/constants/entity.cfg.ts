@@ -1,8 +1,7 @@
-import { BaseInitEntity } from "src/entity/baseInitEntity";
+// import { BaseInitEntity } from 'src/entity/baseInitEntity'
 
-const { tablePerfix } = BaseInitEntity.dbConfig;
+// const { tablePerfix } = BaseInitEntity.dbConfig
 /**
  * 文章实体表名
  */
-export const ArticleTableName = {
-};
+export const ArticleTableName = {}

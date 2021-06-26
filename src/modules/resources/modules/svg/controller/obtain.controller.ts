@@ -1,14 +1,15 @@
-import Avatars from '@dicebear/avatars';
-import { ApiOperation, ApiTags } from "@nestjs/swagger";
-import maleSprites from '@dicebear/avatars-male-sprites';
-import humanSprites from '@dicebear/avatars-human-sprites';
-import femaleSprites from '@dicebear/avatars-female-sprites';
-import { Controller, Get, Header, HttpService, Param, Query } from "@nestjs/common";
+import Avatars from '@dicebear/avatars'
+import { ApiOperation, ApiTags } from '@nestjs/swagger'
+import maleSprites from '@dicebear/avatars-male-sprites'
+import humanSprites from '@dicebear/avatars-human-sprites'
+import femaleSprites from '@dicebear/avatars-female-sprites'
+import { Controller, Get, Header, Param, Query } from '@nestjs/common'
 
-import { MainCPrefix } from "src/modules/resources/constants";
-import { GenerateSVGAvatarsDTO, GenerateSVGAvatarsOptionsDTO } from "src/modules/resources/modules/svg/dto/svg.dto";
-
-
+import { MainCPrefix } from 'src/modules/resources/constants'
+import {
+  GenerateSVGAvatarsDTO,
+  GenerateSVGAvatarsOptionsDTO,
+} from 'src/modules/resources/modules/svg/dto/svg.dto'
 
 /**
  * 资源业务 SVG获取控制器
@@ -16,11 +17,6 @@ import { GenerateSVGAvatarsDTO, GenerateSVGAvatarsOptionsDTO } from "src/modules
 @Controller(MainCPrefix)
 @ApiTags('资源-SVG')
 export class ResourcesSVGObtainController {
-  constructor(
-    private readonly HttpService: HttpService,
-  ) {}
-
-
   /**
    * 获取随机生成的用户头像
    * @returns svg资源
@@ -34,16 +30,16 @@ export class ResourcesSVGObtainController {
   @Header('Cache-Control', 'max-age=60000')
   async generateAvatars(
     @Param() avatarsDTO: GenerateSVGAvatarsDTO,
-    @Query() options: GenerateSVGAvatarsOptionsDTO = {},
+    @Query() options: GenerateSVGAvatarsOptionsDTO = {}
   ) {
     const sprites = {
-      female : femaleSprites, // 女
-      male   : maleSprites,   // 男
-      human  : humanSprites,  // 人类
-    };
+      female: femaleSprites, // 女
+      male: maleSprites, // 男
+      human: humanSprites, // 人类
+    }
     const avatar = new Avatars<any>(sprites[avatarsDTO.gender] || sprites.human, {
-      mood: [ options.mood ],
-    });
-    return avatar.create(avatarsDTO.nickname);
+      mood: [options.mood],
+    })
+    return avatar.create(avatarsDTO.nickname)
   }
 }

@@ -1,20 +1,18 @@
-import { Logger, Module } from "@nestjs/common";
-import { JwtModule, JwtService } from "@nestjs/jwt";
-import { TypeOrmModule } from "@nestjs/typeorm";
+import { Logger, Module } from '@nestjs/common'
+import { JwtModule, JwtService } from '@nestjs/jwt'
+import { TypeOrmModule } from '@nestjs/typeorm'
 
-import { UserEntity, UserConfigEntity } from "../../entity/user.entity";
+import { UserEntity, UserConfigEntity } from '../../entity/user.entity'
 
-import { UserAuthService } from "../auth/service/auth.service";
-import { UserConfigService } from "../config/service/config.service";
-import { UserAccountService } from "./service/account.service";
-import { UserAccountController } from "./controller/account.controller";
-import { RedisService } from "src/modules/coreModules/redis/redis.service";
-import ConfigsService from "src/modules/coreModules/config/configs.service";
-import { UserService } from "../../user.service";
-import { UserAuthValidateService } from "../auth/service/validate.service";
-import { NotifyEmailService } from "src/modules/notify/modules/email/service/email.service";
-
-
+import { UserAuthService } from '../auth/service/auth.service'
+import { UserConfigService } from '../config/service/config.service'
+import { UserAccountService } from './service/account.service'
+import { UserAccountController } from './controller/account.controller'
+import { RedisService } from 'src/modules/coreModules/redis/redis.service'
+import ConfigsService from 'src/modules/coreModules/config/configs.service'
+import { UserService } from '../../user.service'
+import { UserAuthValidateService } from '../auth/service/validate.service'
+import { NotifyEmailService } from 'src/modules/notify/modules/email/service/email.service'
 
 /**
  * 用户业务 账号 模块
@@ -24,16 +22,11 @@ import { NotifyEmailService } from "src/modules/notify/modules/email/service/ema
     // UserAuthModule,
     JwtModule.registerAsync({
       useFactory: (configsService: ConfigsService) => configsService.jwt,
-      inject: [ ConfigsService ],
+      inject: [ConfigsService],
     }),
-    TypeOrmModule.forFeature([
-      UserEntity,
-      UserConfigEntity,
-    ]),
+    TypeOrmModule.forFeature([UserEntity, UserConfigEntity]),
   ],
-  controllers: [
-    UserAccountController,
-  ],
+  controllers: [UserAccountController],
   providers: [
     UserService,
     RedisService,
@@ -44,10 +37,6 @@ import { NotifyEmailService } from "src/modules/notify/modules/email/service/ema
     UserAccountService,
     Logger,
   ],
-  exports: [
-    UserAccountService,
-    UserAuthService,
-    Logger,
-  ]
+  exports: [UserAccountService, UserAuthService, Logger],
 })
-export class UserAccountModule {};
+export class UserAccountModule {}

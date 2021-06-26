@@ -1,6 +1,4 @@
-import { createHash } from 'crypto';
-
-
+import { createHash } from 'crypto'
 
 /**
  * 生成hash
@@ -9,12 +7,16 @@ import { createHash } from 'crypto';
  * @param digest   摘要方式
  * @param isUpper  是否转为大写
  */
-export const generateHash = (data: any, hashType: 'md5' | 'sha1' | 'sha256' | 'sha512' = 'md5', digest: any = 'hex', isUpper: boolean = true): string => {
-  let hash = createHash(hashType).update(data).digest(digest);
-  isUpper && (hash = hash.toLocaleUpperCase());
-  return hash;
+export const generateHash = (
+  data: any,
+  hashType: 'md5' | 'sha1' | 'sha256' | 'sha512' = 'md5',
+  digest: any = 'hex',
+  isUpper = true
+): string => {
+  let hash = createHash(hashType).update(data).digest(digest)
+  isUpper && (hash = hash.toLocaleUpperCase())
+  return hash
 }
-
 
 /**
  * 屏蔽数据
@@ -22,11 +24,10 @@ export const generateHash = (data: any, hashType: 'md5' | 'sha1' | 'sha256' | 's
  * @param start 起始位置
  * @param end   结束位置
  */
-export const shieldContent = (data: string, start: number, end?: number, inset: boolean = true): string => {
-  end = end || data.length;
-  const endCount = data.length - Math.abs(end) - start;
+export const shieldContent = (data: string, start: number, end?: number, inset = true): string => {
+  end = end || data.length
+  const endCount = data.length - Math.abs(end) - start
   return inset
     ? data.substr(0, start) + Array(endCount).fill('*').join('') + data.substr(-end)
-    : Array(start).fill('*').join('') + data.substr(start, endCount) +  Array(end).fill('*').join('')
-  ;
+    : Array(start).fill('*').join('') + data.substr(start, endCount) + Array(end).fill('*').join('')
 }

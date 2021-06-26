@@ -37,7 +37,7 @@ export class FriendService {
   async getFriendList(friendDto: GetFriendListDto) {
     const { page, pageSize } = friendDto
     const [list, total] = await this.Friend.findAndCount({
-      select: ['name', 'link', 'icon'],
+      select: ['name', 'link', 'icon', 'desc'],
       where: {
         is_show: FriendShow.SHOW,
       },

@@ -1,7 +1,2 @@
-
-
-
-/**
- * 父级控制层前缀
- */
-export const MainCPrefix = 'notify';
+/** 父级控制层前缀 */
+export const MainCPrefix = 'notify'

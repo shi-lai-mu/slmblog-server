@@ -7,7 +7,7 @@ export default {
     <br>响应文档 [http://127.0.0.1:3000/api/code](/api/code)`,
     version: '1.0',
     tag: 'API',
-    url: 'api'
+    url: 'api',
   },
   codeDoc: {
     title: '博客响应状态文档',

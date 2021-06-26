@@ -1,18 +1,16 @@
-import { ApiBearerAuth, ApiOperation, ApiTags } from "@nestjs/swagger";
-import { Body, Controller, Get, Post, UseGuards } from "@nestjs/common";
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger'
+import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common'
 
-import { UserEntity } from "src/modules/user/entity/user.entity";
+import { UserEntity } from 'src/modules/user/entity/user.entity'
 
-import { UserConfigService } from "../service/config.service";
+import { UserConfigService } from '../service/config.service'
 
-import { SaveUserConfigDto } from "../dto/config.dto";
-import { JwtAuthGuard } from "src/core/strategy/jwt.strategy";
-import { CurUser } from "src/core/decorators/global.decorators";
-import { MainCPrefix } from "../../../constants/controller.cfg";
+import { SaveUserConfigDto } from '../dto/config.dto'
+import { JwtAuthGuard } from 'src/core/strategy/jwt.strategy'
+import { CurUser } from 'src/core/decorators/global.decorators'
+import { MainCPrefix } from '../../../constants/controller.cfg'
 
-
-
-export const controllerPerfix = MainCPrefix + '/config';
+export const controllerPerfix = MainCPrefix + '/config'
 
 /**
  * 用户业务 配置 控制层
@@ -20,11 +18,7 @@ export const controllerPerfix = MainCPrefix + '/config';
 @Controller(controllerPerfix)
 @ApiTags('用户')
 export class UserConfigController {
-
-  constructor(
-    private readonly UserConfigService: UserConfigService,
-  ) {}
-
+  constructor(private readonly UserConfigService: UserConfigService) {}
 
   /**
    * 保存用户配置
@@ -38,10 +32,8 @@ export class UserConfigController {
   })
   @ApiBearerAuth()
   async saveConfig(@CurUser() user: UserEntity, @Body() userConfig: SaveUserConfigDto) {
-    return this.UserConfigService.saveConfig(user.id, userConfig);
+    return this.UserConfigService.saveConfig(user.id, userConfig)
   }
-
-
 
   /**
    * 获取用户配置
@@ -54,6 +46,6 @@ export class UserConfigController {
   })
   @ApiBearerAuth()
   async getConfig(@CurUser() user: UserEntity) {
-    return await this.UserConfigService.getConfig(user.id) || {};
+    return (await this.UserConfigService.getConfig(user.id)) || {}
   }
 }

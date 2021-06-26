@@ -25,7 +25,7 @@ import { GlobalMiddleware } from './core/middleware/global.middleware'
   imports: [
     ThrottlerModule.forRoot({
       ttl: 60,
-      limit: 10,
+      limit: 50,
     }),
     TypeOrmModule.forRootAsync({
       useFactory: async (configService: ConfigService) => configService.db,

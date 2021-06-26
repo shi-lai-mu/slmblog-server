@@ -12,12 +12,6 @@ export class FriendReviewEntity extends FriendBase<SubmitFriendReview> {
   })
   id: number
 
-  /** 申请原因/内容 */
-  @Column({
-    comment: '申请原因/内容',
-  })
-  desc: string
-
   /** 审核状态 */
   @Column({
     comment: '审核状态',
