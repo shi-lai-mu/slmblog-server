@@ -3,7 +3,7 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 
 import { AppService } from './app.service'
 
-import { Response } from './interface/gloabl.interface'
+import { Response } from './interface/global.interface'
 
 /**
  * APP 控制层

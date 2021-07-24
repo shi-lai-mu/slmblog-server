@@ -7,7 +7,6 @@ import { UserEntity } from 'src/modules/user/entity/user.entity'
 
 import { UserAuthService } from 'src/modules/user/modules/auth/service/auth.service'
 import { RedisService } from 'src/modules/coreModules/redis/redis.service'
-import ConfigsService from 'src/modules/coreModules/config/configs.service'
 
 import { isDev } from 'src/constants/system'
 import { ResBaseException } from '../exception/res.exception'
@@ -18,7 +17,6 @@ export class TimeoutInterceptor implements NestInterceptor {
   // private AuthService!: UserAuthService;
 
   constructor(
-    private readonly configService: ConfigsService,
     private readonly redisService: RedisService,
     private readonly AuthService: UserAuthService
   ) {
@@ -96,19 +94,12 @@ export class TimeoutInterceptor implements NestInterceptor {
         .pipe(
           catchError(err => {
             if (err instanceof ResBaseException) {
-              if (err.transferLog) {
-                err.transferLog(req)
-              }
               return throwError(err)
-            }
-            if (isDev) {
-              console.error(err)
             }
             if (!err?.code) {
               // TODO: write log file code...
               ResponseBody.throw(ResponseEnum.SERVER_ERROR)
             }
-            console.log('[错误位置]: ', err)
             return throwError(new ResBaseException(err))
           })
         )

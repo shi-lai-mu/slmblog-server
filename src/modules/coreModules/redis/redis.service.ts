@@ -1,10 +1,9 @@
 import * as Redis from 'ioredis'
 import { Injectable } from '@nestjs/common'
 
-import ConfigsService from 'src/modules/coreModules/config/configs.service'
-
 import { isDev } from 'src/constants/system'
 import { RedisConfig } from 'src/configs/type/db.cfg'
+import { exit } from 'process'
 
 /**
  * 缓存键定义
@@ -34,13 +33,15 @@ export class RedisService {
    */
   readonly cacheKeys: CacheKeys
 
-  constructor(private readonly configService: ConfigsService) {
-    if (JSON.stringify(RedisCache.config) === JSON.stringify(this.configService.redis)) {
+  constructor(private readonly RedisConfig: RedisConfig) {
+    if (!RedisConfig.host) return
+    if (JSON.stringify(RedisCache.config) === JSON.stringify(RedisConfig)) {
       this.client = RedisCache.object
     } else {
-      this.client = new Redis(this.configService.redis)
+      this.client = new Redis(RedisConfig)
     }
-    RedisCache.config = this.configService.redis
+
+    RedisCache.config = RedisConfig
     RedisCache.object = this.client
   }
 

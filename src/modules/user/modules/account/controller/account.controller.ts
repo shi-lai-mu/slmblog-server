@@ -10,7 +10,7 @@ import { UserAccountService } from '../service/account.service'
 
 import { getClientIP } from 'src/utils/collection'
 import { ResponseBody } from 'src/constants/response'
-import { GlobalRequest } from 'src/interface/gloabl.interface'
+import { GlobalRequest } from 'src/interface/global.interface'
 import { CurUser } from 'src/core/decorators/global.decorators'
 import { UserAccountResponse } from '../constants/account.response'
 import { FrequentlyGuards } from 'src/core/guards/frequently.guards'

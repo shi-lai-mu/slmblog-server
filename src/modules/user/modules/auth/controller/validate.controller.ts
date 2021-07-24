@@ -3,7 +3,6 @@ import { ISendMailOptions } from '@nestjs-modules/mailer'
 import { Controller, Post, Query, Put, Body } from '@nestjs/common'
 
 import { UserAuthService } from '../service/auth.service'
-import ConfigsService from 'src/modules/coreModules/config/configs.service'
 import { NotifyEmailService } from 'src/modules/notify/modules/email/service/email.service'
 
 import { ValidateAccountEmailDto } from '../dto/auth.dto'
@@ -23,7 +22,6 @@ export const controllerPerfix = MainCPrefix + '/validate'
 @ApiTags('用户')
 export class UserAuthValidateController {
   constructor(
-    private readonly ConfigService: ConfigsService,
     private readonly UserAuthService: UserAuthService,
     private readonly NotifyEmailService: NotifyEmailService,
     private readonly UserAuthValidateService: UserAuthValidateService
@@ -52,56 +50,56 @@ export class UserAuthValidateController {
   /**
    * 发送 找回密码 邮件通知
    */
-  @Post('/email')
-  @ApiOperation({
-    summary: '发送 账号邮箱验证 邮件通知',
-    description: `会向指定邮箱发送 验证账号邮箱邮件，有效时间为\`${formatJetlag(
-      NOTIFY_EMAIL.SEND_COOLING_S * 1000,
-      '小时'
-    )}\`<br>
-       **防止轰炸：**邮箱一分钟内只能发送\`1次\`，一个邮箱一天最多发送\`${
-         NOTIFY_EMAIL.SEND_COOLING_COUNT
-       }次\`<br>
-       **注意：**本邮件的验证码只能用于\`验证账号邮箱\`，不适用其他验证
-     `,
-  })
-  async sendResetAccountPasswordEmail(@Query() query: ValidateEmailDto) {
-    //  const { SEND_COOLING_COUNT, SEND_COOLING_S, SEND_COOLING_TIME } = NOTIFY_EMAIL;
-    //  const { web } = this.ConfigService;
-    //  const { NotifyEmailService } = this;
-    //  const { email, account } = query;
-    //  const isRegister = await this.UserAccountService.isRegister(account);
-    //  if (!isRegister) ResponseBody.throw(NotifyEmailResponse.EMAIL_SEND_CURRENT_NOT_REG);
-    //  const sendLogs = await NotifyEmailService.getLogs(email);
-    //  const uuid = generateUUID();
-    //  const content = {
-    //    to: query.email,
-    //    subject: '请验证您的邮箱',
-    //    template: 'email',
-    //    from: web.email.from,
-    //    context: {
-    //      email,
-    //      systemAccount: account,
-    //      uuid,
-    //      account: shieldContent(account, 2, 2),
-    //      host: web.host,
-    //      supportEmail: web.email.support,
-    //      validateUrl: `${web.host}/user/validate/email?uuid=${uuid}&code=${email}&n=${sendLogs.length}`,
-    //      fromAddress: web.email.from.address,
-    //      validateTimeString: formatJetlag(SEND_COOLING_S * 1000, '小时'),
-    //      copyRight: `© 2018-${new Date().getFullYear()}, SlmBlog, ${web.host}.`,
-    //      time: Date.now() + SEND_COOLING_TIME,
-    //    },
-    //  };
-    //  await NotifyEmailService.sendPermission(email, sendLogs, SEND_COOLING_COUNT);
-    //  const sendQuery: Status | SentMessageInfo = await NotifyEmailService.send(content);
-    //  // 执行成功则记录状态
-    //  if (sendQuery.status) {
-    //    this.NotifyEmailService.logger(`${email}${sendLogs.length}`, JSON.stringify(content), 'EX', SEND_COOLING_S);
-    //    return sendQuery.status;
-    //  }
-    //  return ResponseBody.throw(NotifyEmailResponse.EMAIL_SEND_ERROR);
-  }
+  // @Post('/email')
+  // @ApiOperation({
+  //   summary: '发送 账号邮箱验证 邮件通知',
+  //   description: `会向指定邮箱发送 验证账号邮箱邮件，有效时间为\`${formatJetlag(
+  //     NOTIFY_EMAIL.SEND_COOLING_S * 1000,
+  //     '小时'
+  //   )}\`<br>
+  //      **防止轰炸：**邮箱一分钟内只能发送\`1次\`，一个邮箱一天最多发送\`${
+  //        NOTIFY_EMAIL.SEND_COOLING_COUNT
+  //      }次\`<br>
+  //      **注意：**本邮件的验证码只能用于\`验证账号邮箱\`，不适用其他验证
+  //    `,
+  // })
+  // async sendResetAccountPasswordEmail(@Query() query: ValidateEmailDto) {
+  //  const { SEND_COOLING_COUNT, SEND_COOLING_S, SEND_COOLING_TIME } = NOTIFY_EMAIL;
+  //  const { web } = this.ConfigService;
+  //  const { NotifyEmailService } = this;
+  //  const { email, account } = query;
+  //  const isRegister = await this.UserAccountService.isRegister(account);
+  //  if (!isRegister) ResponseBody.throw(NotifyEmailResponse.EMAIL_SEND_CURRENT_NOT_REG);
+  //  const sendLogs = await NotifyEmailService.getLogs(email);
+  //  const uuid = generateUUID();
+  //  const content = {
+  //    to: query.email,
+  //    subject: '请验证您的邮箱',
+  //    template: 'email',
+  //    from: web.email.from,
+  //    context: {
+  //      email,
+  //      systemAccount: account,
+  //      uuid,
+  //      account: shieldContent(account, 2, 2),
+  //      host: web.host,
+  //      supportEmail: web.email.support,
+  //      validateUrl: `${web.host}/user/validate/email?uuid=${uuid}&code=${email}&n=${sendLogs.length}`,
+  //      fromAddress: web.email.from.address,
+  //      validateTimeString: formatJetlag(SEND_COOLING_S * 1000, '小时'),
+  //      copyRight: `© 2018-${new Date().getFullYear()}, SlmBlog, ${web.host}.`,
+  //      time: Date.now() + SEND_COOLING_TIME,
+  //    },
+  //  };
+  //  await NotifyEmailService.sendPermission(email, sendLogs, SEND_COOLING_COUNT);
+  //  const sendQuery: Status | SentMessageInfo = await NotifyEmailService.send(content);
+  //  // 执行成功则记录状态
+  //  if (sendQuery.status) {
+  //    this.NotifyEmailService.logger(`${email}${sendLogs.length}`, JSON.stringify(content), 'EX', SEND_COOLING_S);
+  //    return sendQuery.status;
+  //  }
+  //  return ResponseBody.throw(NotifyEmailResponse.EMAIL_SEND_ERROR);
+  // }
 
   /**
    * 验证 账号邮箱

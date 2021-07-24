@@ -9,7 +9,6 @@ import { UserConfigService } from '../config/service/config.service'
 import { UserAccountService } from './service/account.service'
 import { UserAccountController } from './controller/account.controller'
 import { RedisService } from 'src/modules/coreModules/redis/redis.service'
-import ConfigsService from 'src/modules/coreModules/config/configs.service'
 import { UserService } from '../../user.service'
 import { UserAuthValidateService } from '../auth/service/validate.service'
 import { NotifyEmailService } from 'src/modules/notify/modules/email/service/email.service'
@@ -21,8 +20,12 @@ import { NotifyEmailService } from 'src/modules/notify/modules/email/service/ema
   imports: [
     // UserAuthModule,
     JwtModule.registerAsync({
-      useFactory: (configsService: ConfigsService) => configsService.jwt,
-      inject: [ConfigsService],
+      useFactory: () => ({
+        secret: process.env.APP_JWT_SECRET,
+        signOptions: {
+          expiresIn: process.env.APP_JWT_OPT_EXPIRES_IN,
+        },
+      }),
     }),
     TypeOrmModule.forFeature([UserEntity, UserConfigEntity]),
   ],

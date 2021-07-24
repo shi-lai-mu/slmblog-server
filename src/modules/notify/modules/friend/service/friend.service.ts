@@ -3,7 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm'
 
 import { responseList, skipPage } from 'src/utils/collection'
 import { NotifyEmailService } from '../../email/service/email.service'
-import ConfigsService from 'src/modules/coreModules/config/configs.service'
 
 import { FriendShow } from '../constants'
 import { FriendEntity } from '../entity/friend.entity'
@@ -15,9 +14,6 @@ import { GetFriendListDto, SubmitFriendDto } from '../dto/friend.dto'
  */
 export class FriendService {
   constructor(
-    /** 核心 配置业务 逻辑层 */
-    private readonly ConfigService: ConfigsService,
-
     /** 储存库 友链 */
     @InjectRepository(FriendEntity)
     private readonly Friend: Repository<FriendEntity>,
@@ -65,9 +61,8 @@ export class FriendService {
       } as FriendReviewEntity
     } else {
       // 通知收件箱收到友链申请
-      const { web } = this.ConfigService
       this.NotifyEmailService.send({
-        to: web.email.support,
+        to: process.env.EMAIL_SEND_FROM_ADDRESS,
         subject: `【友链业务】收到友链申请 ${name} in ${email}`,
         html: JSON.stringify(submitFriendDto),
       })

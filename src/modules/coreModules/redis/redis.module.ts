@@ -1,34 +1,14 @@
-import { DynamicModule, Global, Module } from "@nestjs/common";
+import { Global, Module } from '@nestjs/common'
+import { RedisConfig } from 'src/configs/type/db.cfg'
 
-import ConfigsService from "src/modules/coreModules/config/configs.service";
-
-import { RedisService } from "./redis.service";
-
-
+import { RedisService } from './redis.service'
 
 /**
  * 核心 Redis 模块
  */
 @Global()
-@Module({})
-export class RedisModule {
-  static forRootAsync(options): DynamicModule {
-    const providers = [
-      {
-        provide: 'RedisModuleOptions',
-        useFactory: options.useFactory,
-        inject: options.inject,
-      },
-      {
-        provide: RedisModule,
-        useFactory: (configsService: ConfigsService) => new RedisService(configsService),
-        inject: ['RedisModuleOptions'],
-      },
-    ];
-    return {
-      module: RedisModule,
-      providers,
-      exports: providers,
-    }
-  }
-}
+@Module({
+  providers: [RedisService, RedisConfig],
+  exports: [RedisConfig],
+})
+export class RedisModule {}

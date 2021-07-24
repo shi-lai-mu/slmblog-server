@@ -5,9 +5,9 @@ import { getClientIP } from 'src/utils/collection'
 import { ResponseBody, Status } from 'src/constants/response'
 
 import { RedisService } from 'src/modules/coreModules/redis/redis.service'
-import ConfigsService from 'src/modules/coreModules/config/configs.service'
+import { RedisConfig } from 'src/configs/type/db.cfg'
 
-const Redis = new RedisService(new ConfigsService())
+const Redis = new RedisService(new RedisConfig())
 
 /**
  * 频繁请求守卫
@@ -36,7 +36,6 @@ export const FrequentlyGuards = (options: FrequentlyOptions): FrequentlyGuardsAc
           if (ident === 'ip') headers[ident] = getClientIP(request)
           if (headers[ident]) authStr += String(headers[ident])
         })
-        // console.log(us);
       }
 
       const hash = generateHash(authStr + request.url)
