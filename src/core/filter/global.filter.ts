@@ -1,6 +1,7 @@
-import { ArgumentsHost, Catch, ExceptionFilter, HttpException } from '@nestjs/common'
+import { ArgumentsHost, Catch, ExceptionFilter, HttpException, HttpStatus } from '@nestjs/common'
 
 import { ResponseBody, ResponseEnum } from 'src/constants/response'
+import { Logger } from 'src/plugins/log4'
 
 /**
  * 全局过滤器
@@ -10,8 +11,9 @@ export class GlobalFilter implements ExceptionFilter {
   catch(exception: HttpException, host: ArgumentsHost) {
     const ctx = host.switchToHttp()
     const response: any = ctx.getResponse<Response>()
-    const request = ctx.getRequest<Request>()
-    let status = exception.getStatus()
+    const request = ctx.getRequest()
+    const status =
+      exception instanceof HttpException ? exception.getStatus() : HttpStatus.INTERNAL_SERVER_ERROR
 
     const errorShooting = {
       401: ResponseEnum.UNAUTHORIZED,
@@ -20,9 +22,14 @@ export class GlobalFilter implements ExceptionFilter {
       429: ResponseEnum.FREQUENTLY,
     }
 
-    if (request.method === 'OPTIONS') {
-      status = 200
-    }
+    // 自定义异常格式体
+    const logFormat = `Request original url: ${request.originalUrl}
+    Method: ${request.method}
+    IP: ${request.ip}
+    Status code: ${status}
+    Response: ${exception}`
+
+    // Logger.error(logFormat)
 
     // 发送响应
     response
@@ -30,8 +37,5 @@ export class GlobalFilter implements ExceptionFilter {
       .json(
         errorShooting[status] ? ResponseBody.send(errorShooting[status]) : exception.getResponse()
       )
-    if (request.method !== 'OPTIONS') {
-      console.log('[%s] %s %s error: %s', status, request.method, request.url, exception.message)
-    }
   }
 }

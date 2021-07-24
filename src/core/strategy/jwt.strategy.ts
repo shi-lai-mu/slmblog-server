@@ -6,13 +6,9 @@ import { Strategy, StrategyOptions, ExtractJwt } from 'passport-jwt'
 
 import { UserEntity } from 'src/modules/user/entity/user.entity'
 
-import ConfigsService from 'src/modules/coreModules/config/configs.service'
-
 import { ResponseBody, ResponseEnum } from 'src/constants/response'
 import { Permission } from 'src/modules/user/constants/entity.cfg'
-import { ResBaseException } from 'src/core/exception/res.exception'
 
-const jwtConfig = new ConfigsService().jwt
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(
@@ -29,7 +25,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       //   return token;
       // },
       ignoreExpiration: false,
-      secretOrKey: jwtConfig.secret,
+      secretOrKey: process.env.APP_JWT_SECRET,
     } as StrategyOptions)
   }
 

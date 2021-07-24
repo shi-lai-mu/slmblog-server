@@ -1,8 +1,5 @@
 import { BaseEntity } from 'typeorm'
-
-import ConfigsService from 'src/modules/coreModules/config/configs.service'
-
-const configsService = new ConfigsService()
+import { DBConfig } from 'src/configs/type/db.cfg'
 
 /**
  * 初始化实体基类 基础 typeorm BaseEntity ActiveRecord
@@ -11,7 +8,9 @@ export class BaseInitEntity<T> extends BaseEntity {
   /**
    * 当前环境数据库配置信息
    */
-  static readonly dbConfig: ConfigsService['db'] = configsService.db
+  static get dbConfig() {
+    return new DBConfig()
+  }
 
   constructor(data?: T) {
     super()

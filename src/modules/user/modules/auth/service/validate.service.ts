@@ -6,7 +6,6 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { UserEntity } from 'src/modules/user/entity/user.entity'
 
 import { UserService } from '../../../user.service'
-import ConfigsService from 'src/modules/coreModules/config/configs.service'
 import { NotifyEmailService } from 'src/modules/notify/modules/email/service/email.service'
 
 import { shieldContent } from 'src/utils/crypto'
@@ -24,7 +23,6 @@ export class UserAuthValidateService {
   constructor(
     @InjectRepository(UserEntity) private readonly userRepository: Repository<UserEntity>,
     private readonly UserService: UserService,
-    private readonly ConfigService: ConfigsService,
     private readonly NotifyEmailService: NotifyEmailService
   ) {}
   1
@@ -35,10 +33,11 @@ export class UserAuthValidateService {
    */
   async sendValidateAccountEmail(query: ValidateEmailDto) {
     const { SEND_COOLING_COUNT, SEND_COOLING_S, SEND_COOLING_TIME } = NOTIFY_EMAIL
-    const { web } = this.ConfigService
     const { NotifyEmailService } = this
-    let { email, account } = query
+    const { account } = query
+    const { env } = process
     const isRegister = await this.UserService.isRegister(account)
+    let { email } = query
 
     if (!isRegister) ResponseBody.throw(NotifyEmailResponse.EMAIL_SEND_CURRENT_NOT_REG)
 
@@ -52,19 +51,19 @@ export class UserAuthValidateService {
     const content = {
       to: email,
       subject: '请验证您的邮箱',
-      template: 'email',
-      from: web.email.from,
+      template: './email',
+      from: env.EMAIL_SEND_FROM_ADDRESS,
       context: {
         email,
         systemAccount: account,
         uuid,
         account: shieldContent(account, 2, 2),
-        host: web.host,
-        supportEmail: web.email.support,
-        validateUrl: `${web.host}/user/validate/email?uuid=${uuid}&code=${email}&n=${sendLogs.length}`,
-        fromAddress: web.email.from.address,
+        host: env.EMAIL_TRANSPORT_HOST,
+        supportEmail: env.EMAIL_SEND_FROM_ADDRESS,
+        validateUrl: `${env.LISTEN_HOSTNAME}/user/validate/email?uuid=${uuid}&code=${email}&n=${sendLogs.length}`,
+        fromAddress: env.EMAIL_SEND_FROM_ADDRESS,
         validateTimeString: formatJetlag(SEND_COOLING_S * 1000, '小时'),
-        copyRight: `© 2018-${new Date().getFullYear()}, SlmBlog, ${web.host}.`,
+        copyRight: `© 2018-${new Date().getFullYear()}, SlmBlog, ${env.LISTEN_HOSTNAME}.`,
         time: Date.now() + SEND_COOLING_TIME,
       },
     }
@@ -81,6 +80,7 @@ export class UserAuthValidateService {
       )
       return sendQuery.status
     }
+
     return ResponseBody.throw(NotifyEmailResponse.EMAIL_SEND_ERROR)
   }
 }

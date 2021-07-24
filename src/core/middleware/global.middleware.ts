@@ -1,7 +1,7 @@
 import { NestMiddleware } from '@nestjs/common'
 
 import { isDev } from 'src/constants/system'
-import { getIPAdress } from 'src/utils/network'
+// import { getIPAdress } from 'src/utils/network'
 
 // const devDomian = getIPAdress() ?? 'dev.slmblog.com';
 // const origin = 'http://localhost:*';

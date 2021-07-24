@@ -7,10 +7,9 @@ import { FindConditions, Repository } from 'typeorm'
 import { UserEntity } from 'src/modules/user/entity/user.entity'
 
 import { UserService } from 'src/modules/user/user.service'
-import ConfigsService from 'src/modules/coreModules/config/configs.service'
 
 import { UserAuthResponse } from '../constants/response'
-import { JwtToken } from 'src/interface/gloabl.interface'
+import { JwtToken } from 'src/interface/global.interface'
 import { Permission, UserStatus } from '../../../constants/entity.cfg'
 import { ResponseBody, ResponseEnum, Status } from 'src/constants/response'
 import { UserAccountResponse } from '../../account/constants/account.response'
@@ -23,8 +22,7 @@ export class UserAuthService {
   constructor(
     @InjectRepository(UserEntity) private readonly userRepository: Repository<UserEntity>,
     private readonly jwtService: JwtService,
-    private readonly UserService: UserService,
-    private readonly ConfigsService: ConfigsService
+    private readonly UserService: UserService
   ) {}
 
   /**
@@ -62,7 +60,7 @@ export class UserAuthService {
       const jwtVerify = await new Promise<JwtToken | Error | string>(resolve => {
         JWT.verify(
           jwt,
-          this.ConfigsService.jwt.secret,
+          process.env.APP_JWT_SECRET,
           {
             ignoreExpiration: true,
           },

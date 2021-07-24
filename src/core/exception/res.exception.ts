@@ -2,14 +2,13 @@ import { HttpException, HttpStatus } from '@nestjs/common'
 
 import { generateUUID } from '../../utils/collection'
 import { ErrorStatus, Status } from '../../constants/response'
-import { ConstantsResponse } from 'src/interface/gloabl.interface'
+import { ConstantsResponse } from 'src/interface/global.interface'
+import { Logger } from 'src/plugins/log4'
 
 /**
  * 请求基础 异常类
  */
 export class ResBaseException<T extends ConstantsResponse.Status<unknown>> extends HttpException {
-  transferLog: ConstantsResponse.Status<string>['transferLog']
-
   constructor(exception: T | Status | ErrorStatus) {
     // const errorResponse: ErrorStatus = exception;
 
@@ -24,12 +23,9 @@ export class ResBaseException<T extends ConstantsResponse.Status<unknown>> exten
       if (!exception.result) {
         exception.result = ''
       }
+      Logger.error(exception)
     }
 
     super(exception, HttpStatus.OK)
-
-    if (exception.transferLog) {
-      this.transferLog = exception.transferLog
-    }
   }
 }
