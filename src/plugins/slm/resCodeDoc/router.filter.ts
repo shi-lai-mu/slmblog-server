@@ -30,8 +30,5 @@ export class ResponseDocumentFilter implements ExceptionFilter {
       .json(
         errorShooting[status] ? ResponseBody.send(errorShooting[status]) : exception.getResponse()
       )
-    if (request.method !== 'OPTIONS') {
-      console.log('[%s] %s %s error: %s', status, request.method, request.url, exception.message)
-    }
   }
 }

@@ -1,6 +1,4 @@
-import { Status } from "src/constants/response";
-
-
+import { Status } from 'src/constants/response'
 
 export namespace ResponseDocument {
   /**
@@ -10,13 +8,12 @@ export namespace ResponseDocument {
     /**
      * 标题
      */
-    title?: string;
+    title?: string
     /***
      * 路由
      */
-    url?: string;
+    url?: string
   }
-  
 
   /**
    * 响应
@@ -25,51 +22,49 @@ export namespace ResponseDocument {
     /**
      * 调用键
      */
-    key: string;
+    key: string
     /**
      * 业务拓展模块名
      */
-    extends?: string;
+    extends?: string
     /**
      * 拓展模块上方的提示
      */
-    extendsTips?: string;
+    extendsTips?: string
   }
-
 
   /**
    * 响应文档注入入参
    */
-  export interface InsterOptions {
+  export interface InstarOptions {
     /**
      * 业务名
      */
-    name: string;
+    name: string
     /**
      * 本业务其实码
      */
-    startCode?: number;
+    startCode?: number
     /**
      * 业务拓展模块名
      */
-    extends?: string;
+    extends?: string
     /**
      * 拓展模块上方的提示
      */
-    tips?: string;
+    tips?: string
   }
-
 
   export type CodeTypeObject = {
     [k: string]: {
       /**
        * 错误类型名称
        */
-      type: string;
+      type: string
       /**
        * 响应Map
        */
-      resMap: ResponseDocument.ResStatus[];
+      resMap: ResponseDocument.ResStatus[]
       /**
        * 响应码状态
        */
@@ -77,19 +72,18 @@ export namespace ResponseDocument {
         /**
          * 起始码
          */
-        start: number;
+        start: number
         /**
          * 截止码
          */
-        end: number;
+        end: number
         /**
          * 转换次数
          */
-        transferLogCount: number;
-      };
+        transferLogCount: number
+      }
     }
   }
-
 
   /**
    * 响应业务
@@ -99,11 +93,11 @@ export namespace ResponseDocument {
       /**
        * 错误类型
        */
-      type: string;
+      type: string
       /**
        * 总数统计
        */
-      total: number;
+      total: number
     }
   }
 
@@ -117,7 +111,7 @@ export namespace ResponseDocument {
    *  + I	socket.io错误
    *  + O	其他错误
    */
-  export type CodeType = 'P' | 'B' | 'N' | 'D' | 'F' | 'I' | 'O';
+  export type CodeType = 'P' | 'B' | 'N' | 'D' | 'F' | 'I' | 'O'
 
   /**
    * 错误类型中文定义
@@ -126,10 +120,10 @@ export namespace ResponseDocument {
     /**
      * 置顶Code类型
      */
-    name: CodeType;
+    name: CodeType
     /**
      * 显示名称
      */
-    type: string;
+    type: string
   }
 }

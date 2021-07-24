@@ -1,14 +1,15 @@
-import { Injectable, Logger } from '@nestjs/common'
+import { Injectable } from '@nestjs/common'
 import { SentMessageInfo } from 'nodemailer'
 import { ISendMailOptions, MailerService } from '@nestjs-modules/mailer'
 
 import { RedisService } from 'src/modules/coreModules/redis/redis.service'
-import ConfigsService from 'src/modules/coreModules/config/configs.service'
 
 import { NOTIFY_EMAIL } from '../constants'
 import { formatJetlag } from 'src/utils/collection'
 import { ResponseBody, Status } from 'src/constants/response'
 import { NotifyEmailResponse } from '../constants/email.response'
+import { ResBaseException } from 'src/core/exception/res.exception'
+import { Logger } from 'src/plugins/log4'
 
 /**
  * 通知业务 邮箱 逻辑层
@@ -16,14 +17,10 @@ import { NotifyEmailResponse } from '../constants/email.response'
 @Injectable()
 export class NotifyEmailService {
   constructor(
-    /** 核心 配置业务 逻辑层 */
-    private readonly ConfigService: ConfigsService,
     /** 逻辑库 邮件 */
     private readonly MailerService: MailerService,
     /** 核心 Redis业务 逻辑层 */
-    private readonly RedisService: RedisService,
-    /** 基础库 日志 */
-    private readonly Logger: Logger
+    private readonly RedisService: RedisService
   ) {}
 
   /**
@@ -35,12 +32,11 @@ export class NotifyEmailService {
       ResponseBody.throw(NotifyEmailResponse.EMAIL_SEND_TO_IS_EMPTY)
     }
     // 数据默认值定义
-    const { web } = this.ConfigService
     options = {
-      from: web.email.from,
+      from: process.env.EMAIL_SEND_FROM_ADDRESS,
       ...options,
     }
-    return new Promise(async (res: SentMessageInfo, rej: (value: Status) => void) => {
+    return await new Promise(async (res: SentMessageInfo, rej: (value: Status) => void) => {
       try {
         const send: SentMessageInfo = await this.MailerService.sendMail(options)
         send.status = send.response === '250 Ok: queued as '
@@ -48,7 +44,8 @@ export class NotifyEmailService {
       } catch (err) {
         rej(NotifyEmailResponse.EMAIL_SEND_ERROR)
         // TODO: 记录错误 code...
-        this.Logger.debug(err, JSON.stringify(options))
+        // throw new ResBaseException(err)
+        Logger.error(err)
       }
     })
   }
