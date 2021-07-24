@@ -1,5 +1,5 @@
 import { isJsonString } from 'src/utils/collection'
-import { ConstantsResponse } from 'src/interface/gloabl.interface'
+import { ConstantsResponse } from 'src/interface/global.interface'
 import { ResBaseException } from 'src/core/exception/res.exception'
 import { NotifyResponse } from 'src/modules/notify/constants/response.cfg'
 import { ArticleResponse } from 'src/modules/article/constants/response.cfg'

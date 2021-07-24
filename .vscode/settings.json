@@ -1,13 +1,17 @@
 {
   "cSpell.words": [
     "Jetlag",
+    "KEYFIX",
     "Perfix",
     "chmod",
     "cnpm",
+    "cockroachdb",
     "dicebear",
     "keyscan",
+    "mariadb",
     "mkdir",
     "nestjs",
+    "postgres",
     "prebuild",
     "slmblog",
     "typegoose",

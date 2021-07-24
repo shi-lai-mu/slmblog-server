@@ -6,27 +6,33 @@ import { INestApplication } from '@nestjs/common'
 import { Status } from 'src/constants/response'
 
 const _dir = (name: string) => path.join(__dirname, name)
-const fileStyle = fs.readFileSync(_dir('template/style.css')).toString()
-const fileContent = fs.readFileSync(_dir('template/index.hbs')).toString()
-const fileBusinessContent = fs.readFileSync(_dir('template/business.hbs')).toString()
+const fileStyle = fs.readFileSync(_dir('template/style.css').replace('src', '')).toString()
+const fileContent = fs.readFileSync(_dir('template/index.hbs').replace('src', '')).toString()
+const fileBusinessContent = fs
+  .readFileSync(_dir('template/business.hbs').replace('src', ''))
+  .toString()
 
 /**
  * Response Document 文档 validation 全局注入
  */
-export function createResponseDocument(app: INestApplication, options: ResponseDocument.Options) {
-  const httpAdapter = app.getHttpAdapter()
+export function createResponseDocument(app: INestApplication) {
+  const { env } = process
   const { responseMap, codeType, responseBusiness } = ResponseCodeDocument
-  const baseUrl = options.url ?? '/api/code'
+  const httpAdapter = app.getHttpAdapter()
+  const baseUrl = env.SWAGGER_API_CODE_URL ?? '/api/code'
+  const baseTemplateData = {
+    url: baseUrl,
+    title: env.SWAGGER_API_CODE_TITLE_URL,
+    styles: fileStyle,
+    codeType,
+  }
 
   httpAdapter.get(baseUrl, (req: any, res: any) => {
     const template = Handlebars.compile(fileContent)
     res.send(
       template({
-        url: options.url,
-        title: options.title,
-        styles: fileStyle,
+        ...baseTemplateData,
         responseMap,
-        codeType,
         AllResponseBusiness: responseBusiness,
       })
     )
@@ -38,12 +44,9 @@ export function createResponseDocument(app: INestApplication, options: ResponseD
 
     res.send(
       template({
+        ...baseTemplateData,
         business,
-        url: options.url,
-        title: options.title,
-        styles: fileStyle,
         responseMap: responseMap[business],
-        codeType,
       })
     )
   })
@@ -106,7 +109,10 @@ export class ResponseCodeDocument {
    * @param resClass 响应类
    * @param options  入参
    */
-  static addResponseBusiness(resClass: Object, options: ResponseDocument.InsterOptions) {
+  static addResponseBusiness(
+    resClass: Record<string, Status>,
+    options: ResponseDocument.InstarOptions
+  ) {
     const codeTypeObj: ResponseDocument.CodeTypeObject =
       ResponseCodeDocument.responseMap[options.name]?.map || {}
 
@@ -145,12 +151,6 @@ export class ResponseCodeDocument {
 
       if (!item.codeKeep) {
         item.code = `${firstStr}${('0000' + curCodeType.code.start).substr(-4)}`
-      }
-
-      item.transferLog = (res: Request) => {
-        // console.log(currentResponseBusiness);
-        // currentResponseBusiness.code.transferLogCount++;
-        // TODO: 记录日志code...
       }
 
       currentMap.push({

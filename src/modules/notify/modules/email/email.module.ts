@@ -6,7 +6,6 @@ import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handleba
 import { NotifyEmailService } from './service/email.service'
 import { NotifyEmailController } from './controller/email.controller'
 import { RedisService } from 'src/modules/coreModules/redis/redis.service'
-import ConfigsService from 'src/modules/coreModules/config/configs.service'
 
 /**
  * 通知业务 邮箱 模块
@@ -14,17 +13,26 @@ import ConfigsService from 'src/modules/coreModules/config/configs.service'
 @Module({
   imports: [
     MailerModule.forRootAsync({
-      useFactory: (configsService: ConfigsService) => ({
-        ...configsService.email,
-        template: {
-          dir: path.join(__dirname, './template').replace('dist', 'src'),
-          adapter: new HandlebarsAdapter(),
-          options: {
-            strict: true,
+      useFactory: () => {
+        const { env } = process
+        return {
+          transport: {
+            host: env.EMAIL_TRANSPORT_HOST,
+            port: parseInt(env.EMAIL_TRANSPORT_PORT),
+            auth: {
+              user: env.EMAIL_TRANSPORT_AUTH_USER,
+              pass: env.EMAIL_TRANSPORT_AUTH_PASS,
+            },
           },
-        },
-      }),
-      inject: [ConfigsService],
+          template: {
+            dir: path.join(__dirname, 'template').replace(/src/g, ''),
+            adapter: new HandlebarsAdapter(),
+            options: {
+              strict: true,
+            },
+          },
+        }
+      },
     }),
   ],
   controllers: [NotifyEmailController],

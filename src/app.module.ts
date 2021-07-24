@@ -1,4 +1,5 @@
 import { APP_GUARD } from '@nestjs/core'
+import { ConfigModule } from '@nestjs/config'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler'
 import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common'
@@ -6,36 +7,32 @@ import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common'
 import { AppService } from './app.service'
 import { AppController } from './app.controller'
 import { RedisService } from './modules/coreModules/redis/redis.service'
-import ConfigService from './modules/coreModules/config/configs.service'
 
-import { NotifyBusinessModule } from './modules/notify/index.module'
 import { UserBusinessModule } from './modules/user/index.module'
+import { NotifyBusinessModule } from './modules/notify/index.module'
 import { RedisModule } from './modules/coreModules/redis/redis.module'
 import { ArticleBusinessModule } from './modules/article/index.module'
 import { ResourcesBusinessModule } from './modules/resources/index.module'
-import { ConfigsModule } from './modules/coreModules/config/configs.module'
 import { ScheduleBusinessModule } from './modules/coreModules/schedule/schedule.module'
 
+import { DBConfig } from './configs/type/db.cfg'
+import { configModuleOptions } from 'config/ConfigModuleOptions'
 import { GlobalMiddleware } from './core/middleware/global.middleware'
+import { LoggerMiddleware } from './core/middleware/logger.middleware'
 
 /**
  * APP 主模块
  */
 @Module({
   imports: [
+    ConfigModule.forRoot(configModuleOptions),
+    // 频繁请求限制
     ThrottlerModule.forRoot({
       ttl: 60,
-      limit: 50,
+      limit: 5,
     }),
-    TypeOrmModule.forRootAsync({
-      useFactory: async (configService: ConfigService) => configService.db,
-      inject: [ConfigService],
-    }),
-    RedisModule.forRootAsync({
-      useFactory: async (configService: ConfigService) => configService,
-      inject: [ConfigService],
-    }),
-    ConfigsModule,
+    TypeOrmModule.forRoot(new DBConfig()),
+    RedisModule,
     UserBusinessModule,
     NotifyBusinessModule,
     ArticleBusinessModule,
@@ -57,6 +54,7 @@ export class AppModule {
     consumer
       .apply(
         // 全局中间件
+        LoggerMiddleware,
         GlobalMiddleware
       )
       .forRoutes({
